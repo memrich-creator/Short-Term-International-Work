@@ -347,6 +347,27 @@
                 gap: 1rem;
             }
         }
+        
+        /* Red styling for over-limit status */
+        .over-limit {
+            color: #dc3545 !important;
+            font-weight: bold !important;
+        }
+        
+        .over-limit-card {
+            border-color: #dc3545 !important;
+            background-color: #f8d7da !important;
+        }
+        
+        .warning-limit {
+            color: #ffc107 !important;
+            font-weight: bold !important;
+        }
+        
+        .warning-limit-card {
+            border-color: #ffc107 !important;
+            background-color: #fff3cd !important;
+        }
     </style>
 </head>
 <body>
@@ -2650,6 +2671,64 @@ For detailed information, please generate the Detailed Report.`;
             document.body.removeChild(link);
             window.URL.revokeObjectURL(url);
         }
+        
+        // Function to update status card colors based on days used
+        function updateStatusCardColors() {
+            const currentDaysElement = document.getElementById('currentDaysUsed');
+            const rollingDaysElement = document.getElementById('rollingDaysNumber');
+            const complianceCard = document.getElementById('complianceCard');
+            const currentDaysCard = document.getElementById('currentDaysCard');
+            const daysAvailableCard = document.getElementById('daysAvailableCard');
+            
+            if (currentDaysElement) {
+                const currentDays = parseInt(currentDaysElement.textContent) || 0;
+                
+                // Remove existing classes
+                [currentDaysElement, rollingDaysElement].forEach(el => {
+                    if (el) {
+                        el.classList.remove('over-limit', 'warning-limit');
+                    }
+                });
+                
+                [complianceCard, currentDaysCard, daysAvailableCard].forEach(card => {
+                    if (card) {
+                        card.classList.remove('over-limit-card', 'warning-limit-card');
+                    }
+                });
+                
+                // Add appropriate classes based on days used
+                if (currentDays >= 45) {
+                    // Over limit - red
+                    if (currentDaysElement) currentDaysElement.classList.add('over-limit');
+                    if (rollingDaysElement) rollingDaysElement.classList.add('over-limit');
+                    if (currentDaysCard) currentDaysCard.classList.add('over-limit-card');
+                    if (daysAvailableCard) daysAvailableCard.classList.add('over-limit-card');
+                    if (complianceCard) complianceCard.classList.add('over-limit-card');
+                } else if (currentDays >= 40) {
+                    // Warning - yellow
+                    if (currentDaysElement) currentDaysElement.classList.add('warning-limit');
+                    if (rollingDaysElement) rollingDaysElement.classList.add('warning-limit');
+                    if (currentDaysCard) currentDaysCard.classList.add('warning-limit-card');
+                    if (daysAvailableCard) daysAvailableCard.classList.add('warning-limit-card');
+                    if (complianceCard) complianceCard.classList.add('warning-limit-card');
+                }
+            }
+        }
+        
+        // Override the existing updateComplianceStatus function to include color updates
+        const originalUpdateComplianceStatus = window.updateComplianceStatus;
+        window.updateComplianceStatus = function() {
+            if (originalUpdateComplianceStatus) {
+                originalUpdateComplianceStatus();
+            }
+            updateStatusCardColors();
+        };
+        
+        // Also call it when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(updateStatusCardColors, 500);
+        });
+        
     </script>
 </body>
 </html>
