@@ -618,7 +618,7 @@
             </div>
 
             <div class="links-section">
-                <a href="https://go/compass" target="_blank">❓ Questions? Visit go/compass</a>
+                <a href="https://go/compass" target="_blank">❓ Questions? Raise a request via go/compass</a>
                 <a href="https://docs.google.com/document/d/16ZSXNSQOf8G8P7gPFNtZri3Wrz2NmB0qzlWF-KC0HkM/edit?tab=t.0#heading=h.jlam7p41jwb8" target="_blank">🌍 View Approved STIW Locations</a>
             </div>
         </div>
@@ -836,7 +836,7 @@
             </form>
 
             <div class="links-section">
-                <a href="https://go/compass" target="_blank">❓ Questions? Visit go/compass</a>
+                <a href="https://go/compass" target="_blank">❓ Questions? Raise a request via go/compass</a>
                 <a href="https://docs.google.com/document/d/16ZSXNSQOf8G8P7gPFNtZri3Wrz2NmB0qzlWF-KC0HkM/edit?tab=t.0#heading=h.jlam7p41jwb8" target="_blank">🌍 View Approved STIW Locations</a>
             </div>
         </div>
@@ -869,7 +869,7 @@
             <div id="allTripsDisplay"></div>
 
             <div class="links-section">
-                <a href="https://go/compass" target="_blank">❓ Questions? Visit go/compass</a>
+                <a href="https://go/compass" target="_blank">❓ Questions? Raise a request via go/compass</a>
                 <a href="https://docs.google.com/document/d/16ZSXNSQOf8G8P7gPFNtZri3Wrz2NmB0qzlWF-KC0HkM/edit?tab=t.0#heading=h.jlam7p41jwb8" target="_blank">🌍 View Approved STIW Locations</a>
             </div>
         </div>
@@ -2743,6 +2743,121 @@ For detailed information, please generate the Detailed Report.`;
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(updateStatusCardColors, 500);
         });
+        
+        // Enhanced Employee Management Display
+        function displayAllEmployeeRequestsEnhanced() {
+            if (!authorizedUsers.includes(userEmail)) return;
+            
+            const container = document.getElementById('allEmployeeRequests');
+            if (!container) return;
+            
+            let allRequests = [];
+            let employeeEmails = new Set();
+            
+            // Collect all requests from localStorage
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('stiwUserData_')) {
+                    try {
+                        const userData = JSON.parse(localStorage.getItem(key));
+                        const email = key.replace('stiwUserData_', '');
+                        
+                        if (userData && userData.requests) {
+                            employeeEmails.add(email);
+                            userData.requests.forEach(request => {
+                                request.employeeEmail = email;
+                                request.employeeName = userData.name || request.name || 'Unknown';
+                                allRequests.push(request);
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Error parsing user data for', key, error);
+                    }
+                }
+            }
+            
+            // Sort requests by date (newest first)
+            allRequests.sort((a, b) => new Date(b.dateSubmitted || 0) - new Date(a.dateSubmitted || 0));
+            
+            let html = '';
+            
+            if (allRequests.length === 0) {
+                html = `
+                    <div style="text-align: center; padding: 40px; color: #666;">
+                        <p><strong>No STIW requests found</strong></p>
+                        <p>Requests will appear here when employees submit them through the system.</p>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div style="margin-bottom: 20px; padding: 15px; background-color: #e8f5e8; border-left: 4px solid #4caf50; border-radius: 4px;">
+                        <strong>📊 Summary:</strong> Found ${allRequests.length} requests from ${employeeEmails.size} employees
+                    </div>
+                `;
+                
+                allRequests.forEach(request => {
+                    const statusColor = request.status === 'Approved' || request.status === 'Approved (Auto-approved for shortening)' ? '#4caf50' : 
+                                      request.status === 'Denied' || request.status === 'Canceled' ? '#f44336' : '#ff9800';
+                    
+                    const submittedDate = request.dateSubmitted ? new Date(request.dateSubmitted).toLocaleDateString() : 'Unknown';
+                    const tripDates = `${request.startDate} to ${request.endDate}`;
+                    
+                    html += `
+                        <div style="border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 15px; background-color: white;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                                <div>
+                                    <h4 style="margin: 0; color: #333;">${request.employeeName} (${request.employeeEmail})</h4>
+                                    <p style="margin: 5px 0; color: #666;"><strong>Destination:</strong> ${request.country}${request.additionalLocation ? ', ' + request.additionalLocation : ''}</p>
+                                </div>
+                                <span style="background-color: ${statusColor}; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">
+                                    ${request.status}
+                                </span>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 15px;">
+                                <div>
+                                    <strong>Trip Dates:</strong><br>
+                                    ${tripDates} (${request.duration} days)
+                                </div>
+                                <div>
+                                    <strong>Submitted:</strong><br>
+                                    ${submittedDate}
+                                </div>
+                                <div>
+                                    <strong>Manager:</strong><br>
+                                    ${request.managerEmail}
+                                </div>
+                            </div>
+                            ${request.purpose ? `
+                                <div style="margin-top: 15px;">
+                                    <strong>Purpose:</strong> ${request.purpose}
+                                </div>
+                            ` : ''}
+                            ${request.denialReason ? `
+                                <div style="margin-top: 10px; padding: 10px; background-color: #ffebee; border-radius: 4px;">
+                                    <strong>Reason:</strong> ${request.denialReason}
+                                </div>
+                            ` : ''}
+                            ${request.cancellationReason ? `
+                                <div style="margin-top: 10px; padding: 10px; background-color: #fff3e0; border-radius: 4px;">
+                                    <strong>Cancellation Reason:</strong> ${request.cancellationReason}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+            }
+            
+            container.innerHTML = html;
+        }
+        
+        // Override the existing employee management update to use enhanced display
+        const originalUpdateEmployeeManagement = window.updateEmployeeManagement;
+        window.updateEmployeeManagement = function() {
+            if (originalUpdateEmployeeManagement) {
+                originalUpdateEmployeeManagement();
+            }
+            setTimeout(displayAllEmployeeRequestsEnhanced, 100);
+        };
         
     </script>
 </body>
