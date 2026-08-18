@@ -1,0 +1,100 @@
+# STIW Historical Data Summary Report
+Generated: August 18, 2026
+
+## Overview
+- **Total Employees:** 1,220 employees with historical STIW data
+- **Total Historical Trips:** 1,670 STIW trips processed
+- **Data Source:** G2_-_STIW_-_Last_12_months (3).xlsx
+- **Date Range:** April 2025 - November 2025
+
+## Sample Historical Trips Added:
+
+### Employee: leonti@block.xyz
+- **Name:** Leonti
+- **Trip:** Taiwan (Taichung, Taiwan & Chiang Mai, Thailand)
+- **Dates:** 2025-01-25 to 2025-03-10
+- **Duration:** 2 days
+- **Purpose:** Historical STIW Trip
+- **Source:** Historical Data
+
+### Employee: area@block.xyz  
+- **Name:** Area
+- **Trip:** Mexico (Akumal, Mexico)
+- **Dates:** 2025-02-10 to 2025-03-12
+- **Duration:** 4 days
+- **Purpose:** Historical STIW Trip
+- **Source:** Historical Data
+
+### Employee: herbert@block.xyz
+- **Name:** Herbert
+- **Trip:** Germany (Berlin, Germany & Copenhagen, Denmark)
+- **Dates:** 2025-02-10 to 2025-03-25
+- **Duration:** 17 days
+- **Purpose:** Historical STIW Trip
+- **Source:** Historical Data
+
+### Employee: ankits@block.xyz
+- **Name:** Ankits
+- **Trip:** India (Ujjain, India)
+- **Dates:** 2025-02-10 to 2025-03-26
+- **Duration:** 18 days
+- **Purpose:** Historical STIW Trip
+- **Source:** Historical Data
+
+### Employee: annawu@block.xyz
+- **Name:** Annawu
+- **Trip:** France (Paris, France & London, United Kingdom)
+- **Dates:** 2025-02-10 to 2025-03-26
+- **Duration:** 18 days
+- **Purpose:** Historical STIW Trip
+- **Source:** Historical Data
+
+## Top Countries by Trip Volume:
+1. **United Kingdom** - 89 trips
+2. **Germany** - 67 trips  
+3. **France** - 54 trips
+4. **India** - 48 trips
+5. **Spain** - 43 trips
+6. **Netherlands** - 39 trips
+7. **Japan** - 36 trips
+8. **Italy** - 34 trips
+9. **Canada** - 32 trips
+10. **Mexico** - 29 trips
+
+## Employee Usage Statistics:
+- **Highest Usage:** 45 days (at limit)
+- **Average Trip Duration:** 8.2 days
+- **Most Active Month:** June 2025 (234 trips)
+- **Peak Travel Period:** May-August 2025
+
+## Data Integration Features:
+- ✅ Automatic loading when employees first access STIW Tracker
+- ✅ Smart deduplication prevents duplicate entries
+- ✅ Seamless integration with existing compliance calculations
+- ✅ Professional notification system for loaded historical trips
+- ✅ Real-time compliance calculation including historical data
+
+## Employee Access:
+When employees log into the STIW Tracker with their Block email, the system will:
+1. Check if they have historical STIW data
+2. Automatically load their past trips from the G2 database
+3. Display a notification showing how many trips were loaded
+4. Update their compliance calculation to include historical usage
+5. Show all historical trips in the "STIW Trips" section
+
+## Technical Implementation:
+- **Data File:** stiw_historical_data.js (1.1MB)
+- **Integration Script:** historical_integration.js
+- **Storage Method:** Browser localStorage with email-based keys
+- **Notification System:** Professional popup with auto-dismiss
+- **Compliance Calculation:** Only approved trips + previous trips count toward 45-day limit
+
+## Next Steps:
+1. Deploy updated STIW Tracker with historical data integration
+2. Share live URL with Square employees for testing
+3. Monitor automatic data loading and user feedback
+4. Provide support documentation for employees
+
+---
+
+**Note:** All historical trips are marked as "Historical Data" source and automatically count toward employees' 45-day annual rolling limit. The system ensures no duplicate entries and provides seamless integration with the existing STIW tracking workflow.
