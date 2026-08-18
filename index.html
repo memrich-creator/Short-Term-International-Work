@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Deployed working version - Updated Aug 13 -->
+    <!-- Deployed working version - Updated Aug 13 - Fix approved requests display -->
     <title>STIW Tracker</title>
     <style>
         :root {
@@ -390,15 +390,15 @@
     </div>
 
     <div class="nav-tabs">
-        <button class="nav-tab active" data-tab="calculator">📊 Trip Tracking Calculator</button>
-        <button class="nav-tab" data-tab="submit">📝 Submit Request</button>
+        <button class="nav-tab" data-tab="calculator">📊 Trip Tracking Calculator</button>
+        <button class="nav-tab active" data-tab="submit">📝 Submit Request</button>
         <button class="nav-tab" data-tab="tracking">📋 Request Tracking</button>
         <button class="nav-tab" data-tab="employee" id="employeeTab" style="display: none;">👥 Employee Management</button>
     </div>
 
     <div class="container">
         <!-- Trip Tracking Calculator Tab -->
-        <div id="calculator" class="tab-content active">
+        <div id="calculator" class="tab-content">
             <div class="info-box">
                 <p><strong>ℹ️ Information:</strong> This calculator helps you track your international work trips against the 45-day annual rolling limit. Add your previous trips to see your current usage status and plan future trips.</p>
             </div>
@@ -624,7 +624,7 @@
         </div>
 
         <!-- Submit Request Tab -->
-        <div id="submit" class="tab-content">
+        <div id="submit" class="tab-content active">
             <h2>Submit STIW Request</h2>
 
             <form id="requestForm">
@@ -1101,7 +1101,7 @@
             updateComplianceStatus();
             updateAllTripsDisplay();
             clearForm();
-            showTab('tracking');
+            showTab('submit');
         }
 
         function removeFromCalculator(tripId) {
@@ -1430,7 +1430,10 @@ STIW Tracking System`;
             container.innerHTML = `
                 <div class="trips-display">
                     <h3>Submitted Requests</h3>
-                    ${userRequests.map(req => `
+                    ${userRequests.filter(req => 
+                        req.status !== 'Approved' && 
+                        req.status !== 'Approved (Auto-approved for shortening)'
+                    ).map(req => `
                         <div class="trip-card">
                             <div class="trip-info">
                                 <div class="trip-country">${req.country} - ${req.purpose}</div>
