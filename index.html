@@ -1026,6 +1026,10 @@
             }
             
             loadUserData();
+            
+            // Load historical data if available
+            loadHistoricalDataForUser();
+            
             updateCalculatorDisplay();
             updateRequestTracking();
             updateAllTripsDisplay();
@@ -1033,6 +1037,88 @@
             if (authorizedUsers.includes(userEmail)) {
                 updateEmployeeManagement();
             }
+        }
+
+        // Load historical STIW data for the current user
+        function loadHistoricalDataForUser() {
+            // Check if historical data is available
+            if (typeof window.STIW_HISTORICAL_DATA !== 'undefined' && userEmail) {
+                const historicalUser = window.STIW_HISTORICAL_DATA.find(user => user.email === userEmail);
+                if (historicalUser && historicalUser.trips.length > 0) {
+                    // Check if historical data already loaded
+                    const existingHistoricalTrips = allTrips.filter(trip => trip.source === 'Historical Data');
+                    if (existingHistoricalTrips.length === 0) {
+                        // Add historical trips to allTrips
+                        historicalUser.trips.forEach(trip => {
+                            const historicalTrip = {
+                                id: Date.now() + Math.random(), // Unique ID
+                                country: trip.country,
+                                additionalLocation: trip.additionalLocation || '',
+                                purpose: 'Historical STIW Trip',
+                                startDate: trip.startDate,
+                                endDate: trip.endDate,
+                                duration: trip.duration,
+                                dateAdded: new Date().toISOString(),
+                                source: 'Historical Data'
+                            };
+                            allTrips.push(historicalTrip);
+                        });
+                        
+                        // Save updated data
+                        saveUserData();
+                        
+                        // Show notification
+                        showHistoricalDataNotification(historicalUser.trips.length, historicalUser.totalDays);
+                    }
+                }
+            }
+        }
+
+        // Show historical data notification
+        function showHistoricalDataNotification(tripCount, totalDays) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #e8f5e8;
+                border: 2px solid #4caf50;
+                border-radius: 12px;
+                padding: 20px;
+                max-width: 400px;
+                z-index: 1000;
+                box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            `;
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <span style="font-size: 28px;">📊</span>
+                    <div>
+                        <strong style="color: #2e7d32; font-size: 16px;">Historical STIW Data Loaded!</strong>
+                        <p style="margin: 8px 0 0 0; font-size: 14px; color: #555;">
+                            ✅ Loaded ${tripCount} historical trips (${totalDays} days)<br>
+                            🎯 Your usage status has been updated
+                        </p>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" style="
+                        background: none;
+                        border: none;
+                        font-size: 20px;
+                        cursor: pointer;
+                        color: #666;
+                        margin-left: auto;
+                        padding: 5px;
+                    ">×</button>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            // Auto-remove after 10 seconds
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 10000);
         }
 
         // Tab switching functionality
@@ -1712,6 +1798,14 @@ This report provides a high-level overview of STIW activity and usage status.`;
 
     <!-- Historical STIW Data Integration -->
     <script src="stiw_historical_data.js"></script>
-    <script src="historical_integration.js"></script>
+    <script>
+        // Initialize historical data after page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Historical data available:', typeof window.STIW_HISTORICAL_DATA !== 'undefined');
+            if (typeof window.STIW_HISTORICAL_DATA !== 'undefined') {
+                console.log('Historical data loaded for', window.STIW_HISTORICAL_DATA.length, 'employees');
+            }
+        });
+    </script>
 </body>
 </html>
