@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Historical Data</title>
+</head>
+<body>
+    <h1>Historical Data Test</h1>
+    <div id="results"></div>
+    
+    <script src="stiw_historical_data.js"></script>
+    <script>
+        const results = document.getElementById('results');
+        
+        if (typeof window.STIW_HISTORICAL_DATA !== 'undefined') {
+            const data = window.STIW_HISTORICAL_DATA;
+            results.innerHTML = `
+                <h2>✅ Historical Data Loaded Successfully!</h2>
+                <p><strong>Total Employees:</strong> ${data.length}</p>
+                <p><strong>Total Trips:</strong> ${data.reduce((sum, user) => sum + user.trips.length, 0)}</p>
+                
+                <h3>Sample Employee Data:</h3>
+                <pre>${JSON.stringify(data[0], null, 2)}</pre>
+            `;
+        } else {
+            results.innerHTML = '<h2>❌ Historical Data Not Found</h2>';
+        }
+    </script>
+</body>
+</html>
