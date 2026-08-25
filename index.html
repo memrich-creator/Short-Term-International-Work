@@ -1652,119 +1652,101 @@
             
             if (isChangeRequest) {
                 // Enhanced Change Request Email
-                emailSubject = `🔄 STIW CHANGE REQUEST - ${request.name} - ${request.country}`;
+                emailSubject = `STIW Change Request - ${request.name} - ${request.country} - Action Required`;
                 
-                emailBody = `
-═══════════════════════════════════════════════════════════════
-🔄 SHORT TERM INTERNATIONAL WORK (STIW) - CHANGE REQUEST
-═══════════════════════════════════════════════════════════════
+                emailBody = `Dear Manager,
 
-${request.name} has submitted a CHANGE REQUEST for an existing STIW request.
+${request.name} has submitted a CHANGE REQUEST for an existing STIW request that requires your approval.
 
-📋 EMPLOYEE INFORMATION:
-• Name: ${request.name}
-• Email: ${request.email}
-• Current STIW Usage: ${request.currentDays || 0} days
-• Days Available: ${request.daysAvailable || 45} days
+EMPLOYEE INFORMATION:
+Name: ${request.name}
+Email: ${request.email}
+Current STIW Usage: ${request.currentDays || 0} days
+Days Available: ${request.daysAvailable || 45} days
 
-🔄 CHANGE REASON:
+CHANGE REASON:
 ${request.changeReason || 'No reason provided'}
 
-═══════════════════════════════════════════════════════════════
-📊 COMPARISON - ORIGINAL vs. PROPOSED REQUEST
-═══════════════════════════════════════════════════════════════
+COMPARISON - ORIGINAL vs. PROPOSED REQUEST:
 
-🔴 ORIGINAL REQUEST:
-• Destination: ${request.originalRequest?.country || 'N/A'}${request.originalRequest?.additionalLocation ? ` (${request.originalRequest.additionalLocation})` : ''}
-• Travel Dates: ${request.originalRequest?.startDate || 'N/A'} to ${request.originalRequest?.endDate || 'N/A'}
-• Duration: ${request.originalRequest?.duration || 'N/A'} days
-• Purpose: ${request.originalRequest?.purpose || 'N/A'}
+ORIGINAL REQUEST:
+Destination: ${request.originalRequest?.country || 'N/A'}${request.originalRequest?.additionalLocation ? ` (${request.originalRequest.additionalLocation})` : ''}
+Travel Dates: ${request.originalRequest?.startDate || 'N/A'} to ${request.originalRequest?.endDate || 'N/A'}
+Duration: ${request.originalRequest?.duration || 'N/A'} days
+Purpose: ${request.originalRequest?.purpose || 'N/A'}
 
-🟢 PROPOSED NEW REQUEST:
-• Destination: ${request.country}${request.additionalLocation ? ` (${request.additionalLocation})` : ''}
-• Travel Dates: ${request.startDate} to ${request.endDate}
-• Duration: ${request.duration} days
-• Purpose: ${request.purpose}
+PROPOSED NEW REQUEST:
+Destination: ${request.country}${request.additionalLocation ? ` (${request.additionalLocation})` : ''}
+Travel Dates: ${request.startDate} to ${request.endDate}
+Duration: ${request.duration} days
+Purpose: ${request.purpose}
 
-📈 IMPACT ANALYSIS:
-• Duration Change: ${request.originalRequest ? (request.duration - request.originalRequest.duration > 0 ? `+${request.duration - request.originalRequest.duration}` : `${request.duration - request.originalRequest.duration}`) : 'N/A'} days
-• Projected Total After Trip: ${(request.currentDays || 0) + request.duration} days
+IMPACT ANALYSIS:
+Duration Change: ${request.originalRequest ? (request.duration - request.originalRequest.duration > 0 ? `+${request.duration - request.originalRequest.duration}` : `${request.duration - request.originalRequest.duration}`) : 'N/A'} days
+Projected Total After Trip: ${(request.currentDays || 0) + request.duration} days
 
-═══════════════════════════════════════════════════════════════
-⚡ MANAGER ACTION REQUIRED
-═══════════════════════════════════════════════════════════════
-
+MANAGER ACTION REQUIRED:
 Please review the change request and click one of the links below:
 
-✅ APPROVE CHANGES: ${baseUrl}?approve=${request.id}&email=${encodeURIComponent(request.email)}
+APPROVE CHANGES: ${baseUrl}?approve=${request.id}&email=${encodeURIComponent(request.email)}
 
-❌ DENY CHANGES: ${baseUrl}?deny=${request.id}&email=${encodeURIComponent(request.email)}&reason=required
+DENY CHANGES: ${baseUrl}?deny=${request.id}&email=${encodeURIComponent(request.email)}&reason=required
 
-⚠️ IMPORTANT NOTES:
-• Change requests require manager approval even if the duration is reduced
-• Denied changes will require you to provide a detailed denial reason
-• Employees can cancel their own requests if needed
-• Original request remains in effect until changes are approved
+IMPORTANT NOTES:
+- Change requests require manager approval even if the duration is reduced
+- Denied changes will require you to provide a detailed denial reason
+- Employees can cancel their own requests if needed
+- Original request remains in effect until changes are approved
 
-═══════════════════════════════════════════════════════════════
-📚 RESOURCES
-═══════════════════════════════════════════════════════════════
-• STIW Policy Guidelines: https://my.sqprod.co/resources/people-resource-center/employee-resources/relocation/short-term-international-work-guidelines
-• Questions? Contact Global Mobility at mobility-stiw@squareup.com
+RESOURCES:
+STIW Policy Guidelines: https://my.sqprod.co/resources/people-resource-center/employee-resources/relocation/short-term-international-work-guidelines
+Questions? Contact Global Mobility at mobility-stiw@squareup.com
 
 This email was automatically generated by the STIW Tracking System.
 `;
             } else {
                 // Enhanced New Request Email
-                emailSubject = `📋 STIW Request - ${request.name} - ${request.country}`;
+                emailSubject = `STIW Request - ${request.name} - ${request.country} - Manager Approval Required`;
                 
-                emailBody = `
-═══════════════════════════════════════════════════════════════
-📋 SHORT TERM INTERNATIONAL WORK (STIW) REQUEST
-═══════════════════════════════════════════════════════════════
+                emailBody = `Dear Manager,
 
 ${request.name} has submitted a new Short Term International Work (STIW) request for your approval.
 
-👤 EMPLOYEE INFORMATION:
-• Name: ${request.name}
-• Email: ${request.email}
-• Current STIW Usage: ${request.currentDays || 0} days
-• Days Available: ${request.daysAvailable || 45} days
+EMPLOYEE INFORMATION:
+Name: ${request.name}
+Email: ${request.email}
+Current STIW Usage: ${request.currentDays || 0} days
+Days Available: ${request.daysAvailable || 45} days
 
-✈️ TRIP DETAILS:
-• Destination: ${request.country}${request.additionalLocation ? ` (${request.additionalLocation})` : ''}
-• Travel Dates: ${request.startDate} to ${request.endDate}
-• Duration: ${request.duration} days
-• Purpose: ${request.purpose}
+TRIP DETAILS:
+Destination: ${request.country}${request.additionalLocation ? ` (${request.additionalLocation})` : ''}
+Travel Dates: ${request.startDate} to ${request.endDate}
+Duration: ${request.duration} days
+Purpose: ${request.purpose}
 
-📊 USAGE ANALYSIS:
-• Current Usage: ${request.currentDays || 0} days
-• This Trip: ${request.duration} days
-• Projected Total: ${(request.currentDays || 0) + request.duration} days
-• Remaining After Trip: ${Math.max(0, 45 - ((request.currentDays || 0) + request.duration))} days
+USAGE ANALYSIS:
+Current Usage: ${request.currentDays || 0} days
+This Trip: ${request.duration} days
+Projected Total: ${(request.currentDays || 0) + request.duration} days
+Remaining After Trip: ${Math.max(0, 45 - ((request.currentDays || 0) + request.duration))} days
 
-═══════════════════════════════════════════════════════════════
-⚡ MANAGER ACTION REQUIRED
-═══════════════════════════════════════════════════════════════
-
+MANAGER ACTION REQUIRED:
 Please review the request and click one of the links below:
 
-✅ APPROVE REQUEST: ${baseUrl}?approve=${request.id}&email=${encodeURIComponent(request.email)}
+APPROVE REQUEST: ${baseUrl}?approve=${request.id}&email=${encodeURIComponent(request.email)}
 
-❌ DENY REQUEST: ${baseUrl}?deny=${request.id}&email=${encodeURIComponent(request.email)}&reason=required
+DENY REQUEST: ${baseUrl}?deny=${request.id}&email=${encodeURIComponent(request.email)}&reason=required
 
-⚠️ IMPORTANT NOTES:
-• Approved requests will be added to the employee's STIW tracking
-• Denied requests will require you to provide a detailed reason
-• Employees can cancel their own requests if needed
-• All actions are logged and tracked in the system
+IMPORTANT NOTES:
+- Approved requests will be added to the employee's STIW tracking
+- Denied requests will require you to provide a detailed reason
+- Employees can cancel their own requests if needed
+- All actions are logged and tracked in the system
 
-═══════════════════════════════════════════════════════════════
-📚 RESOURCES
-═══════════════════════════════════════════════════════════════
-• STIW Policy Guidelines: https://my.sqprod.co/resources/people-resource-center/employee-resources/relocation/short-term-international-work-guidelines
-• Approved STIW Locations: https://docs.google.com/document/d/16ZSXNSQOf8G8P7gPFNtZri3Wrz2NmB0qzlWF-KC0HkM/edit?tab=t.0#heading=h.jlam7p41jwb8
-• Questions? Contact Global Mobility at mobility-stiw@squareup.com
+RESOURCES:
+STIW Policy Guidelines: https://my.sqprod.co/resources/people-resource-center/employee-resources/relocation/short-term-international-work-guidelines
+Approved STIW Locations: https://docs.google.com/document/d/16ZSXNSQOf8G8P7gPFNtZri3Wrz2NmB0qzlWF-KC0HkM/edit?tab=t.0#heading=h.jlam7p41jwb8
+Questions? Contact Global Mobility at mobility-stiw@squareup.com
 
 This email was automatically generated by the STIW Tracking System.
 `;
@@ -1804,10 +1786,604 @@ This email was automatically generated by the STIW Tracking System.
         // Additional functions would go here (cancelOwnRequest, editRequest, etc.)
         // For brevity, I'm including the key functions that fix the main issues
 
+        function removeCalculatorTrip(index) {
+            if (confirm('Are you sure you want to remove this calculator trip?')) {
+                userData.calculatorTrips.splice(index, 1);
+                saveUserData();
+                updateCalculatorDisplay();
+                updateUsageStatus();
+            }
+        }
+
+        function cancelOwnRequest(requestId) {
+            const request = userData.requests.find(r => r.id === requestId);
+            if (request && confirm('Are you sure you want to cancel this request?')) {
+                request.status = 'Canceled';
+                request.cancellationReason = 'Canceled by employee';
+                request.statusUpdatedBy = 'Employee (self-canceled)';
+                request.statusUpdatedDate = new Date().toISOString();
+                saveUserData();
+                updateRequestTracking();
+            }
+        }
+
+        function editRequest(requestId) {
+            const request = userData.requests.find(r => r.id === requestId);
+            if (!request) return;
+
+            document.getElementById('editCountry').value = request.country;
+            document.getElementById('editAdditionalLocation').value = request.additionalLocation || '';
+            document.getElementById('editStartDate').value = request.startDate;
+            document.getElementById('editEndDate').value = request.endDate;
+            document.getElementById('editPurpose').value = request.purpose;
+            document.getElementById('changeReason').value = '';
+
+            document.getElementById('editModal').style.display = 'block';
+            window.currentEditRequestId = requestId;
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+            window.currentEditRequestId = null;
+        }
+
+        function saveEditedRequest() {
+            const requestId = window.currentEditRequestId;
+            const request = userData.requests.find(r => r.id === requestId);
+            if (!request) return;
+
+            const newCountry = document.getElementById('editCountry').value;
+            const newAdditionalLocation = document.getElementById('editAdditionalLocation').value;
+            const newStartDate = document.getElementById('editStartDate').value;
+            const newEndDate = document.getElementById('editEndDate').value;
+            const newPurpose = document.getElementById('editPurpose').value;
+            const changeReason = document.getElementById('changeReason').value;
+
+            if (!newCountry || !newStartDate || !newEndDate || !newPurpose || !changeReason) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            if (!validateDates(newStartDate, newEndDate)) {
+                alert('End date must be after start date.');
+                return;
+            }
+
+            const newDuration = calculateDuration(newStartDate, newEndDate);
+            const oldDuration = request.duration;
+
+            // Store original request data
+            if (!request.originalRequest) {
+                request.originalRequest = {
+                    country: request.country,
+                    additionalLocation: request.additionalLocation,
+                    startDate: request.startDate,
+                    endDate: request.endDate,
+                    duration: request.duration,
+                    purpose: request.purpose
+                };
+            }
+
+            // Update request
+            request.country = newCountry;
+            request.additionalLocation = newAdditionalLocation;
+            request.startDate = newStartDate;
+            request.endDate = newEndDate;
+            request.duration = newDuration;
+            request.purpose = newPurpose;
+            request.changeReason = changeReason;
+            request.previousStatus = request.status;
+
+            // Smart approval logic
+            if (newDuration <= oldDuration) {
+                // Trip shortened or same - auto-approve
+                request.status = 'Approved (Auto-approved for shortening)';
+                request.statusUpdatedBy = 'System (auto-approved)';
+                request.statusUpdatedDate = new Date().toISOString();
+                
+                // Send email to manager for notification
+                sendManagerEmail(request);
+            } else {
+                // Trip extended - requires manager approval
+                request.status = 'Pending Approval for Changes';
+                request.statusUpdatedBy = 'Employee (edited request)';
+                request.statusUpdatedDate = new Date().toISOString();
+                
+                // Send email to manager for approval
+                sendManagerEmail(request);
+            }
+
+            saveUserData();
+            closeEditModal();
+            updateAllDisplays();
+
+            if (newDuration <= oldDuration) {
+                alert('Request updated and auto-approved (trip shortened).');
+            } else {
+                alert('Request updated and sent to manager for approval (trip extended).');
+            }
+        }
+
+        function editSTIWTrip(tripId) {
+            const trip = userData.allTrips.find(t => t.id === tripId);
+            if (!trip) return;
+
+            const newCountry = prompt('Enter new country:', trip.country);
+            if (!newCountry) return;
+
+            const newStartDate = prompt('Enter new start date (YYYY-MM-DD):', trip.startDate);
+            if (!newStartDate) return;
+
+            const newEndDate = prompt('Enter new end date (YYYY-MM-DD):', trip.endDate);
+            if (!newEndDate) return;
+
+            const newPurpose = prompt('Enter new purpose:', trip.purpose);
+            if (!newPurpose) return;
+
+            if (!validateDates(newStartDate, newEndDate)) {
+                alert('End date must be after start date.');
+                return;
+            }
+
+            const newDuration = calculateDuration(newStartDate, newEndDate);
+
+            trip.country = newCountry;
+            trip.startDate = newStartDate;
+            trip.endDate = newEndDate;
+            trip.duration = newDuration;
+            trip.purpose = newPurpose;
+
+            saveUserData();
+            updateAllDisplays();
+            alert('STIW trip updated successfully.');
+        }
+
+        function cancelSTIWTrip(tripId) {
+            if (confirm('Are you sure you want to cancel this STIW trip? This will remove it from your tracking.')) {
+                userData.allTrips = userData.allTrips.filter(trip => trip.id !== tripId);
+                saveUserData();
+                updateAllDisplays();
+                alert('STIW trip canceled successfully.');
+            }
+        }
+
+        function generateReport(type) {
+            if (!authorizedUsers.includes(currentUser)) {
+                alert('You are not authorized to generate reports.');
+                return;
+            }
+
+            const allUserData = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('stiwUserData_')) {
+                    const email = key.replace('stiwUserData_', '');
+                    allUserData[email] = JSON.parse(localStorage.getItem(key));
+                }
+            }
+
+            if (type === 'csv') {
+                generateCSVReport(allUserData);
+            } else if (type === 'detailed') {
+                generateDetailedReport(allUserData);
+            } else if (type === 'summary') {
+                generateSummaryReport(allUserData);
+            }
+        }
+
+        function generateCSVReport(allUserData) {
+            let csv = 'Employee Email,Name,Country,Start Date,End Date,Duration,Purpose,Status,Date Submitted\n';
+            
+            Object.entries(allUserData).forEach(([email, data]) => {
+                if (data.requests && Array.isArray(data.requests)) {
+                    data.requests.forEach(request => {
+                        csv += `${email},"${request.name}","${request.country}","${request.startDate}","${request.endDate}",${request.duration},"${request.purpose}","${request.status}","${new Date(request.dateSubmitted).toLocaleDateString()}"\n`;
+                    });
+                }
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `stiw_report_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function generateDetailedReport(allUserData) {
+            const html = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>STIW Detailed Report</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 40px; }
+                        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+                        th { background-color: #f2f2f2; }
+                        .status-approved { color: #00875a; font-weight: bold; }
+                        .status-denied { color: #de350b; font-weight: bold; }
+                        .status-pending { color: #ff8b00; font-weight: bold; }
+                    </style>
+                </head>
+                <body>
+                    <h1>STIW Detailed Report</h1>
+                    <p>Generated on: ${new Date().toLocaleDateString()}</p>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Employee Email</th>
+                                <th>Name</th>
+                                <th>Country</th>
+                                <th>Travel Dates</th>
+                                <th>Duration</th>
+                                <th>Purpose</th>
+                                <th>Status</th>
+                                <th>Date Submitted</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${Object.entries(allUserData).map(([email, data]) => {
+                                if (!data.requests || !Array.isArray(data.requests)) return '';
+                                return data.requests.map(request => `
+                                    <tr>
+                                        <td>${email}</td>
+                                        <td>${request.name}</td>
+                                        <td>${request.country}</td>
+                                        <td>${request.startDate} to ${request.endDate}</td>
+                                        <td>${request.duration} days</td>
+                                        <td>${request.purpose}</td>
+                                        <td class="status-${request.status.toLowerCase()}">${request.status}</td>
+                                        <td>${new Date(request.dateSubmitted).toLocaleDateString()}</td>
+                                    </tr>
+                                `).join('');
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob([html], { type: 'text/html' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `stiw_detailed_report_${new Date().toISOString().split('T')[0]}.html`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function generateSummaryReport(allUserData) {
+            let totalEmployees = 0;
+            let totalRequests = 0;
+            let pendingRequests = 0;
+            let approvedRequests = 0;
+            let deniedRequests = 0;
+
+            Object.values(allUserData).forEach(data => {
+                totalEmployees++;
+                if (data.requests && Array.isArray(data.requests)) {
+                    totalRequests += data.requests.length;
+                    pendingRequests += data.requests.filter(r => r.status === 'Pending' || r.status.includes('Pending')).length;
+                    approvedRequests += data.requests.filter(r => r.status === 'Approved' || r.status.includes('Auto-approved')).length;
+                    deniedRequests += data.requests.filter(r => r.status === 'Denied' || r.status === 'Canceled').length;
+                }
+            });
+
+            const summary = `STIW Summary Report
+Generated on: ${new Date().toLocaleDateString()}
+
+OVERVIEW:
+- Total Employees: ${totalEmployees}
+- Total Requests: ${totalRequests}
+- Pending Requests: ${pendingRequests}
+- Approved Requests: ${approvedRequests}
+- Denied/Canceled Requests: ${deniedRequests}
+
+APPROVAL RATE: ${totalRequests > 0 ? ((approvedRequests / totalRequests) * 100).toFixed(1) : 0}%
+            `;
+
+            const blob = new Blob([summary], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `stiw_summary_report_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function filterEmployeeRequests() {
+            const filterEmail = document.getElementById('employeeFilter').value.toLowerCase();
+            const cards = document.querySelectorAll('#allRequestsList .trip-card');
+            
+            cards.forEach(card => {
+                const employeeText = card.textContent.toLowerCase();
+                if (!filterEmail || employeeText.includes(filterEmail)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function checkManagerApproval() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const action = urlParams.get('approve') ? 'approve' : urlParams.get('deny') ? 'deny' : null;
+            const requestId = urlParams.get('approve') || urlParams.get('deny');
+            const employeeEmail = urlParams.get('email');
+
+            if (action && requestId && employeeEmail) {
+                processManagerDecision(action, requestId, employeeEmail);
+            }
+        }
+
+        function processManagerDecision(action, requestId, employeeEmail) {
+            console.log(`Processing manager decision: ${action} for request ${requestId} from ${employeeEmail}`);
+            
+            const employeeData = JSON.parse(localStorage.getItem(`stiwUserData_${employeeEmail}`) || '{"requests": [], "allTrips": []}');
+            const request = employeeData.requests.find(r => r.id == requestId);
+
+            if (!request) {
+                showManagerConfirmation('error', 'Request Not Found', 'The requested STIW request could not be found in the system.', {});
+                return;
+            }
+
+            const isChangeRequest = request.originalRequest || request.status === 'Pending Approval for Changes';
+
+            if (action === 'approve') {
+                if (isChangeRequest) {
+                    request.status = 'Approved (Changes Approved)';
+                    request.statusUpdatedBy = 'Manager (via email link)';
+                    request.statusUpdatedDate = new Date().toISOString();
+                    
+                    // Update existing trip in allTrips if it exists, or add new one
+                    const existingTripIndex = employeeData.allTrips.findIndex(trip => 
+                        trip.startDate === request.originalRequest?.startDate && 
+                        trip.endDate === request.originalRequest?.endDate &&
+                        trip.country === request.originalRequest?.country
+                    );
+                    
+                    const updatedTrip = {
+                        id: existingTripIndex >= 0 ? employeeData.allTrips[existingTripIndex].id : Date.now(),
+                        country: request.country,
+                        additionalLocation: request.additionalLocation,
+                        startDate: request.startDate,
+                        endDate: request.endDate,
+                        duration: request.duration,
+                        purpose: request.purpose,
+                        dateAdded: existingTripIndex >= 0 ? employeeData.allTrips[existingTripIndex].dateAdded : new Date().toISOString(),
+                        source: 'Approved Request',
+                        lastModified: new Date().toISOString()
+                    };
+                    
+                    if (existingTripIndex >= 0) {
+                        employeeData.allTrips[existingTripIndex] = updatedTrip;
+                    } else {
+                        employeeData.allTrips.push(updatedTrip);
+                    }
+                } else {
+                    request.status = 'Approved';
+                    request.statusUpdatedBy = 'Manager (via email link)';
+                    request.statusUpdatedDate = new Date().toISOString();
+
+                    // Add trip to employee's allTrips
+                    const trip = {
+                        id: Date.now(),
+                        country: request.country,
+                        additionalLocation: request.additionalLocation,
+                        startDate: request.startDate,
+                        endDate: request.endDate,
+                        duration: request.duration,
+                        purpose: request.purpose,
+                        dateAdded: new Date().toISOString(),
+                        source: 'Approved Request'
+                    };
+                    employeeData.allTrips.push(trip);
+                }
+
+            } else if (action === 'deny') {
+                // Enhanced denial process with required reason
+                const urlParams = new URLSearchParams(window.location.search);
+                const reasonRequired = urlParams.get('reason') === 'required';
+                
+                if (reasonRequired) {
+                    // Show denial form
+                    showDenialForm(request, employeeEmail, isChangeRequest);
+                    return;
+                } else {
+                    // Process denial with reason from URL or prompt
+                    const reason = urlParams.get('denialReason') || prompt('Please provide a reason for denial:') || 'No reason provided';
+                    
+                    if (isChangeRequest) {
+                        request.status = 'Changes Denied';
+                        request.denialReason = reason;
+                        request.statusUpdatedBy = 'Manager (via email link)';
+                        request.statusUpdatedDate = new Date().toISOString();
+                        // Keep original request active
+                    } else {
+                        request.status = 'Denied';
+                        request.denialReason = reason;
+                        request.statusUpdatedBy = 'Manager (via email link)';
+                        request.statusUpdatedDate = new Date().toISOString();
+                    }
+                }
+            }
+
+            localStorage.setItem(`stiwUserData_${employeeEmail}`, JSON.stringify(employeeData));
+
+            // Show enhanced confirmation page
+            showManagerConfirmation(action, request.status, getActionMessage(action, isChangeRequest), request);
+        }
+
+        function showDenialForm(request, employeeEmail, isChangeRequest) {
+            const requestType = isChangeRequest ? 'Change Request' : 'STIW Request';
+            
+            document.body.innerHTML = `
+                <div style="text-align: center; padding: 2rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; min-height: 100vh;">
+                    <div style="max-width: 700px; margin: 0 auto; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <h1 style="color: #de350b; margin-bottom: 1rem;">❌ Deny ${requestType}</h1>
+                        
+                        <div style="background: #fff3cd; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid #ffc107;">
+                            <h3 style="margin: 0 0 1rem 0; color: #856404;">⚠️ Denial Reason Required</h3>
+                            <p style="margin: 0; color: #856404;">Please provide a detailed reason for denying this ${requestType.toLowerCase()}. This will help the employee understand the decision and make necessary adjustments.</p>
+                        </div>
+
+                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; text-align: left;">
+                            <h3 style="margin: 0 0 1rem 0; color: #333;">${requestType} Details</h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div><strong>Employee:</strong> ${request.name}</div>
+                                <div><strong>Email:</strong> ${request.email}</div>
+                                <div><strong>Destination:</strong> ${request.country}</div>
+                                <div><strong>Duration:</strong> ${request.duration} days</div>
+                                <div><strong>Travel Dates:</strong> ${request.startDate} to ${request.endDate}</div>
+                                <div><strong>Purpose:</strong> ${request.purpose}</div>
+                            </div>
+                            ${isChangeRequest && request.changeReason ? `
+                                <div style="margin-top: 1rem; padding: 1rem; background: #e3f2fd; border-radius: 6px;">
+                                    <strong>Change Reason:</strong> ${request.changeReason}
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <form onsubmit="submitDenial(event, '${request.id}', '${employeeEmail}', ${isChangeRequest})" style="text-align: left;">
+                            <div style="margin-bottom: 1.5rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">
+                                    Reason for Denial *
+                                </label>
+                                <textarea 
+                                    id="denialReason" 
+                                    rows="4" 
+                                    required 
+                                    placeholder="Please provide a clear, detailed reason for denial. This will be shared with the employee."
+                                    style="width: 100%; padding: 0.75rem; border: 2px solid #dee2e6; border-radius: 6px; font-size: 1rem; resize: vertical;"
+                                ></textarea>
+                            </div>
+                            
+                            <div style="text-align: center;">
+                                <button 
+                                    type="submit" 
+                                    style="background: #de350b; color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; cursor: pointer; margin: 0.5rem; font-weight: 600;"
+                                >
+                                    Submit Denial
+                                </button>
+                                <button 
+                                    type="button" 
+                                    onclick="window.history.back()" 
+                                    style="background: #6c757d; color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; cursor: pointer; margin: 0.5rem;"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+        }
+
+        function submitDenial(event, requestId, employeeEmail, isChangeRequest) {
+            event.preventDefault();
+            
+            const denialReason = document.getElementById('denialReason').value.trim();
+            if (!denialReason) {
+                alert('Please provide a reason for denial.');
+                return;
+            }
+
+            const employeeData = JSON.parse(localStorage.getItem(`stiwUserData_${employeeEmail}`) || '{"requests": [], "allTrips": []}');
+            const request = employeeData.requests.find(r => r.id == requestId);
+
+            if (request) {
+                if (isChangeRequest) {
+                    request.status = 'Changes Denied';
+                    request.denialReason = denialReason;
+                    request.statusUpdatedBy = 'Manager (via email link)';
+                    request.statusUpdatedDate = new Date().toISOString();
+                } else {
+                    request.status = 'Denied';
+                    request.denialReason = denialReason;
+                    request.statusUpdatedBy = 'Manager (via email link)';
+                    request.statusUpdatedDate = new Date().toISOString();
+                }
+
+                localStorage.setItem(`stiwUserData_${employeeEmail}`, JSON.stringify(employeeData));
+                showManagerConfirmation('deny', request.status, getActionMessage('deny', isChangeRequest), request);
+            }
+        }
+
+        function getActionMessage(action, isChangeRequest) {
+            if (action === 'approve') {
+                return isChangeRequest ? 
+                    'The change request has been approved and the STIW trip has been updated.' : 
+                    'The STIW request has been approved and added to the employee\'s tracking.';
+            } else if (action === 'deny') {
+                return isChangeRequest ? 
+                    'The change request has been denied. The original request remains active.' : 
+                    'The STIW request has been denied.';
+            }
+            return '';
+        }
+
+        function showManagerConfirmation(action, status, message, request) {
+            const actionColor = action === 'approve' ? '#00875a' : action === 'deny' ? '#de350b' : action === 'error' ? '#dc3545' : '#ff8b00';
+            const actionIcon = action === 'approve' ? '✅' : action === 'deny' ? '❌' : action === 'error' ? '⚠️' : '🚫';
+            
+            document.body.innerHTML = `
+                <div style="text-align: center; padding: 2rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; min-height: 100vh;">
+                    <div style="max-width: 700px; margin: 0 auto; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <h1 style="color: ${actionColor}; margin-bottom: 1rem;">${actionIcon} ${status}</h1>
+                        
+                        <div style="background: #e8f5e8; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid ${actionColor};">
+                            <p style="margin: 0; color: #155724; font-size: 1.1rem;">${message}</p>
+                        </div>
+
+                        ${request.name ? `
+                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; text-align: left;">
+                            <h3 style="margin: 0 0 1rem 0; color: #333;">STIW Request Summary</h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div><strong>Employee:</strong> ${request.name}</div>
+                                <div><strong>Email:</strong> ${request.email}</div>
+                                <div><strong>Destination:</strong> ${request.country}</div>
+                                <div><strong>Duration:</strong> ${request.duration} days</div>
+                                <div><strong>Travel Dates:</strong> ${request.startDate} to ${request.endDate}</div>
+                                <div><strong>Status:</strong> <span style="color: ${actionColor}; font-weight: bold;">${request.status}</span></div>
+                            </div>
+                            ${request.denialReason ? `
+                                <div style="margin-top: 1rem; padding: 1rem; background: #f8d7da; border-radius: 6px; border-left: 4px solid #dc3545;">
+                                    <strong style="color: #721c24;">Denial Reason:</strong><br>
+                                    <span style="color: #721c24;">${request.denialReason}</span>
+                                </div>
+                            ` : ''}
+                            ${request.cancellationReason ? `
+                                <div style="margin-top: 1rem; padding: 1rem; background: #fff3cd; border-radius: 6px; border-left: 4px solid #ffc107;">
+                                    <strong style="color: #856404;">Cancellation Reason:</strong><br>
+                                    <span style="color: #856404;">${request.cancellationReason}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                        ` : ''}
+                        
+                        <div>
+                            <button onclick="window.close()" style="background: #007bff; color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; cursor: pointer; margin: 0.5rem; font-weight: 600;">Close Window</button>
+                            <button onclick="window.location.href='${window.location.href.split('?')[0]}'" style="background: #28a745; color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; cursor: pointer; margin: 0.5rem; font-weight: 600;">View STIW Tracker</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
         // Initialize the application
         window.addEventListener('load', function() {
-            console.log('STIW Tracker v2.1 - Loading...');
+            console.log('STIW Tracker v2.2 - Loading...');
             initializeUser();
+            checkManagerApproval();
             console.log('STIW Tracker initialized');
         });
     </script>
