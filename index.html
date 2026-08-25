@@ -1165,10 +1165,14 @@
 
         // Calculator functions - FIXED
         function addToCalculator() {
+            console.log('addToCalculator called');
             const country = document.getElementById('calcCountry').value;
             const additionalLocation = document.getElementById('calcAdditionalLocation').value;
             const startDate = document.getElementById('calcStartDate').value;
             const endDate = document.getElementById('calcEndDate').value;
+
+            console.log('Form values:', { country, additionalLocation, startDate, endDate });
+            console.log('Current userData:', userData);
 
             if (!country || !startDate || !endDate) {
                 alert('Please fill in all required fields.');
@@ -1192,7 +1196,9 @@
                 dateAdded: new Date().toISOString()
             };
 
+            console.log('Adding trip to calculator:', trip);
             userData.calculatorTrips.push(trip);
+            console.log('Calculator trips after push:', userData.calculatorTrips);
             saveUserData();
             updateCalculatorDisplay();
             updateUsageStatus();
@@ -1243,8 +1249,13 @@
 
         // Display update functions
         function updateCalculatorDisplay() {
+            console.log('updateCalculatorDisplay called');
             const list = document.getElementById('calculatorTripsList');
+            console.log('Calculator trips list element:', list);
+            console.log('Calculator trips data:', userData.calculatorTrips);
+            
             if (userData.calculatorTrips.length === 0) {
+                console.log('No calculator trips, showing empty message');
                 list.innerHTML = '<p>No trips in calculator. Add trips above to see them here.</p>';
                 return;
             }
