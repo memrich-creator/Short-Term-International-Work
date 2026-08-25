@@ -148,6 +148,10 @@
             margin-bottom: 15px;
         }
 
+        .rolling-days.success {
+            color: var(--block-success);
+        }
+
         .rolling-days.warning {
             color: var(--block-warning);
         }
@@ -495,6 +499,28 @@
         <div id="submit-request" class="tab-content active">
             <h2>Submit STIW Request</h2>
             <p>Submit a new Short Term International Work request to your manager for approval.</p>
+
+            <!-- STIW Balance Display -->
+            <div class="status-grid" style="margin-bottom: 2rem;">
+                <div class="status-card">
+                    <div id="submitRemainingDays" class="rolling-days">45</div>
+                    <div class="status-label">DAYS REMAINING</div>
+                    <div class="status-sublabel">out of 45 days available</div>
+                </div>
+                <div class="status-card">
+                    <div id="submitCurrentDays" class="rolling-days">0</div>
+                    <div class="status-label">CURRENT DAYS USED</div>
+                    <div class="status-sublabel">approved trips only</div>
+                </div>
+            </div>
+            
+            <!-- Important Duration Information -->
+            <div class="info-box" style="background: #fff3cd; border-left: 4px solid #ffc107; margin-bottom: 2rem;">
+                <h3>⚠️ Important: Duration Calculation</h3>
+                <p><strong>Duration is counted from your first to last working day outside of your country of employment.</strong></p>
+                <p>PTO/Weekends/Holidays in between trips are included in the entire duration calculation.</p>
+                <p>This ensures accurate tracking against your 45-day annual STIW limit.</p>
+            </div>
 
             <div class="info-box">
                 <h3>How to Use This Form</h3>
@@ -1383,6 +1409,29 @@
                     trackingRollingDaysElement.className = 'rolling-days danger';
                 } else if (totalDays > 35) {
                     trackingRollingDaysElement.className = 'rolling-days warning';
+                }
+            }
+
+            // Update submit request tab balance display
+            const submitRemainingDaysElement = document.getElementById('submitRemainingDays');
+            const submitCurrentDaysElement = document.getElementById('submitCurrentDays');
+            if (submitRemainingDaysElement && submitCurrentDaysElement) {
+                submitRemainingDaysElement.textContent = remainingDays;
+                submitCurrentDaysElement.textContent = realUsageDays; // Show only real usage, not experimental
+                
+                // Apply styling based on usage
+                submitRemainingDaysElement.className = 'rolling-days';
+                submitCurrentDaysElement.className = 'rolling-days';
+                
+                if (realUsageDays > 45) {
+                    submitRemainingDaysElement.className = 'rolling-days danger';
+                    submitCurrentDaysElement.className = 'rolling-days danger';
+                } else if (realUsageDays > 35) {
+                    submitRemainingDaysElement.className = 'rolling-days warning';
+                    submitCurrentDaysElement.className = 'rolling-days warning';
+                } else {
+                    submitRemainingDaysElement.className = 'rolling-days success';
+                    submitCurrentDaysElement.className = 'rolling-days success';
                 }
             }
         }
