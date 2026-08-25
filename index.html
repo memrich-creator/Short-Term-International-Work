@@ -1289,11 +1289,60 @@
             `).join('');
         }
 
+        function migrateApprovedRequestsToTrips() {
+            // Migration function to ensure approved requests are in allTrips
+            if (!userData.requests || !userData.allTrips) return;
+            
+            const approvedRequests = userData.requests.filter(r => 
+                r.status === 'Approved' || r.status.includes('Auto-approved')
+            );
+            
+            approvedRequests.forEach(request => {
+                // Check if this request is already in allTrips
+                const existingTrip = userData.allTrips.find(trip => 
+                    trip.startDate === request.startDate && 
+                    trip.endDate === request.endDate &&
+                    trip.country === request.country &&
+                    trip.purpose === request.purpose
+                );
+                
+                if (!existingTrip) {
+                    console.log('Migrating approved request to allTrips:', request);
+                    // Add approved request to allTrips
+                    const trip = {
+                        id: request.id || Date.now(),
+                        country: request.country,
+                        additionalLocation: request.additionalLocation,
+                        startDate: request.startDate,
+                        endDate: request.endDate,
+                        duration: request.duration,
+                        purpose: request.purpose,
+                        dateAdded: request.statusUpdatedDate || new Date().toISOString(),
+                        source: 'Approved Request'
+                    };
+                    userData.allTrips.push(trip);
+                    saveUserData();
+                }
+            });
+        }
+
         function updateUsageStatus() {
+            console.log('updateUsageStatus called');
+            console.log('userData.allTrips:', userData.allTrips);
+            console.log('userData.requests:', userData.requests);
+            
+            // MIGRATION FIX: Ensure approved requests are in allTrips
+            migrateApprovedRequestsToTrips();
+            
             // Calculate usage: only approved trips + previous trips count toward limit
             const approvedTrips = userData.allTrips.filter(trip => trip.source === 'Previous Trip' || trip.source === 'Approved Request');
+            console.log('approvedTrips after migration:', approvedTrips);
+            
             const totalDays = approvedTrips.reduce((sum, trip) => sum + trip.duration, 0);
+            console.log('totalDays calculated:', totalDays);
+            
             const remainingDays = Math.max(0, 45 - totalDays);
+            console.log('remainingDays calculated:', remainingDays);
 
             // Update calculator display
             const remainingDaysElement = document.getElementById('remainingDays');
