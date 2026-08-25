@@ -1313,8 +1313,7 @@
                 source: 'Previous Trip'
             };
 
-            // Add to both calculator and permanent storage
-            userData.calculatorTrips.push({...trip, purpose: 'Calculator Entry'});
+            // Add only to permanent storage (allTrips) - this is a real completed trip
             userData.allTrips.push(trip);
 
             saveUserData();
@@ -1369,6 +1368,8 @@
         
         function updateCalculatorDisplay() {
             // Calculator Trips (Planning) section removed - function disabled
+            // Just log for debugging, no display update needed
+            console.log('Calculator display update skipped - section removed');
             return;
         }
 
