@@ -493,6 +493,11 @@
             <h2>Submit STIW Request</h2>
             <p>Submit a new Short Term International Work request to your manager for approval.</p>
 
+            <div class="info-box">
+                <h3>How to Use This Form</h3>
+                <p>Complete all required fields and submit your request. Your manager will receive an email with approval options to approve or deny your request. You can cancel your own requests if needed.</p>
+            </div>
+
             <form id="submitForm">
                 <div class="form-grid">
                     <div class="form-group">
@@ -699,10 +704,7 @@
                 </div>
             </form>
 
-            <div class="info-box">
-                <h3>How to Use This Form</h3>
-                <p>Complete all required fields and submit your request. Your manager will receive an email with approval links to approve, deny, or cancel your request.</p>
-            </div>
+
 
             <div class="info-links">
                 <span>📋 <a href="https://my.sqprod.co/resources/people-resource-center/employee-resources/relocation/short-term-international-work-guidelines" target="_blank" class="info-link">View STIW Policy Guidelines</a></span>
@@ -1684,12 +1686,10 @@ Please review the change request and click one of the links below:
 
 ❌ DENY CHANGES: ${baseUrl}?deny=${request.id}&email=${encodeURIComponent(request.email)}&reason=required
 
-🚫 CANCEL REQUEST: ${baseUrl}?cancel=${request.id}&email=${encodeURIComponent(request.email)}
-
 ⚠️ IMPORTANT NOTES:
 • Change requests require manager approval even if the duration is reduced
-• Denied changes will require the employee to provide a denial reason
-• Canceled requests do not count toward the 45-day limit
+• Denied changes will require you to provide a detailed denial reason
+• Employees can cancel their own requests if needed
 • Original request remains in effect until changes are approved
 
 ═══════════════════════════════════════════════════════════════
@@ -1739,12 +1739,10 @@ Please review the request and click one of the links below:
 
 ❌ DENY REQUEST: ${baseUrl}?deny=${request.id}&email=${encodeURIComponent(request.email)}&reason=required
 
-🚫 CANCEL REQUEST: ${baseUrl}?cancel=${request.id}&email=${encodeURIComponent(request.email)}
-
 ⚠️ IMPORTANT NOTES:
 • Approved requests will be added to the employee's STIW tracking
-• Denied requests will require you to provide a reason
-• Canceled requests do not count toward the 45-day limit
+• Denied requests will require you to provide a detailed reason
+• Employees can cancel their own requests if needed
 • All actions are logged and tracked in the system
 
 ═══════════════════════════════════════════════════════════════
