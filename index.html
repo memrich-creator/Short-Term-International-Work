@@ -54,10 +54,7 @@
             margin-bottom: 10px;
         }
 
-        .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
+
 
         .tabs {
             display: flex;
@@ -977,7 +974,7 @@
         <!-- Request Tracking Tab -->
         <div id="tracking" class="tab-content">
             <h2>Request Tracking</h2>
-            <p>Track your submitted STIW requests and view your approved trips.</p>
+
 
             <div class="status-grid">
                 <div class="status-card">
@@ -1317,11 +1314,11 @@
             userData.allTrips.push(trip);
 
             saveUserData();
-            updateCalculatorDisplay();
+            // updateCalculatorDisplay() disabled - Calculator Trips section removed
             updateUsageStatus();
             updateAllTripsDisplay();
             document.getElementById('calculatorForm').reset();
-            alert('Previous trip added to your permanent STIW tracking.');
+            alert('Previous trip added to your permanent STIW tracking and will appear in Request Tracking.');
         }
 
         // Display update functions
