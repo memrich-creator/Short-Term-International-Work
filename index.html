@@ -1265,8 +1265,10 @@
                             <div class="trip-detail-value">${trip.duration} days</div>
                         </div>
                         <div class="trip-detail-row">
-                            <div class="trip-detail-label">Purpose</div>
-                            <div class="trip-detail-value">${trip.purpose}</div>
+                            <div class="trip-detail-label">Type</div>
+                            <div class="trip-detail-value">
+                                <span class="status-badge status-pending">Planning/Testing</span>
+                            </div>
                         </div>
                     </div>
                     <div class="button-group">
@@ -1390,8 +1392,14 @@
                             <div class="trip-detail-value">${trip.duration} days</div>
                         </div>
                         <div class="trip-detail-row">
-                            <div class="trip-detail-label">Source</div>
-                            <div class="trip-detail-value">${trip.source || 'Previous Trip'}</div>
+                            <div class="trip-detail-label">Purpose</div>
+                            <div class="trip-detail-value">${trip.purpose || 'Not specified'}</div>
+                        </div>
+                        <div class="trip-detail-row">
+                            <div class="trip-detail-label">Status</div>
+                            <div class="trip-detail-value">
+                                <span class="status-badge status-approved">Approved Trip</span>
+                            </div>
                         </div>
                     </div>
                     <div class="button-group">
