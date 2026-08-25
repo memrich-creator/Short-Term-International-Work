@@ -1008,6 +1008,7 @@
             <div class="button-group">
                 <button class="btn btn-primary" onclick="generateReport('csv')">Download CSV Report</button>
                 <button class="btn btn-secondary" onclick="generateReport('detailed')">Generate Detailed Report</button>
+                <button class="btn btn-warning" onclick="loadHistoricalSTIWData()">Load Historical STIW Data</button>
                 <button class="btn btn-secondary" onclick="generateReport('summary')">Generate Summary Report</button>
             </div>
 
@@ -2166,6 +2167,117 @@ APPROVAL RATE: ${totalRequests > 0 ? ((approvedRequests / totalRequests) * 100).
                     card.style.display = 'none';
                 }
             });
+        }
+
+        // Historical Data Integration Function
+        function loadHistoricalSTIWData() {
+            if (!authorizedUsers.includes(currentUser)) {
+                alert('You are not authorized to load historical data.');
+                return;
+            }
+
+            if (!confirm('This will load historical STIW data from the last 12 months. This should only be done once. Continue?')) {
+                return;
+            }
+
+            // Historical STIW data from Excel file (sample entries)
+            const historicalData = [
+                {
+                    email: 'eakinpelu@block.xyz',
+                    name: 'Emmanuel Akinpelu',
+                    trips: [{
+                        id: 'hist_' + Date.now() + '_1',
+                        country: 'Italy',
+                        additionalLocation: 'Florence, Italy; Madrid, Seville, Barcelona, Spain',
+                        startDate: '2025-07-14',
+                        endDate: '2025-08-27',
+                        duration: 4,
+                        purpose: 'Historical STIW Trip',
+                        dateAdded: '2025-07-14T00:00:00.000Z',
+                        source: 'Previous Trip'
+                    }]
+                },
+                {
+                    email: 'sdevanathan@block.xyz',
+                    name: 'Shriram Devanathan',
+                    trips: [{
+                        id: 'hist_' + Date.now() + '_2',
+                        country: 'India',
+                        additionalLocation: 'Chennai, India',
+                        startDate: '2025-07-21',
+                        endDate: '2025-09-03',
+                        duration: 11,
+                        purpose: 'Historical STIW Trip',
+                        dateAdded: '2025-07-21T00:00:00.000Z',
+                        source: 'Previous Trip'
+                    }]
+                },
+                {
+                    email: 'adimitriu@block.xyz',
+                    name: 'Andreea Dimitriu',
+                    trips: [{
+                        id: 'hist_' + Date.now() + '_3',
+                        country: 'Romania',
+                        additionalLocation: 'Ploiesti, Romania',
+                        startDate: '2025-07-28',
+                        endDate: '2025-08-29',
+                        duration: 6,
+                        purpose: 'Historical STIW Trip',
+                        dateAdded: '2025-07-28T00:00:00.000Z',
+                        source: 'Previous Trip'
+                    }]
+                },
+                {
+                    email: 'calaura@block.xyz',
+                    name: 'Camille Alaura',
+                    trips: [{
+                        id: 'hist_' + Date.now() + '_4',
+                        country: 'France',
+                        additionalLocation: 'Paris, France',
+                        startDate: '2025-08-01',
+                        endDate: '2025-08-30',
+                        duration: 7,
+                        purpose: 'Historical STIW Trip',
+                        dateAdded: '2025-08-01T00:00:00.000Z',
+                        source: 'Previous Trip'
+                    }]
+                }
+                // Add more historical data entries here...
+            ];
+
+            let integratedCount = 0;
+            let skippedCount = 0;
+
+            historicalData.forEach(employee => {
+                const userDataKey = `stiwUserData_${employee.email}`;
+                let userData = JSON.parse(localStorage.getItem(userDataKey) || '{"requests": [], "allTrips": [], "calculatorTrips": []}');
+                
+                employee.trips.forEach(trip => {
+                    // Check if trip already exists
+                    const existingTrip = userData.allTrips.find(t => 
+                        t.startDate === trip.startDate && 
+                        t.endDate === trip.endDate &&
+                        t.country === trip.country &&
+                        t.source === 'Previous Trip'
+                    );
+                    
+                    if (!existingTrip) {
+                        console.log(`Adding historical trip for ${employee.email}: ${trip.country} (${trip.duration} days)`);
+                        userData.allTrips.push(trip);
+                        integratedCount++;
+                    } else {
+                        skippedCount++;
+                    }
+                });
+                
+                localStorage.setItem(userDataKey, JSON.stringify(userData));
+            });
+            
+            console.log(`Historical data integration complete! Added: ${integratedCount}, Skipped: ${skippedCount}`);
+            alert(`Historical STIW data integration complete!\n\nAdded: ${integratedCount} trips\nSkipped: ${skippedCount} duplicates\n\nPlease refresh the page to see updated usage calculations.`);
+            
+            // Refresh displays
+            updateAllDisplays();
         }
 
         function checkManagerApproval() {
