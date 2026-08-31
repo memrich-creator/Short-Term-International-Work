@@ -963,7 +963,11 @@
                 </div>
             </form>
 
-
+            <!-- Calculator Trips Display Section -->
+            <div id="calculatorTripsSection" style="margin-top: 30px;">
+                <h3>Calculator Trips (Planning)</h3>
+                <div id="calculatorTripsList"></div>
+            </div>
 
             <div class="info-links">
                 <span>📋 <a href="https://my.sqprod.co/resources/people-resource-center/employee-resources/relocation/short-term-international-work-guidelines" target="_blank" class="info-link">View STIW Policy Guidelines</a></span>
@@ -1240,14 +1244,35 @@
 
         // Calculator functions - FIXED
         function addToCalculator() {
-            console.log('addToCalculator called');
-            const country = document.getElementById('calcCountry').value;
-            const additionalLocation = document.getElementById('calcAdditionalLocation').value;
-            const startDate = document.getElementById('calcStartDate').value;
-            const endDate = document.getElementById('calcEndDate').value;
+            console.log('addToCalculator called - debugging calculator functionality');
+            
+            // Check if form elements exist
+            const countryElement = document.getElementById('calcCountry');
+            const locationElement = document.getElementById('calcAdditionalLocation');
+            const startElement = document.getElementById('calcStartDate');
+            const endElement = document.getElementById('calcEndDate');
+            
+            console.log('Form elements found:', {
+                country: !!countryElement,
+                location: !!locationElement,
+                start: !!startElement,
+                end: !!endElement
+            });
+            
+            if (!countryElement || !startElement || !endElement) {
+                console.error('Calculator form elements not found!');
+                alert('Calculator form elements not found. Please refresh the page.');
+                return;
+            }
+            
+            const country = countryElement.value;
+            const additionalLocation = locationElement ? locationElement.value : '';
+            const startDate = startElement.value;
+            const endDate = endElement.value;
 
             console.log('Form values:', { country, additionalLocation, startDate, endDate });
             console.log('Current userData:', userData);
+            console.log('Calculator trips before:', userData.calculatorTrips);
 
             if (!country || !startDate || !endDate) {
                 alert('Please fill in all required fields.');
@@ -1275,10 +1300,10 @@
             userData.calculatorTrips.push(trip);
             console.log('Calculator trips after push:', userData.calculatorTrips);
             saveUserData();
-            // updateCalculatorDisplay() disabled - Calculator Trips section removed
+            updateCalculatorDisplay();
             updateUsageStatus();
             document.getElementById('calculatorForm').reset();
-            alert('Trip added to calculator for planning purposes. Check your usage status above.');
+            alert('Trip added to calculator for planning purposes. Check your usage status above and see your trip in the Calculator Trips section below.');
         }
 
         function addPreviousTrip() {
@@ -1364,10 +1389,48 @@
         }*/
         
         function updateCalculatorDisplay() {
-            // Calculator Trips (Planning) section removed - function disabled
-            // Just log for debugging, no display update needed
-            console.log('Calculator display update skipped - section removed');
-            return;
+            console.log('Updating calculator display...');
+            const list = document.getElementById('calculatorTripsList');
+            
+            if (!list) {
+                console.error('Calculator trips list element not found!');
+                return;
+            }
+            
+            console.log('Calculator trips data:', userData.calculatorTrips);
+            
+            if (!userData.calculatorTrips || userData.calculatorTrips.length === 0) {
+                list.innerHTML = '<p>No calculator trips added yet. Use the blue button above to add trips for planning.</p>';
+                return;
+            }
+
+            list.innerHTML = userData.calculatorTrips.map((trip, index) => `
+                <div class="trip-card">
+                    <div class="trip-details">
+                        <div class="trip-detail-row">
+                            <div class="trip-detail-label">Country</div>
+                            <div class="trip-detail-value">${trip.country}</div>
+                        </div>
+                        <div class="trip-detail-row">
+                            <div class="trip-detail-label">Dates</div>
+                            <div class="trip-detail-value">${trip.startDate} to ${trip.endDate}</div>
+                        </div>
+                        <div class="trip-detail-row">
+                            <div class="trip-detail-label">Duration</div>
+                            <div class="trip-detail-value">${trip.duration} days</div>
+                        </div>
+                        <div class="trip-detail-row">
+                            <div class="trip-detail-label">Type</div>
+                            <div class="trip-detail-value">
+                                <span class="status-badge status-pending">Planning/Testing</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-danger btn-sm" onclick="removeCalculatorTrip(${index})">Remove</button>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function migrateApprovedRequestsToTrips() {
