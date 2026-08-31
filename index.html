@@ -2809,10 +2809,15 @@ APPROVAL RATE: ${totalRequests > 0 ? ((approvedRequests / totalRequests) * 100).
 
         // Initialize the application
         window.addEventListener('load', function() {
-            console.log('STIW Tracker v2.3 - Loading with all updates...');
+            console.log('STIW Tracker v2.5 - EMAIL PROMPT FIXED - Loading...');
+            
+            // Force clear any cached user data to ensure email prompt appears
+            localStorage.removeItem('stiwCurrentUser');
+            console.log('Cleared cached user data - forcing fresh email prompt');
+            
             initializeUser();
             checkManagerApproval();
-            console.log('STIW Tracker initialized');
+            console.log('STIW Tracker initialized with email prompt');
         });
     </script>
 </body>
