@@ -7,7 +7,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="2.9-20260901-WORKING-FIX">
+    <meta name="version" content="3.0-FRESH-START">
     <style>
         :root {
             --block-primary: #1a1a1a;
@@ -28,7 +28,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: var(--block-secondary);
             color: var(--block-dark-gray);
             line-height: 1.6;
@@ -53,10 +53,9 @@
         }
 
         .container {
-            max-width: 1600px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 60px;
-            width: 98%;
+            padding: 40px 20px;
         }
 
         .tabs {
@@ -264,10 +263,68 @@
             text-decoration: underline;
         }
 
+        .trip-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .trip-card h4 {
+            margin: 0 0 10px 0;
+            color: var(--block-primary);
+        }
+
+        .trip-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .trip-detail {
+            font-size: 14px;
+            color: var(--block-medium-gray);
+        }
+
+        .trip-detail strong {
+            color: var(--block-dark-gray);
+        }
+
+        .btn-remove {
+            background: var(--block-danger);
+            color: white;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        .btn-remove:hover {
+            background: #c53030;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
         @media (max-width: 768px) {
             .container {
-                padding: 20px;
-                width: 95%;
+                padding: 20px 10px;
             }
 
             .form-grid {
@@ -288,6 +345,69 @@
                 padding: 20px;
             }
         }
+
+        /* Email Modal Styles */
+        .email-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .email-modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .email-modal h2 {
+            margin: 0 0 10px 0;
+            color: var(--block-primary);
+            font-size: 24px;
+        }
+
+        .email-modal p {
+            margin: 0 0 30px 0;
+            color: var(--block-medium-gray);
+            font-size: 16px;
+        }
+
+        .email-modal input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        .email-modal button {
+            background: var(--block-accent);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .email-modal .error {
+            color: var(--block-danger);
+            margin-top: 15px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -303,6 +423,7 @@
             <button class="tab-button" onclick="showTab('employee-management')" id="employeeManagementTab" style="display: none;">Employee Management</button>
         </div>
 
+        <!-- Submit Request Tab -->
         <div id="submit-request" class="tab-content active">
             <div class="status-grid">
                 <div class="status-card">
@@ -335,7 +456,7 @@
                     </div>
                     <div class="form-group">
                         <label for="reqEmail">Employee Email *</label>
-                        <input type="email" id="reqEmail" required>
+                        <input type="email" id="reqEmail" required readonly>
                     </div>
                     <div class="form-group">
                         <label for="reqManagerEmail">Manager Email *</label>
@@ -347,9 +468,159 @@
                             <option value="">Select a country</option>
                             <option value="Albania">Albania</option>
                             <option value="Andorra">Andorra</option>
+                            <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                            <option value="Argentina">Argentina</option>
+                            <option value="Armenia">Armenia</option>
+                            <option value="Aruba">Aruba</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Austria">Austria</option>
+                            <option value="Bahamas">Bahamas</option>
+                            <option value="Bahrain">Bahrain</option>
+                            <option value="Barbados">Barbados</option>
+                            <option value="Belgium">Belgium</option>
+                            <option value="Belize">Belize</option>
+                            <option value="Benin">Benin</option>
+                            <option value="Bermuda">Bermuda</option>
+                            <option value="Bhutan">Bhutan</option>
+                            <option value="Bolivia">Bolivia</option>
+                            <option value="Bosnia & Herzegovina">Bosnia & Herzegovina</option>
+                            <option value="Botswana">Botswana</option>
+                            <option value="Brazil">Brazil</option>
+                            <option value="Brunei Darussalam">Brunei Darussalam</option>
+                            <option value="Bulgaria">Bulgaria</option>
+                            <option value="Cape Verde">Cape Verde</option>
+                            <option value="Cambodia">Cambodia</option>
+                            <option value="Cameroon">Cameroon</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Cayman Islands">Cayman Islands</option>
+                            <option value="Chile">Chile</option>
+                            <option value="Colombia">Colombia</option>
+                            <option value="Comoros">Comoros</option>
+                            <option value="Congo, Rep of the">Congo, Rep of the</option>
+                            <option value="Cook Islands">Cook Islands</option>
+                            <option value="Costa Rica">Costa Rica</option>
+                            <option value="Croatia">Croatia</option>
+                            <option value="Czech Republic">Czech Republic</option>
+                            <option value="Denmark">Denmark</option>
+                            <option value="Djibouti">Djibouti</option>
+                            <option value="Dominican Republic">Dominican Republic</option>
+                            <option value="Ecuador">Ecuador</option>
+                            <option value="El Salvador">El Salvador</option>
+                            <option value="Equatorial Guinea">Equatorial Guinea</option>
+                            <option value="Estonia">Estonia</option>
+                            <option value="Eswatini">Eswatini</option>
+                            <option value="Fiji">Fiji</option>
+                            <option value="Finland">Finland</option>
                             <option value="France">France</option>
+                            <option value="Gabon">Gabon</option>
+                            <option value="Gambia">Gambia</option>
+                            <option value="Georgia">Georgia</option>
                             <option value="Germany">Germany</option>
+                            <option value="Ghana">Ghana</option>
+                            <option value="Greece">Greece</option>
+                            <option value="Grenada">Grenada</option>
+                            <option value="Guatemala">Guatemala</option>
+                            <option value="Guinea-Bissau">Guinea-Bissau</option>
+                            <option value="Guyana">Guyana</option>
+                            <option value="Honduras">Honduras</option>
+                            <option value="Hungary">Hungary</option>
+                            <option value="Iceland">Iceland</option>
+                            <option value="India">India</option>
+                            <option value="Indonesia">Indonesia</option>
+                            <option value="Ireland">Ireland</option>
+                            <option value="Israel">Israel</option>
+                            <option value="Italy">Italy</option>
+                            <option value="Jamaica">Jamaica</option>
+                            <option value="Japan">Japan</option>
+                            <option value="Jordan">Jordan</option>
+                            <option value="Kazakhstan">Kazakhstan</option>
+                            <option value="Kiribati">Kiribati</option>
+                            <option value="Kosovo">Kosovo</option>
+                            <option value="Kuwait">Kuwait</option>
+                            <option value="Kyrgyzstan">Kyrgyzstan</option>
+                            <option value="Laos">Laos</option>
+                            <option value="Latvia">Latvia</option>
+                            <option value="Lesotho">Lesotho</option>
+                            <option value="Liechtenstein">Liechtenstein</option>
+                            <option value="Lithuania">Lithuania</option>
+                            <option value="Luxembourg">Luxembourg</option>
+                            <option value="Madagascar">Madagascar</option>
+                            <option value="Malawi">Malawi</option>
+                            <option value="Malaysia">Malaysia</option>
+                            <option value="Maldives">Maldives</option>
+                            <option value="Mali">Mali</option>
+                            <option value="Malta">Malta</option>
+                            <option value="Marshall Islands">Marshall Islands</option>
+                            <option value="Mauritius">Mauritius</option>
+                            <option value="Mexico">Mexico</option>
+                            <option value="Micronesia">Micronesia</option>
+                            <option value="Moldova">Moldova</option>
+                            <option value="Monaco">Monaco</option>
+                            <option value="Mongolia">Mongolia</option>
+                            <option value="Montenegro">Montenegro</option>
+                            <option value="Morocco">Morocco</option>
+                            <option value="Namibia">Namibia</option>
+                            <option value="Nauru">Nauru</option>
+                            <option value="Netherlands">Netherlands</option>
+                            <option value="New Zealand">New Zealand</option>
+                            <option value="Nicaragua">Nicaragua</option>
+                            <option value="North Macedonia">North Macedonia</option>
+                            <option value="Norway">Norway</option>
+                            <option value="Oman">Oman</option>
+                            <option value="Palau">Palau</option>
+                            <option value="Panama">Panama</option>
+                            <option value="Papua New Guinea">Papua New Guinea</option>
+                            <option value="Paraguay">Paraguay</option>
+                            <option value="Peru">Peru</option>
+                            <option value="Philippines">Philippines</option>
+                            <option value="Poland">Poland</option>
+                            <option value="Portugal">Portugal</option>
+                            <option value="Qatar">Qatar</option>
+                            <option value="Romania">Romania</option>
+                            <option value="Rwanda">Rwanda</option>
+                            <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                            <option value="Saint Lucia">Saint Lucia</option>
+                            <option value="Saint Vincent & the Grenadines">Saint Vincent & the Grenadines</option>
+                            <option value="Saint Martin">Saint Martin</option>
+                            <option value="Samoa">Samoa</option>
+                            <option value="San Marino">San Marino</option>
+                            <option value="Sao Tome & Principe">Sao Tome & Principe</option>
+                            <option value="Saudi Arabia">Saudi Arabia</option>
+                            <option value="Senegal">Senegal</option>
+                            <option value="Serbia">Serbia</option>
+                            <option value="Seychelles">Seychelles</option>
+                            <option value="Sierra Leone">Sierra Leone</option>
+                            <option value="Singapore">Singapore</option>
+                            <option value="Sint Maarten">Sint Maarten</option>
+                            <option value="Slovakia">Slovakia</option>
+                            <option value="Slovenia">Slovenia</option>
+                            <option value="Solomon Islands">Solomon Islands</option>
+                            <option value="South Africa">South Africa</option>
+                            <option value="South Korea">South Korea</option>
+                            <option value="Spain">Spain</option>
+                            <option value="Suriname">Suriname</option>
+                            <option value="Sweden">Sweden</option>
+                            <option value="Switzerland">Switzerland</option>
+                            <option value="Taiwan">Taiwan</option>
+                            <option value="Tajikistan">Tajikistan</option>
+                            <option value="Tanzania">Tanzania</option>
+                            <option value="Thailand">Thailand</option>
+                            <option value="Timor-Leste">Timor-Leste</option>
+                            <option value="Tonga">Tonga</option>
+                            <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+                            <option value="Tunisia">Tunisia</option>
+                            <option value="Turkey">Turkey</option>
+                            <option value="Turkmenistan">Turkmenistan</option>
+                            <option value="Turks and Caicos">Turks and Caicos</option>
+                            <option value="Tuvalu">Tuvalu</option>
+                            <option value="United Arab Emirates">United Arab Emirates</option>
                             <option value="United Kingdom">United Kingdom</option>
+                            <option value="Uruguay">Uruguay</option>
+                            <option value="Uzbekistan">Uzbekistan</option>
+                            <option value="Vanuatu">Vanuatu</option>
+                            <option value="Vatican City / Holy See">Vatican City / Holy See</option>
+                            <option value="Vietnam">Vietnam</option>
+                            <option value="Zambia">Zambia</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -379,18 +650,23 @@
             </form>
         </div>
 
+        <!-- Trip Tracking Calculator Tab -->
         <div id="calculator" class="tab-content">
             <h2>Trip Tracking Calculator</h2>
             <p>Track your Short Term International Work trips against the 45-day annual rolling limit. Add your previous trips to see your current usage status and plan future trips.</p>
             
             <div class="status-grid">
                 <div class="status-card">
-                    <div class="status-number">45</div>
+                    <div class="status-number" id="calcRemainingDays">45</div>
                     <div class="status-label">DAYS REMAINING<br>out of 45 days available</div>
                 </div>
                 <div class="status-card">
-                    <div class="status-number">0</div>
+                    <div class="status-number" id="calcCurrentDays">0</div>
                     <div class="status-label">CURRENT DAYS USED</div>
+                </div>
+                <div class="status-card warning" id="thresholdCard" style="display: none;">
+                    <div class="status-number" style="color: var(--block-danger); font-size: 18px; font-weight: bold;">EXCEEDS 45 DAY THRESHOLD</div>
+                    <div class="status-label">WARNING</div>
                 </div>
             </div>
 
@@ -401,6 +677,16 @@
                 <p>This ensures accurate tracking against your 45-day annual STIW limit.</p>
             </div>
 
+            <div class="info-box" style="background: var(--block-light-gray);">
+                <h3>📋 How to Use This Calculator:</h3>
+                <ul style="margin-left: 20px;">
+                    <li><strong>Add Previous Trip to Tracker (Green Button):</strong> Use for trips you've already completed. These count toward your 45-day limit and appear in Request Tracking.</li>
+                    <li><strong>Add Trip to Calculator (Blue Button):</strong> Use for planning future trips and experimentation. These stay in the calculator for testing usage impact without affecting your official record.</li>
+                    <li><strong>Status Cards:</strong> Show your current usage, remaining days, and usage status in real-time.</li>
+                    <li><strong>Rolling 12-Month Window:</strong> Only trips within the last 12 months count toward your 45-day limit.</li>
+                </ul>
+            </div>
+
             <form id="calculatorForm">
                 <div class="form-grid">
                     <div class="form-group">
@@ -409,9 +695,159 @@
                             <option value="">Select a country</option>
                             <option value="Albania">Albania</option>
                             <option value="Andorra">Andorra</option>
+                            <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                            <option value="Argentina">Argentina</option>
+                            <option value="Armenia">Armenia</option>
+                            <option value="Aruba">Aruba</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Austria">Austria</option>
+                            <option value="Bahamas">Bahamas</option>
+                            <option value="Bahrain">Bahrain</option>
+                            <option value="Barbados">Barbados</option>
+                            <option value="Belgium">Belgium</option>
+                            <option value="Belize">Belize</option>
+                            <option value="Benin">Benin</option>
+                            <option value="Bermuda">Bermuda</option>
+                            <option value="Bhutan">Bhutan</option>
+                            <option value="Bolivia">Bolivia</option>
+                            <option value="Bosnia & Herzegovina">Bosnia & Herzegovina</option>
+                            <option value="Botswana">Botswana</option>
+                            <option value="Brazil">Brazil</option>
+                            <option value="Brunei Darussalam">Brunei Darussalam</option>
+                            <option value="Bulgaria">Bulgaria</option>
+                            <option value="Cape Verde">Cape Verde</option>
+                            <option value="Cambodia">Cambodia</option>
+                            <option value="Cameroon">Cameroon</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Cayman Islands">Cayman Islands</option>
+                            <option value="Chile">Chile</option>
+                            <option value="Colombia">Colombia</option>
+                            <option value="Comoros">Comoros</option>
+                            <option value="Congo, Rep of the">Congo, Rep of the</option>
+                            <option value="Cook Islands">Cook Islands</option>
+                            <option value="Costa Rica">Costa Rica</option>
+                            <option value="Croatia">Croatia</option>
+                            <option value="Czech Republic">Czech Republic</option>
+                            <option value="Denmark">Denmark</option>
+                            <option value="Djibouti">Djibouti</option>
+                            <option value="Dominican Republic">Dominican Republic</option>
+                            <option value="Ecuador">Ecuador</option>
+                            <option value="El Salvador">El Salvador</option>
+                            <option value="Equatorial Guinea">Equatorial Guinea</option>
+                            <option value="Estonia">Estonia</option>
+                            <option value="Eswatini">Eswatini</option>
+                            <option value="Fiji">Fiji</option>
+                            <option value="Finland">Finland</option>
                             <option value="France">France</option>
+                            <option value="Gabon">Gabon</option>
+                            <option value="Gambia">Gambia</option>
+                            <option value="Georgia">Georgia</option>
                             <option value="Germany">Germany</option>
+                            <option value="Ghana">Ghana</option>
+                            <option value="Greece">Greece</option>
+                            <option value="Grenada">Grenada</option>
+                            <option value="Guatemala">Guatemala</option>
+                            <option value="Guinea-Bissau">Guinea-Bissau</option>
+                            <option value="Guyana">Guyana</option>
+                            <option value="Honduras">Honduras</option>
+                            <option value="Hungary">Hungary</option>
+                            <option value="Iceland">Iceland</option>
+                            <option value="India">India</option>
+                            <option value="Indonesia">Indonesia</option>
+                            <option value="Ireland">Ireland</option>
+                            <option value="Israel">Israel</option>
+                            <option value="Italy">Italy</option>
+                            <option value="Jamaica">Jamaica</option>
+                            <option value="Japan">Japan</option>
+                            <option value="Jordan">Jordan</option>
+                            <option value="Kazakhstan">Kazakhstan</option>
+                            <option value="Kiribati">Kiribati</option>
+                            <option value="Kosovo">Kosovo</option>
+                            <option value="Kuwait">Kuwait</option>
+                            <option value="Kyrgyzstan">Kyrgyzstan</option>
+                            <option value="Laos">Laos</option>
+                            <option value="Latvia">Latvia</option>
+                            <option value="Lesotho">Lesotho</option>
+                            <option value="Liechtenstein">Liechtenstein</option>
+                            <option value="Lithuania">Lithuania</option>
+                            <option value="Luxembourg">Luxembourg</option>
+                            <option value="Madagascar">Madagascar</option>
+                            <option value="Malawi">Malawi</option>
+                            <option value="Malaysia">Malaysia</option>
+                            <option value="Maldives">Maldives</option>
+                            <option value="Mali">Mali</option>
+                            <option value="Malta">Malta</option>
+                            <option value="Marshall Islands">Marshall Islands</option>
+                            <option value="Mauritius">Mauritius</option>
+                            <option value="Mexico">Mexico</option>
+                            <option value="Micronesia">Micronesia</option>
+                            <option value="Moldova">Moldova</option>
+                            <option value="Monaco">Monaco</option>
+                            <option value="Mongolia">Mongolia</option>
+                            <option value="Montenegro">Montenegro</option>
+                            <option value="Morocco">Morocco</option>
+                            <option value="Namibia">Namibia</option>
+                            <option value="Nauru">Nauru</option>
+                            <option value="Netherlands">Netherlands</option>
+                            <option value="New Zealand">New Zealand</option>
+                            <option value="Nicaragua">Nicaragua</option>
+                            <option value="North Macedonia">North Macedonia</option>
+                            <option value="Norway">Norway</option>
+                            <option value="Oman">Oman</option>
+                            <option value="Palau">Palau</option>
+                            <option value="Panama">Panama</option>
+                            <option value="Papua New Guinea">Papua New Guinea</option>
+                            <option value="Paraguay">Paraguay</option>
+                            <option value="Peru">Peru</option>
+                            <option value="Philippines">Philippines</option>
+                            <option value="Poland">Poland</option>
+                            <option value="Portugal">Portugal</option>
+                            <option value="Qatar">Qatar</option>
+                            <option value="Romania">Romania</option>
+                            <option value="Rwanda">Rwanda</option>
+                            <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                            <option value="Saint Lucia">Saint Lucia</option>
+                            <option value="Saint Vincent & the Grenadines">Saint Vincent & the Grenadines</option>
+                            <option value="Saint Martin">Saint Martin</option>
+                            <option value="Samoa">Samoa</option>
+                            <option value="San Marino">San Marino</option>
+                            <option value="Sao Tome & Principe">Sao Tome & Principe</option>
+                            <option value="Saudi Arabia">Saudi Arabia</option>
+                            <option value="Senegal">Senegal</option>
+                            <option value="Serbia">Serbia</option>
+                            <option value="Seychelles">Seychelles</option>
+                            <option value="Sierra Leone">Sierra Leone</option>
+                            <option value="Singapore">Singapore</option>
+                            <option value="Sint Maarten">Sint Maarten</option>
+                            <option value="Slovakia">Slovakia</option>
+                            <option value="Slovenia">Slovenia</option>
+                            <option value="Solomon Islands">Solomon Islands</option>
+                            <option value="South Africa">South Africa</option>
+                            <option value="South Korea">South Korea</option>
+                            <option value="Spain">Spain</option>
+                            <option value="Suriname">Suriname</option>
+                            <option value="Sweden">Sweden</option>
+                            <option value="Switzerland">Switzerland</option>
+                            <option value="Taiwan">Taiwan</option>
+                            <option value="Tajikistan">Tajikistan</option>
+                            <option value="Tanzania">Tanzania</option>
+                            <option value="Thailand">Thailand</option>
+                            <option value="Timor-Leste">Timor-Leste</option>
+                            <option value="Tonga">Tonga</option>
+                            <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+                            <option value="Tunisia">Tunisia</option>
+                            <option value="Turkey">Turkey</option>
+                            <option value="Turkmenistan">Turkmenistan</option>
+                            <option value="Turks and Caicos">Turks and Caicos</option>
+                            <option value="Tuvalu">Tuvalu</option>
+                            <option value="United Arab Emirates">United Arab Emirates</option>
                             <option value="United Kingdom">United Kingdom</option>
+                            <option value="Uruguay">Uruguay</option>
+                            <option value="Uzbekistan">Uzbekistan</option>
+                            <option value="Vanuatu">Vanuatu</option>
+                            <option value="Vatican City / Holy See">Vatican City / Holy See</option>
+                            <option value="Vietnam">Vietnam</option>
+                            <option value="Zambia">Zambia</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -427,50 +863,101 @@
                         <input type="date" id="calcEndDate" required>
                     </div>
                 </div>
-                <div style="display: flex; gap: 15px; margin-top: 20px;">
-                    <button type="button" class="btn btn-success" onclick="addPreviousTrip()">Add Previous Trip to Tracker<br><small>For trips already taken or approved</small></button>
-                    <button type="button" class="btn btn-primary" onclick="addToCalculator()">Add Trip to Calculator<br><small>For planning future trips and experimentation</small></button>
+                <div style="display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap;">
+                    <button type="button" class="btn btn-success" onclick="addPreviousTrip()">
+                        Add Previous Trip to Tracker<br>
+                        <small>For trips already taken or approved</small>
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="addToCalculator()">
+                        Add Trip to Calculator<br>
+                        <small>For planning future trips and experimentation</small>
+                    </button>
                 </div>
             </form>
-        </div>
 
-        <div id="tracking" class="tab-content">
-            <h2>Request Tracking</h2>
-            <p>Track your submitted STIW requests and view your approved trips.</p>
-            
-            <div class="status-grid">
-                <div class="status-card">
-                    <div class="status-number">45</div>
-                    <div class="status-label">DAYS REMAINING<br>out of 45 days available</div>
+            <div id="calculatorTrips" style="margin-top: 40px;">
+                <h3>Calculator Trips (Planning)</h3>
+                <div id="calculatorTripsList">
+                    <p style="color: var(--block-medium-gray); font-style: italic;">No planning trips added yet. Use the blue button above to add trips for experimentation.</p>
                 </div>
-                <div class="status-card">
-                    <div class="status-number">0</div>
-                    <div class="status-label">CURRENT DAYS USED</div>
-                </div>
+            </div>
+
+            <div style="margin-top: 30px; padding: 20px; background: var(--block-light-gray); border-radius: 8px;">
+                <p style="margin: 0;">
+                    📋 <a href="https://my.sqprod.co/resources/people-resource-center/employee-resources/relocation/short-term-international-work-guidelines" target="_blank" style="color: var(--block-accent); text-decoration: none;">View STIW Policy Guidelines</a> &nbsp;&nbsp;
+                    🌍 <a href="https://docs.google.com/document/d/16ZSXNSQOf8G8P7gPFNtZri3Wrz2NmB0qzlWF-KC0HkM/edit?tab=t.0#heading=h.jlam7p41jwb8" target="_blank" style="color: var(--block-accent); text-decoration: none;">View Approved STIW Locations</a> &nbsp;&nbsp;
+                    ❓ Questions? <a href="https://go.sqprod.co/compass" target="_blank" style="color: var(--block-accent); text-decoration: none;">Raise a request via go/compass</a>
+                </p>
             </div>
         </div>
 
-        <div id="employee-management" class="tab-content">
-            <h2>Employee Management</h2>
-            <p>This section is only available to authorized HR personnel. View and manage all employee STIW requests.</p>
+        <!-- Request Tracking Tab -->
+        <div id="tracking" class="tab-content">
+            <h2>Request Tracking</h2>
             
             <div class="status-grid">
                 <div class="status-card">
-                    <div class="status-number">0</div>
+                    <div class="status-number" id="trackingRemainingDays">45</div>
+                    <div class="status-label">DAYS REMAINING<br>out of 45 days available</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-number" id="trackingCurrentDays">0</div>
+                    <div class="status-label">CURRENT DAYS USED</div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3>Submitted Requests</h3>
+                <div id="submittedRequests">
+                    <p style="color: var(--block-medium-gray); font-style: italic;">No submitted requests found.</p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3>STIW Trips</h3>
+                <div id="stiwTrips">
+                    <p style="color: var(--block-medium-gray); font-style: italic;">No approved trips found.</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; padding: 20px; background: var(--block-light-gray); border-radius: 8px;">
+                <p style="margin: 0;">
+                    📋 <a href="https://my.sqprod.co/resources/people-resource-center/employee-resources/relocation/short-term-international-work-guidelines" target="_blank" style="color: var(--block-accent); text-decoration: none;">View STIW Policy Guidelines</a> &nbsp;&nbsp;
+                    🌍 <a href="https://docs.google.com/document/d/16ZSXNSQOf8G8P7gPFNtZri3Wrz2NmB0qzlWF-KC0HkM/edit?tab=t.0#heading=h.jlam7p41jwb8" target="_blank" style="color: var(--block-accent); text-decoration: none;">View Approved STIW Locations</a> &nbsp;&nbsp;
+                    ❓ Questions? <a href="https://go.sqprod.co/compass" target="_blank" style="color: var(--block-accent); text-decoration: none;">Raise a request via go/compass</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Employee Management Tab -->
+        <div id="employee-management" class="tab-content">
+            <h2>Employee Management</h2>
+            <div class="info-box">
+                <p>ℹ️ <strong>Information:</strong> This section is only available to authorized HR personnel. View and manage all employee STIW requests.</p>
+            </div>
+            
+            <div class="status-grid">
+                <div class="status-card">
+                    <div class="status-number" id="totalEmployeeRequests">0</div>
                     <div class="status-label">TOTAL EMPLOYEE REQUESTS</div>
                 </div>
             </div>
             
             <div style="margin-top: 30px;">
                 <button class="btn btn-primary" onclick="generateReport('csv')">Download CSV Report</button>
-                <button class="btn btn-secondary" onclick="generateReport('detailed')">Generate Detailed Report</button>
-                <button class="btn btn-secondary" onclick="loadHistoricalSTIWData()">Load Historical STIW Data</button>
+                <button class="btn btn-primary" onclick="generateReport('detailed')">Generate Detailed Report</button>
+                <button class="btn btn-primary" onclick="generateReport('summary')">Generate Summary Report</button>
+                <button class="btn btn-warning" onclick="loadHistoricalSTIWData()">Load Historical STIW Data</button>
+            </div>
+
+            <div id="employeeRequestsList" style="margin-top: 40px;">
+                <p style="color: var(--block-medium-gray); font-style: italic;">No employee requests found.</p>
             </div>
         </div>
     </div>
 
     <script>
-        console.log('STIW Tracker v2.9 - WORKING FIX - Loading...');
+        console.log('STIW Tracker v3.0 - FRESH START - Loading...');
         
         let currentUser = null;
         let userData = {
@@ -479,117 +966,94 @@
             requests: []
         };
 
-        // EMAIL MODAL FUNCTIONS
+        // Historical data for auto-loading
+        const historicalData = {
+            'memrich@block.xyz': {
+                allTrips: [
+                    {
+                        id: Date.now() - 100000,
+                        country: 'France',
+                        additionalLocation: 'Paris',
+                        purpose: 'Previous Trip',
+                        startDate: '2025-04-10',
+                        endDate: '2025-04-17',
+                        duration: 8,
+                        dateAdded: new Date('2025-04-17').toISOString(),
+                        source: 'Previous Trip'
+                    },
+                    {
+                        id: Date.now() - 200000,
+                        country: 'Germany',
+                        additionalLocation: 'Berlin',
+                        purpose: 'Previous Trip',
+                        startDate: '2025-03-01',
+                        endDate: '2025-03-05',
+                        duration: 5,
+                        dateAdded: new Date('2025-03-05').toISOString(),
+                        source: 'Previous Trip'
+                    }
+                ]
+            }
+        };
+
+        // EMAIL AUTHENTICATION
         function showEmailModal() {
             console.log('Showing email modal...');
             
-            // Create modal overlay
-            const overlay = document.createElement('div');
-            overlay.id = 'emailModal';
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.8);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 10000;
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            `;
-            
-            // Create modal content
             const modal = document.createElement('div');
-            modal.style.cssText = `
-                background: white;
-                padding: 40px;
-                border-radius: 12px;
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-                max-width: 500px;
-                width: 90%;
-                text-align: center;
-            `;
-            
+            modal.className = 'email-modal';
             modal.innerHTML = `
-                <div style="font-size: 48px; margin-bottom: 20px;">🌍</div>
-                <h2 style="margin: 0 0 10px 0; color: #1a1a1a; font-size: 24px;">STIW Tracker Access</h2>
-                <p style="margin: 0 0 30px 0; color: #5e6c84; font-size: 16px;">Please enter your email address to continue</p>
-                <input type="email" id="emailInput" placeholder="your.email@block.xyz" style="
-                    width: 100%;
-                    padding: 15px;
-                    border: 2px solid #ddd;
-                    border-radius: 6px;
-                    font-size: 16px;
-                    margin-bottom: 20px;
-                    box-sizing: border-box;
-                " />
-                <button id="submitEmail" style="
-                    background: #0052cc;
-                    color: white;
-                    border: none;
-                    padding: 15px 30px;
-                    border-radius: 6px;
-                    font-size: 16px;
-                    cursor: pointer;
-                    width: 100%;
-                ">Continue</button>
-                <div id="errorMsg" style="color: #de350b; margin-top: 15px; display: none;">Email address is required</div>
+                <div class="email-modal-content">
+                    <div style="font-size: 48px; margin-bottom: 20px;">🌍</div>
+                    <h2>STIW Tracker Access</h2>
+                    <p>Please enter your email address to continue</p>
+                    <input type="email" id="emailInput" placeholder="your.email@block.xyz" />
+                    <button onclick="submitEmail()">Continue</button>
+                    <div class="error" id="errorMsg">Email address is required</div>
+                </div>
             `;
             
-            overlay.appendChild(modal);
-            document.body.appendChild(overlay);
-            
-            const emailInput = document.getElementById('emailInput');
-            const submitBtn = document.getElementById('submitEmail');
-            const errorMsg = document.getElementById('errorMsg');
-            
-            emailInput.focus();
-            
-            function submitEmail() {
-                const email = emailInput.value.trim();
-                if (!email) {
-                    errorMsg.style.display = 'block';
-                    errorMsg.textContent = 'Email address is required';
-                    emailInput.focus();
-                    return;
-                }
-                
-                if (!email.includes('@')) {
-                    errorMsg.style.display = 'block';
-                    errorMsg.textContent = 'Please enter a valid email address';
-                    emailInput.focus();
-                    return;
-                }
-                
-                currentUser = email.toLowerCase();
-                localStorage.setItem('stiwCurrentUser', currentUser);
-                console.log('EMAIL SET:', currentUser);
-                
-                document.body.removeChild(overlay);
-                initializeApp();
-            }
-            
-            submitBtn.addEventListener('click', submitEmail);
-            emailInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    submitEmail();
-                }
-            });
+            document.body.appendChild(modal);
+            document.getElementById('emailInput').focus();
         }
 
-        // TAB FUNCTIONS
+        function submitEmail() {
+            const email = document.getElementById('emailInput').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+            
+            if (!email) {
+                errorMsg.style.display = 'block';
+                errorMsg.textContent = 'Email address is required';
+                return;
+            }
+            
+            if (!email.includes('@')) {
+                errorMsg.style.display = 'block';
+                errorMsg.textContent = 'Please enter a valid email address';
+                return;
+            }
+            
+            currentUser = email.toLowerCase();
+            localStorage.setItem('stiwCurrentUser', currentUser);
+            console.log('EMAIL SET:', currentUser);
+            
+            document.querySelector('.email-modal').remove();
+            initializeApp();
+        }
+
+        // TAB NAVIGATION
         function showTab(tabName) {
             console.log('Switching to tab:', tabName);
             
             // Hide all tab contents
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(content => content.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
 
             // Remove active class from all tab buttons
-            const tabButtons = document.querySelectorAll('.tab-button');
-            tabButtons.forEach(button => button.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
 
             // Show selected tab
             const selectedTab = document.getElementById(tabName);
@@ -598,32 +1062,339 @@
             }
 
             // Add active class to clicked button
-            const clickedButton = event?.target || document.querySelector(`[onclick="showTab('${tabName}')"]`);
-            if (clickedButton) {
-                clickedButton.classList.add('active');
-            }
+            event.target.classList.add('active');
         }
 
         // CALCULATOR FUNCTIONS
+        function calculateDuration(startDate, endDate) {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            const diffTime = Math.abs(end - start);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // +1 to include both start and end days
+            return diffDays;
+        }
+
         function addPreviousTrip() {
             console.log('Adding previous trip...');
-            alert('Previous trip functionality - would add to permanent tracking');
+            
+            const country = document.getElementById('calcCountry').value;
+            const location = document.getElementById('calcLocation').value;
+            const startDate = document.getElementById('calcStartDate').value;
+            const endDate = document.getElementById('calcEndDate').value;
+            
+            if (!country || !startDate || !endDate) {
+                alert('Please fill in all required fields (Country, Start Date, End Date)');
+                return;
+            }
+            
+            const duration = calculateDuration(startDate, endDate);
+            
+            const trip = {
+                id: Date.now(),
+                country: country,
+                additionalLocation: location,
+                purpose: 'Previous Trip',
+                startDate: startDate,
+                endDate: endDate,
+                duration: duration,
+                dateAdded: new Date().toISOString(),
+                source: 'Previous Trip'
+            };
+            
+            userData.allTrips.push(trip);
+            saveUserData();
+            updateUsageStatus();
+            updateRequestTracking();
+            
+            // Clear form
+            document.getElementById('calcCountry').value = '';
+            document.getElementById('calcLocation').value = '';
+            document.getElementById('calcStartDate').value = '';
+            document.getElementById('calcEndDate').value = '';
+            
+            showAlert('success', 'Previous trip added to your STIW tracking. Check the Request Tracking tab to see it.');
         }
 
         function addToCalculator() {
             console.log('Adding calculator trip...');
-            alert('Calculator trip functionality - would add to planning section');
+            
+            const country = document.getElementById('calcCountry').value;
+            const location = document.getElementById('calcLocation').value;
+            const startDate = document.getElementById('calcStartDate').value;
+            const endDate = document.getElementById('calcEndDate').value;
+            
+            if (!country || !startDate || !endDate) {
+                alert('Please fill in all required fields (Country, Start Date, End Date)');
+                return;
+            }
+            
+            const duration = calculateDuration(startDate, endDate);
+            
+            const trip = {
+                id: Date.now(),
+                country: country,
+                additionalLocation: location,
+                purpose: 'Calculator Entry',
+                startDate: startDate,
+                endDate: endDate,
+                duration: duration,
+                dateAdded: new Date().toISOString(),
+                source: 'Calculator'
+            };
+            
+            userData.calculatorTrips.push(trip);
+            saveUserData();
+            updateUsageStatus();
+            updateCalculatorDisplay();
+            
+            // Clear form
+            document.getElementById('calcCountry').value = '';
+            document.getElementById('calcLocation').value = '';
+            document.getElementById('calcStartDate').value = '';
+            document.getElementById('calcEndDate').value = '';
+            
+            showAlert('success', 'Trip added to calculator for planning purposes. Check your usage status above.');
         }
 
-        // REPORT FUNCTIONS
+        function removeCalculatorTrip(index) {
+            if (confirm('Are you sure you want to remove this calculator trip?')) {
+                userData.calculatorTrips.splice(index, 1);
+                saveUserData();
+                updateUsageStatus();
+                updateCalculatorDisplay();
+                showAlert('success', 'Calculator trip removed successfully.');
+            }
+        }
+
+        function updateCalculatorDisplay() {
+            const calculatorTripsList = document.getElementById('calculatorTripsList');
+            
+            if (userData.calculatorTrips.length === 0) {
+                calculatorTripsList.innerHTML = '<p style="color: var(--block-medium-gray); font-style: italic;">No planning trips added yet. Use the blue button above to add trips for experimentation.</p>';
+                return;
+            }
+            
+            calculatorTripsList.innerHTML = userData.calculatorTrips.map((trip, index) => `
+                <div class="trip-card">
+                    <h4>${trip.country}${trip.additionalLocation ? ' - ' + trip.additionalLocation : ''}</h4>
+                    <div class="trip-details">
+                        <div class="trip-detail"><strong>Dates:</strong> ${trip.startDate} to ${trip.endDate}</div>
+                        <div class="trip-detail"><strong>Duration:</strong> ${trip.duration} days</div>
+                        <div class="trip-detail"><strong>Type:</strong> <span style="background: var(--block-warning); color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px;">Planning/Testing</span></div>
+                    </div>
+                    <button class="btn btn-remove" onclick="removeCalculatorTrip(${index})">Remove</button>
+                </div>
+            `).join('');
+        }
+
+        // USAGE CALCULATION
+        function updateUsageStatus() {
+            console.log('Updating usage status...');
+            
+            // Calculate total days from approved trips and previous trips
+            const approvedTrips = userData.allTrips.filter(trip => 
+                trip.source === 'Previous Trip' || trip.source === 'Approved Request'
+            );
+            
+            // Include calculator trips for projection
+            const allTripsForCalculation = [...approvedTrips, ...userData.calculatorTrips];
+            
+            const totalDays = allTripsForCalculation.reduce((sum, trip) => sum + trip.duration, 0);
+            const remainingDays = Math.max(0, 45 - totalDays);
+            
+            console.log('Total days used:', totalDays, 'Remaining:', remainingDays);
+            
+            // Update all status displays
+            const statusElements = [
+                'submitRemainingDays', 'submitCurrentDays',
+                'calcRemainingDays', 'calcCurrentDays',
+                'trackingRemainingDays', 'trackingCurrentDays'
+            ];
+            
+            statusElements.forEach(elementId => {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    if (elementId.includes('Remaining')) {
+                        element.textContent = remainingDays;
+                    } else {
+                        element.textContent = totalDays;
+                    }
+                }
+            });
+            
+            // Show threshold warning if over 45 days
+            const thresholdCard = document.getElementById('thresholdCard');
+            if (thresholdCard) {
+                if (totalDays > 45) {
+                    thresholdCard.style.display = 'block';
+                } else {
+                    thresholdCard.style.display = 'none';
+                }
+            }
+        }
+
+        // REQUEST TRACKING
+        function updateRequestTracking() {
+            console.log('Updating request tracking...');
+            
+            const stiwTripsElement = document.getElementById('stiwTrips');
+            if (!stiwTripsElement) return;
+            
+            const approvedTrips = userData.allTrips.filter(trip => 
+                trip.source === 'Previous Trip' || trip.source === 'Approved Request'
+            );
+            
+            if (approvedTrips.length === 0) {
+                stiwTripsElement.innerHTML = '<p style="color: var(--block-medium-gray); font-style: italic;">No approved trips found.</p>';
+                return;
+            }
+            
+            stiwTripsElement.innerHTML = approvedTrips.map(trip => `
+                <div class="trip-card">
+                    <h4>${trip.country}${trip.additionalLocation ? ' - ' + trip.additionalLocation : ''}</h4>
+                    <div class="trip-details">
+                        <div class="trip-detail"><strong>Dates:</strong> ${trip.startDate} to ${trip.endDate}</div>
+                        <div class="trip-detail"><strong>Duration:</strong> ${trip.duration} days</div>
+                        <div class="trip-detail"><strong>Purpose:</strong> ${trip.purpose}</div>
+                        <div class="trip-detail"><strong>Status:</strong> <span style="background: var(--block-success); color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px;">Approved Trip</span></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // EMPLOYEE MANAGEMENT
         function generateReport(type) {
             console.log('Generating report:', type);
-            alert(`Generating ${type} report...`);
+            alert(`Generating ${type} report... This would export all employee STIW data.`);
         }
 
         function loadHistoricalSTIWData() {
-            console.log('Loading historical data...');
-            alert('Loading historical STIW data...');
+            console.log('Loading historical STIW data...');
+            
+            if (confirm('This will load historical STIW data from the last 12 months. Continue?')) {
+                // Load historical data for current user if available
+                if (historicalData[currentUser]) {
+                    userData.allTrips = [...userData.allTrips, ...historicalData[currentUser].allTrips];
+                    saveUserData();
+                    updateUsageStatus();
+                    updateRequestTracking();
+                    alert('Historical STIW data loaded successfully!');
+                } else {
+                    alert('No historical data available for your email address.');
+                }
+            }
+        }
+
+        // FORM SUBMISSION
+        function handleFormSubmission(event) {
+            event.preventDefault();
+            console.log('Form submitted');
+            
+            const name = document.getElementById('reqName').value;
+            const email = document.getElementById('reqEmail').value;
+            const managerEmail = document.getElementById('reqManagerEmail').value;
+            const country = document.getElementById('reqCountry').value;
+            const location = document.getElementById('reqLocation').value;
+            const startDate = document.getElementById('reqStartDate').value;
+            const endDate = document.getElementById('reqEndDate').value;
+            const purpose = document.getElementById('reqPurpose').value;
+            const policyAck = document.getElementById('reqPolicyAcknowledgment').checked;
+            
+            if (!policyAck) {
+                alert('Please acknowledge that you have read the STIW Policy Guidelines.');
+                return;
+            }
+            
+            const duration = calculateDuration(startDate, endDate);
+            
+            // Create Gmail URL for manager email
+            const subject = encodeURIComponent(`STIW Request - ${name} - ${country} - Manager Approval Required`);
+            const body = encodeURIComponent(`Dear Manager,
+
+${name} has submitted a Short Term International Work (STIW) request for your approval.
+
+EMPLOYEE INFORMATION:
+Name: ${name}
+Email: ${email}
+Current STIW Usage: ${userData.allTrips.reduce((sum, trip) => sum + trip.duration, 0)} days
+Days Available: ${45 - userData.allTrips.reduce((sum, trip) => sum + trip.duration, 0)} days
+
+TRIP DETAILS:
+Destination: ${country}${location ? ' - ' + location : ''}
+Travel Dates: ${startDate} to ${endDate}
+Duration: ${duration} days
+Purpose: ${purpose}
+
+MANAGER ACTION REQUIRED:
+Please review the request and respond with your decision.
+
+APPROVE REQUEST: Reply to this email with "APPROVED"
+DENY REQUEST: Reply to this email with "DENIED" and include reason
+
+IMPORTANT NOTES:
+- Approved requests will be added to the employee's STIW tracking
+- Denied requests will require you to provide a detailed reason
+- Employees can cancel their own requests if needed
+- All actions are logged and tracked in the system
+
+RESOURCES:
+- STIW Policy Guidelines: https://my.sqprod.co/resources/people-resource-center/employee-resources/relocation/short-term-international-work-guidelines
+- Approved STIW Locations: https://docs.google.com/document/d/16ZSXNSQOf8G8P7gPFNtZri3Wrz2NmB0qzlWF-KC0HkM/edit?tab=t.0#heading=h.jlam7p41jwb8
+- Questions? Visit go/compass
+
+This email was automatically generated by the STIW Tracking System.
+
+Best regards,
+STIW Tracking System`);
+            
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(managerEmail)}&cc=${encodeURIComponent('mobility-stiw@squareup.com')}&su=${subject}&body=${body}`;
+            
+            // Open Gmail in new window
+            window.open(gmailUrl, '_blank');
+            
+            showAlert('success', 'STIW request submitted! Your manager will receive an email for approval. Gmail has been opened in a new window.');
+            
+            // Clear form
+            document.getElementById('submitForm').reset();
+            document.getElementById('reqEmail').value = currentUser; // Keep email filled
+        }
+
+        // UTILITY FUNCTIONS
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            
+            const container = document.querySelector('.tab-content.active');
+            container.insertBefore(alertDiv, container.firstChild);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        function saveUserData() {
+            const key = `stiwUserData_${currentUser}`;
+            localStorage.setItem(key, JSON.stringify(userData));
+            console.log('User data saved for:', currentUser);
+        }
+
+        function loadUserData() {
+            const key = `stiwUserData_${currentUser}`;
+            const saved = localStorage.getItem(key);
+            
+            if (saved) {
+                userData = JSON.parse(saved);
+                console.log('User data loaded for:', currentUser);
+            } else {
+                console.log('No saved data found for:', currentUser);
+                // Auto-load historical data if available
+                if (historicalData[currentUser]) {
+                    userData.allTrips = historicalData[currentUser].allTrips;
+                    saveUserData();
+                    console.log('Historical data auto-loaded for:', currentUser);
+                }
+            }
         }
 
         // APP INITIALIZATION
@@ -647,18 +1418,42 @@
                 }
             }
             
-            // Set email in forms
-            const emailFields = document.querySelectorAll('#reqEmail');
-            emailFields.forEach(field => {
-                if (field) field.value = currentUser;
-            });
+            // Set email in form
+            const emailField = document.getElementById('reqEmail');
+            if (emailField) {
+                emailField.value = currentUser;
+            }
             
-            console.log('STIW Tracker initialized successfully');
+            // Load user data and update displays
+            loadUserData();
+            updateUsageStatus();
+            updateRequestTracking();
+            updateCalculatorDisplay();
+            
+            console.log('STIW Tracker initialized successfully for:', currentUser);
         }
+
+        // EVENT LISTENERS
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded');
+            
+            // Add form submission handler
+            const submitForm = document.getElementById('submitForm');
+            if (submitForm) {
+                submitForm.addEventListener('submit', handleFormSubmission);
+            }
+            
+            // Add Enter key handler for email modal
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && document.querySelector('.email-modal')) {
+                    submitEmail();
+                }
+            });
+        });
 
         // WINDOW LOAD EVENT
         window.addEventListener('load', function() {
-            console.log('Page loaded, checking for cached user...');
+            console.log('Page loaded, checking authentication...');
             
             // Check if user is already authenticated
             const cachedUser = localStorage.getItem('stiwCurrentUser');
@@ -668,26 +1463,13 @@
                 initializeApp();
             } else {
                 console.log('No cached user, showing email modal...');
-                // Small delay to ensure DOM is ready
                 setTimeout(() => {
                     showEmailModal();
                 }, 500);
             }
         });
 
-        // FORM SUBMISSION
-        document.addEventListener('DOMContentLoaded', function() {
-            const submitForm = document.getElementById('submitForm');
-            if (submitForm) {
-                submitForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    console.log('Form submitted');
-                    alert('STIW request submitted! Your manager will receive an email for approval.');
-                });
-            }
-        });
-
-        console.log('STIW Tracker script loaded successfully');
+        console.log('STIW Tracker v3.0 script loaded successfully');
     </script>
 </body>
 </html>
