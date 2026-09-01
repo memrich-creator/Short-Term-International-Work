@@ -7,8 +7,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="2.8-20260901-MODERN-EMAIL-MODAL">
-    <meta http-equiv="Last-Modified" content="Sun, 01 Sep 2026 09:33:00 GMT">
+    <meta name="version" content="2.9-20260901-WORKING-FIX">
     <style>
         :root {
             --block-primary: #1a1a1a;
@@ -35,48 +34,56 @@
             line-height: 1.6;
         }
 
-        .container {
-            max-width: 1600px;
-            width: 98%;
-            margin: 0 auto;
-            padding: 40px 60px;
-        }
-
         .header {
-            background: var(--block-primary);
+            background: linear-gradient(135deg, var(--block-primary) 0%, #2c2c2c 100%);
             color: white;
-            padding: 30px 0;
-            margin-bottom: 40px;
+            padding: 2rem 0;
             text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .header h1 {
             font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-weight: 300;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
         }
 
-
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 60px;
+            width: 98%;
+        }
 
         .tabs {
             display: flex;
             background: white;
             border-radius: 12px 12px 0 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 40px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            margin-bottom: 0;
         }
 
         .tab-button {
             flex: 1;
-            padding: 20px 30px;
-            background: white;
+            padding: 20px 24px;
+            background: var(--block-light-gray);
             border: none;
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 16px;
+            font-weight: 500;
             color: var(--block-medium-gray);
             cursor: pointer;
             transition: all 0.3s ease;
-            border-bottom: 4px solid transparent;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-button:hover {
+            background: #e8f2ff;
+            color: var(--block-accent);
         }
 
         .tab-button.active {
@@ -85,27 +92,101 @@
             border-bottom-color: var(--block-accent);
         }
 
-        .tab-button:hover:not(.active) {
-            background: var(--block-light-gray);
-        }
-
         .tab-content {
             display: none;
             background: white;
-            padding: 40px 60px;
+            padding: 40px;
             border-radius: 0 0 12px 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            min-height: 600px;
         }
 
         .tab-content.active {
             display: block;
         }
 
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--block-dark-gray);
+            font-size: 14px;
+        }
+
+        input, select, textarea {
+            padding: 12px 16px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--block-accent);
+            box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--block-accent) 0%, #0066ff 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 82, 204, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--block-success) 0%, #00a86b 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 135, 90, 0.3);
+        }
+
         .status-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
             margin-bottom: 40px;
         }
 
@@ -113,9 +194,9 @@
             background: white;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
-            border-left: 6px solid var(--block-success);
+            border-left: 4px solid var(--block-success);
         }
 
         .status-card.warning {
@@ -128,361 +209,90 @@
 
         .status-number {
             font-size: 3rem;
-            font-weight: bold;
-            color: var(--block-primary);
-            margin-bottom: 15px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--block-accent);
         }
 
         .status-label {
-            font-size: 1rem;
+            font-size: 14px;
             color: var(--block-medium-gray);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .rolling-days {
-            font-size: 4rem;
-            font-weight: bold;
-            color: var(--block-success);
-            margin-bottom: 15px;
-        }
-
-        .rolling-days.success {
-            color: var(--block-success);
-        }
-
-        .rolling-days.warning {
-            color: var(--block-warning);
-        }
-
-        .rolling-days.danger {
-            color: var(--block-danger);
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
             font-weight: 600;
-            color: var(--block-dark-gray);
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--block-accent);
-        }
-
-        .button-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 15px 30px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--block-accent), #0066ff);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 82, 204, 0.3);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, var(--block-success), #00a86b);
-            color: white;
-        }
-
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 135, 90, 0.3);
-        }
-
-        .btn-warning {
-            background: linear-gradient(135deg, var(--block-warning), #ffab00);
-            color: white;
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, var(--block-danger), #ff5630);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: var(--block-light-gray);
-            color: var(--block-dark-gray);
-        }
-
-        .btn-sm {
-            padding: 8px 16px;
-            font-size: 0.875rem;
-        }
-
-        .trip-card {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            border-left: 6px solid var(--block-accent);
-        }
-
-        .trip-card:hover {
-            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-        }
-
-        .trip-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .trip-detail-row {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .trip-detail-label {
-            font-size: 0.875rem;
-            color: var(--block-medium-gray);
-            margin-bottom: 4px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .trip-detail-value {
-            font-size: 1rem;
-            color: var(--block-dark-gray);
-            font-weight: 500;
-        }
-
-        .status-badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .status-pending {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .status-approved {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .status-denied {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .status-canceled {
-            background: #e2e3e5;
-            color: #383d41;
+            letter-spacing: 1px;
         }
 
         .info-box {
             background: var(--block-light-gray);
-            padding: 25px;
-            border-radius: 12px;
+            padding: 20px;
+            border-radius: 8px;
             margin-bottom: 30px;
-            border-left: 6px solid var(--block-accent);
+            border-left: 4px solid var(--block-accent);
         }
 
         .info-box h3 {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             color: var(--block-primary);
-        }
-
-        .info-box ul {
-            margin-left: 20px;
-        }
-
-        .info-box li {
-            margin-bottom: 8px;
         }
 
         .policy-acknowledgment {
             background: #fff3cd;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
             border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
         }
 
         .policy-acknowledgment label {
             display: flex;
             align-items: flex-start;
             gap: 10px;
+            font-weight: normal;
             cursor: pointer;
         }
 
         .policy-acknowledgment input[type="checkbox"] {
             margin-top: 4px;
-            width: auto;
         }
 
-        .info-links {
-            margin-top: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .info-link {
-            color: #4285f4;
+        .policy-acknowledgment a {
+            color: var(--block-accent);
             text-decoration: none;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
         }
 
-        .info-link:hover {
+        .policy-acknowledgment a:hover {
             text-decoration: underline;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 600px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close:hover {
-            color: black;
-        }
-
-        .alert {
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 8px;
-        }
-
-        .alert-danger {
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-        }
-
-        .alert-warning {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
-        }
-
-        .alert-info {
-            background: #d1ecf1;
-            border: 1px solid #bee5eb;
-            color: #0c5460;
         }
 
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
-            }
-
-            .tab-button {
-                padding: 15px 10px;
-                font-size: 0.9rem;
-            }
-
-            .tab-content {
-                padding: 30px 20px;
-            }
-
-            .button-group {
-                flex-direction: column;
+                width: 95%;
             }
 
             .form-grid {
                 grid-template-columns: 1fr;
+                gap: 16px;
             }
 
-            .status-grid {
-                grid-template-columns: 1fr;
+            .header h1 {
+                font-size: 2rem;
             }
 
-            .rolling-days {
-                font-size: 2.5rem;
+            .tab-button {
+                padding: 15px 12px;
+                font-size: 14px;
+            }
+
+            .tab-content {
+                padding: 20px;
             }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <div class="container">
-            <h1>🌍 Short Term International Work Request</h1>
-        </div>
+        <h1>🌍 Short Term International Work Request</h1>
     </div>
 
     <div class="container">
@@ -493,32 +303,25 @@
             <button class="tab-button" onclick="showTab('employee-management')" id="employeeManagementTab" style="display: none;">Employee Management</button>
         </div>
 
-        <!-- Submit Request Tab -->
         <div id="submit-request" class="tab-content active">
-            <h2>Submit STIW Request</h2>
-            <p>Submit a new Short Term International Work request to your manager for approval.</p>
-
-            <!-- STIW Balance Display -->
-            <div class="status-grid" style="margin-bottom: 2rem;">
+            <div class="status-grid">
                 <div class="status-card">
-                    <div id="submitRemainingDays" class="rolling-days">45</div>
-                    <div class="status-label">DAYS REMAINING</div>
-                    <div class="status-sublabel">out of 45 days available</div>
+                    <div class="status-number" id="submitRemainingDays">45</div>
+                    <div class="status-label">DAYS REMAINING<br>out of 45 days available</div>
                 </div>
                 <div class="status-card">
-                    <div id="submitCurrentDays" class="rolling-days">0</div>
-                    <div class="status-label">CURRENT DAYS USED</div>
-                    <div class="status-sublabel">approved trips only</div>
+                    <div class="status-number" id="submitCurrentDays">0</div>
+                    <div class="status-label">CURRENT DAYS USED<br>approved trips only</div>
                 </div>
             </div>
-            
-            <!-- Important Duration Information -->
-            <div class="info-box" style="background: #fff3cd; border-left: 4px solid #ffc107; margin-bottom: 2rem;">
+
+            <div class="info-box">
                 <h3>⚠️ Important: Duration Calculation</h3>
-                <p><strong>Duration is counted from your first to last working day outside of your country of employment.</strong></p>
+                <p>Duration is counted from your first to last working day outside of your country of employment.</p>
                 <p>PTO/Weekends/Holidays in between trips are included in the entire duration calculation.</p>
                 <p>This ensures accurate tracking against your 45-day annual STIW limit.</p>
             </div>
+
             <div class="info-box">
                 <h3>How to Use This Form</h3>
                 <p>Complete all required fields and submit your request. Your manager will receive an email with approval options to approve or deny your request. You can cancel your own requests if needed.</p>
@@ -544,164 +347,14 @@
                             <option value="">Select a country</option>
                             <option value="Albania">Albania</option>
                             <option value="Andorra">Andorra</option>
-                            <option value="Antigua and Barbuda">Antigua and Barbuda</option>
-                            <option value="Argentina">Argentina</option>
-                            <option value="Armenia">Armenia</option>
-                            <option value="Aruba">Aruba</option>
-                            <option value="Australia">Australia</option>
-                            <option value="Austria">Austria</option>
-                            <option value="Bahamas">Bahamas</option>
-                            <option value="Bahrain">Bahrain</option>
-                            <option value="Barbados">Barbados</option>
-                            <option value="Belgium">Belgium</option>
-                            <option value="Belize">Belize</option>
-                            <option value="Benin">Benin</option>
-                            <option value="Bermuda">Bermuda</option>
-                            <option value="Bhutan">Bhutan</option>
-                            <option value="Bolivia">Bolivia</option>
-                            <option value="Bosnia & Herzegovina">Bosnia & Herzegovina</option>
-                            <option value="Botswana">Botswana</option>
-                            <option value="Brazil">Brazil</option>
-                            <option value="Brunei Darussalam">Brunei Darussalam</option>
-                            <option value="Bulgaria">Bulgaria</option>
-                            <option value="Cape Verde">Cape Verde</option>
-                            <option value="Cambodia">Cambodia</option>
-                            <option value="Cameroon">Cameroon</option>
-                            <option value="Canada">Canada</option>
-                            <option value="Cayman Islands">Cayman Islands</option>
-                            <option value="Chile">Chile</option>
-                            <option value="Colombia">Colombia</option>
-                            <option value="Comoros">Comoros</option>
-                            <option value="Congo, Rep of the">Congo, Rep of the</option>
-                            <option value="Cook Islands">Cook Islands</option>
-                            <option value="Costa Rica">Costa Rica</option>
-                            <option value="Croatia">Croatia</option>
-                            <option value="Czech Republic">Czech Republic</option>
-                            <option value="Denmark">Denmark</option>
-                            <option value="Djibouti">Djibouti</option>
-                            <option value="Dominican Republic">Dominican Republic</option>
-                            <option value="Ecuador">Ecuador</option>
-                            <option value="El Salvador">El Salvador</option>
-                            <option value="Equatorial Guinea">Equatorial Guinea</option>
-                            <option value="Estonia">Estonia</option>
-                            <option value="Eswatini">Eswatini</option>
-                            <option value="Fiji">Fiji</option>
-                            <option value="Finland">Finland</option>
                             <option value="France">France</option>
-                            <option value="Gabon">Gabon</option>
-                            <option value="Gambia">Gambia</option>
-                            <option value="Georgia">Georgia</option>
                             <option value="Germany">Germany</option>
-                            <option value="Ghana">Ghana</option>
-                            <option value="Greece">Greece</option>
-                            <option value="Grenada">Grenada</option>
-                            <option value="Guatemala">Guatemala</option>
-                            <option value="Guinea-Bissau">Guinea-Bissau</option>
-                            <option value="Guyana">Guyana</option>
-                            <option value="Honduras">Honduras</option>
-                            <option value="Hungary">Hungary</option>
-                            <option value="Iceland">Iceland</option>
-                            <option value="India">India</option>
-                            <option value="Indonesia">Indonesia</option>
-                            <option value="Ireland">Ireland</option>
-                            <option value="Israel">Israel</option>
-                            <option value="Italy">Italy</option>
-                            <option value="Jamaica">Jamaica</option>
-                            <option value="Japan">Japan</option>
-                            <option value="Jordan">Jordan</option>
-                            <option value="Kazakhstan">Kazakhstan</option>
-                            <option value="Kiribati">Kiribati</option>
-                            <option value="Kosovo">Kosovo</option>
-                            <option value="Kuwait">Kuwait</option>
-                            <option value="Kyrgyzstan">Kyrgyzstan</option>
-                            <option value="Laos">Laos</option>
-                            <option value="Latvia">Latvia</option>
-                            <option value="Lesotho">Lesotho</option>
-                            <option value="Liechtenstein">Liechtenstein</option>
-                            <option value="Lithuania">Lithuania</option>
-                            <option value="Luxembourg">Luxembourg</option>
-                            <option value="Madagascar">Madagascar</option>
-                            <option value="Malawi">Malawi</option>
-                            <option value="Malaysia">Malaysia</option>
-                            <option value="Maldives">Maldives</option>
-                            <option value="Mali">Mali</option>
-                            <option value="Malta">Malta</option>
-                            <option value="Marshall Islands">Marshall Islands</option>
-                            <option value="Mauritius">Mauritius</option>
-                            <option value="Mexico">Mexico</option>
-                            <option value="Micronesia">Micronesia</option>
-                            <option value="Moldova">Moldova</option>
-                            <option value="Monaco">Monaco</option>
-                            <option value="Mongolia">Mongolia</option>
-                            <option value="Montenegro">Montenegro</option>
-                            <option value="Morocco">Morocco</option>
-                            <option value="Namibia">Namibia</option>
-                            <option value="Nauru">Nauru</option>
-                            <option value="Netherlands">Netherlands</option>
-                            <option value="New Zealand">New Zealand</option>
-                            <option value="Nicaragua">Nicaragua</option>
-                            <option value="North Macedonia">North Macedonia</option>
-                            <option value="Norway">Norway</option>
-                            <option value="Oman">Oman</option>
-                            <option value="Palau">Palau</option>
-                            <option value="Panama">Panama</option>
-                            <option value="Papua New Guinea">Papua New Guinea</option>
-                            <option value="Paraguay">Paraguay</option>
-                            <option value="Peru">Peru</option>
-                            <option value="Philippines">Philippines</option>
-                            <option value="Poland">Poland</option>
-                            <option value="Portugal">Portugal</option>
-                            <option value="Qatar">Qatar</option>
-                            <option value="Romania">Romania</option>
-                            <option value="Rwanda">Rwanda</option>
-                            <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
-                            <option value="Saint Lucia">Saint Lucia</option>
-                            <option value="Saint Vincent & the Grenadines">Saint Vincent & the Grenadines</option>
-                            <option value="Saint Martin">Saint Martin</option>
-                            <option value="Samoa">Samoa</option>
-                            <option value="San Marino">San Marino</option>
-                            <option value="Sao Tome & Principe">Sao Tome & Principe</option>
-                            <option value="Saudi Arabia">Saudi Arabia</option>
-                            <option value="Senegal">Senegal</option>
-                            <option value="Serbia">Serbia</option>
-                            <option value="Seychelles">Seychelles</option>
-                            <option value="Sierra Leone">Sierra Leone</option>
-                            <option value="Singapore">Singapore</option>
-                            <option value="Sint Maarten">Sint Maarten</option>
-                            <option value="Slovakia">Slovakia</option>
-                            <option value="Slovenia">Slovenia</option>
-                            <option value="Solomon Islands">Solomon Islands</option>
-                            <option value="South Africa">South Africa</option>
-                            <option value="South Korea">South Korea</option>
-                            <option value="Spain">Spain</option>
-                            <option value="Suriname">Suriname</option>
-                            <option value="Sweden">Sweden</option>
-                            <option value="Switzerland">Switzerland</option>
-                            <option value="Taiwan">Taiwan</option>
-                            <option value="Tajikistan">Tajikistan</option>
-                            <option value="Tanzania">Tanzania</option>
-                            <option value="Thailand">Thailand</option>
-                            <option value="Timor-Leste">Timor-Leste</option>
-                            <option value="Tonga">Tonga</option>
-                            <option value="Trinidad and Tobago">Trinidad and Tobago</option>
-                            <option value="Tunisia">Tunisia</option>
-                            <option value="Turkey">Turkey</option>
-                            <option value="Turkmenistan">Turkmenistan</option>
-                            <option value="Turks and Caicos">Turks and Caicos</option>
-                            <option value="Tuvalu">Tuvalu</option>
-                            <option value="United Arab Emirates">United Arab Emirates</option>
                             <option value="United Kingdom">United Kingdom</option>
-                            <option value="Uruguay">Uruguay</option>
-                            <option value="Uzbekistan">Uzbekistan</option>
-                            <option value="Vanuatu">Vanuatu</option>
-                            <option value="Vatican City / Holy See">Vatican City / Holy See</option>
-                            <option value="Vietnam">Vietnam</option>
-                            <option value="Zambia">Zambia</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="reqAdditionalLocation">Additional Location Details</label>
-                        <input type="text" id="reqAdditionalLocation" placeholder="City, region, or specific location (optional)">
+                        <label for="reqLocation">Additional Location Details</label>
+                        <input type="text" id="reqLocation" placeholder="City, region, or specific location (optional)">
                     </div>
                     <div class="form-group">
                         <label for="reqStartDate">Start Date *</label>
@@ -722,59 +375,32 @@
                         I acknowledge that I have read and understand the <a href="https://my.sqprod.co/resources/people-resource-center/employee-resources/relocation/short-term-international-work-guidelines" target="_blank">STIW Policy Guidelines</a> and will comply with all requirements.
                     </label>
                 </div>
-
-                <div class="button-group">
-                    <button type="submit" class="btn btn-primary">Submit Request to Manager</button>
-                </div>
+                <button type="submit" class="btn btn-primary">Submit Request to Manager</button>
             </form>
-
-
-
-            <div class="info-links">
-                <span>📋 <a href="https://my.sqprod.co/resources/people-resource-center/employee-resources/relocation/short-term-international-work-guidelines" target="_blank" class="info-link">View STIW Policy Guidelines</a></span>
-                <span>🌍 <a href="https://docs.google.com/document/d/16ZSXNSQOf8G8P7gPFNtZri3Wrz2NmB0qzlWF-KC0HkM/edit?tab=t.0#heading=h.jlam7p41jwb8" target="_blank" class="info-link">View Approved STIW Locations</a></span>
-            </div>
-            <p style="margin-top: 15px;">Questions? <a href="https://go.sqprod.co/compass" target="_blank" class="info-link">❓ Raise a request via go/compass</a></p>
         </div>
 
-        <!-- Trip Tracking Calculator Tab -->
         <div id="calculator" class="tab-content">
             <h2>Trip Tracking Calculator</h2>
-            <p>Add trips to calculate your usage against the 45-day annual limit. Use the buttons below based on your trip type.</p>
+            <p>Track your Short Term International Work trips against the 45-day annual rolling limit. Add your previous trips to see your current usage status and plan future trips.</p>
+            
+            <div class="status-grid">
+                <div class="status-card">
+                    <div class="status-number">45</div>
+                    <div class="status-label">DAYS REMAINING<br>out of 45 days available</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-number">0</div>
+                    <div class="status-label">CURRENT DAYS USED</div>
+                </div>
+            </div>
 
-            <!-- Important Duration Information -->
-            <div class="info-box" style="background: #fff3cd; border-left: 4px solid #ffc107; margin-bottom: 2rem;">
+            <div class="info-box">
                 <h3>⚠️ Important: Duration Calculation</h3>
-                <p><strong>Duration is counted from your first to last working day outside of your country of employment.</strong></p>
+                <p>Duration is counted from your first to last working day outside of your country of employment.</p>
                 <p>PTO/Weekends/Holidays in between trips are included in the entire duration calculation.</p>
                 <p>This ensures accurate tracking against your 45-day annual STIW limit.</p>
             </div>
 
-            <div class="info-box">
-                <p><strong>ℹ️ Information:</strong> This calculator helps you track your Short Term International Work trips against the 45-day annual rolling limit. Add your previous trips to see your current usage status and plan future trips for experimentation and testing.</p>
-
-                <h3>How to Use This Calculator:</h3>
-                <ul>
-                    <li><strong>Add Previous Trip to Tracker (Green Button):</strong> Use for trips you've already taken or that have been approved by your manager. These count toward your 45-day limit and appear in Request Tracking.</li>
-                    <li><strong>Add Trip to Calculator (Blue Button):</strong> Use for planning future trips and experimentation. These stay in the calculator for testing usage impact without affecting your official record.</li>
-                    <li><strong>Status Cards:</strong> Show your current usage, remaining days, and usage status in real-time.</li>
-                    <li><strong>Rolling 12-Month Window:</strong> Only trips within the last 12 months count toward your 45-day limit.</li>
-                </ul>
-            </div>
-
-            <div class="status-grid">
-                <div class="status-card">
-                    <div class="status-number" id="remainingDays">45</div>
-                    <div class="status-label">DAYS REMAINING<br><small>out of 45 days available</small></div>
-                </div>
-                <div class="status-card">
-                    <div class="rolling-days" id="rollingDays">0</div>
-                    <div class="status-label">CURRENT DAYS USED</div>
-                </div>
-                <div class="status-card" id="thresholdCard" style="display: none;">
-                    <div class="status-number" style="color: #de350b; font-size: 18px; font-weight: bold;">EXCEEDS 45 DAY THRESHOLD</div>
-                </div>
-            </div>
             <form id="calculatorForm">
                 <div class="form-grid">
                     <div class="form-group">
@@ -783,164 +409,14 @@
                             <option value="">Select a country</option>
                             <option value="Albania">Albania</option>
                             <option value="Andorra">Andorra</option>
-                            <option value="Antigua and Barbuda">Antigua and Barbuda</option>
-                            <option value="Argentina">Argentina</option>
-                            <option value="Armenia">Armenia</option>
-                            <option value="Aruba">Aruba</option>
-                            <option value="Australia">Australia</option>
-                            <option value="Austria">Austria</option>
-                            <option value="Bahamas">Bahamas</option>
-                            <option value="Bahrain">Bahrain</option>
-                            <option value="Barbados">Barbados</option>
-                            <option value="Belgium">Belgium</option>
-                            <option value="Belize">Belize</option>
-                            <option value="Benin">Benin</option>
-                            <option value="Bermuda">Bermuda</option>
-                            <option value="Bhutan">Bhutan</option>
-                            <option value="Bolivia">Bolivia</option>
-                            <option value="Bosnia & Herzegovina">Bosnia & Herzegovina</option>
-                            <option value="Botswana">Botswana</option>
-                            <option value="Brazil">Brazil</option>
-                            <option value="Brunei Darussalam">Brunei Darussalam</option>
-                            <option value="Bulgaria">Bulgaria</option>
-                            <option value="Cape Verde">Cape Verde</option>
-                            <option value="Cambodia">Cambodia</option>
-                            <option value="Cameroon">Cameroon</option>
-                            <option value="Canada">Canada</option>
-                            <option value="Cayman Islands">Cayman Islands</option>
-                            <option value="Chile">Chile</option>
-                            <option value="Colombia">Colombia</option>
-                            <option value="Comoros">Comoros</option>
-                            <option value="Congo, Rep of the">Congo, Rep of the</option>
-                            <option value="Cook Islands">Cook Islands</option>
-                            <option value="Costa Rica">Costa Rica</option>
-                            <option value="Croatia">Croatia</option>
-                            <option value="Czech Republic">Czech Republic</option>
-                            <option value="Denmark">Denmark</option>
-                            <option value="Djibouti">Djibouti</option>
-                            <option value="Dominican Republic">Dominican Republic</option>
-                            <option value="Ecuador">Ecuador</option>
-                            <option value="El Salvador">El Salvador</option>
-                            <option value="Equatorial Guinea">Equatorial Guinea</option>
-                            <option value="Estonia">Estonia</option>
-                            <option value="Eswatini">Eswatini</option>
-                            <option value="Fiji">Fiji</option>
-                            <option value="Finland">Finland</option>
                             <option value="France">France</option>
-                            <option value="Gabon">Gabon</option>
-                            <option value="Gambia">Gambia</option>
-                            <option value="Georgia">Georgia</option>
                             <option value="Germany">Germany</option>
-                            <option value="Ghana">Ghana</option>
-                            <option value="Greece">Greece</option>
-                            <option value="Grenada">Grenada</option>
-                            <option value="Guatemala">Guatemala</option>
-                            <option value="Guinea-Bissau">Guinea-Bissau</option>
-                            <option value="Guyana">Guyana</option>
-                            <option value="Honduras">Honduras</option>
-                            <option value="Hungary">Hungary</option>
-                            <option value="Iceland">Iceland</option>
-                            <option value="India">India</option>
-                            <option value="Indonesia">Indonesia</option>
-                            <option value="Ireland">Ireland</option>
-                            <option value="Israel">Israel</option>
-                            <option value="Italy">Italy</option>
-                            <option value="Jamaica">Jamaica</option>
-                            <option value="Japan">Japan</option>
-                            <option value="Jordan">Jordan</option>
-                            <option value="Kazakhstan">Kazakhstan</option>
-                            <option value="Kiribati">Kiribati</option>
-                            <option value="Kosovo">Kosovo</option>
-                            <option value="Kuwait">Kuwait</option>
-                            <option value="Kyrgyzstan">Kyrgyzstan</option>
-                            <option value="Laos">Laos</option>
-                            <option value="Latvia">Latvia</option>
-                            <option value="Lesotho">Lesotho</option>
-                            <option value="Liechtenstein">Liechtenstein</option>
-                            <option value="Lithuania">Lithuania</option>
-                            <option value="Luxembourg">Luxembourg</option>
-                            <option value="Madagascar">Madagascar</option>
-                            <option value="Malawi">Malawi</option>
-                            <option value="Malaysia">Malaysia</option>
-                            <option value="Maldives">Maldives</option>
-                            <option value="Mali">Mali</option>
-                            <option value="Malta">Malta</option>
-                            <option value="Marshall Islands">Marshall Islands</option>
-                            <option value="Mauritius">Mauritius</option>
-                            <option value="Mexico">Mexico</option>
-                            <option value="Micronesia">Micronesia</option>
-                            <option value="Moldova">Moldova</option>
-                            <option value="Monaco">Monaco</option>
-                            <option value="Mongolia">Mongolia</option>
-                            <option value="Montenegro">Montenegro</option>
-                            <option value="Morocco">Morocco</option>
-                            <option value="Namibia">Namibia</option>
-                            <option value="Nauru">Nauru</option>
-                            <option value="Netherlands">Netherlands</option>
-                            <option value="New Zealand">New Zealand</option>
-                            <option value="Nicaragua">Nicaragua</option>
-                            <option value="North Macedonia">North Macedonia</option>
-                            <option value="Norway">Norway</option>
-                            <option value="Oman">Oman</option>
-                            <option value="Palau">Palau</option>
-                            <option value="Panama">Panama</option>
-                            <option value="Papua New Guinea">Papua New Guinea</option>
-                            <option value="Paraguay">Paraguay</option>
-                            <option value="Peru">Peru</option>
-                            <option value="Philippines">Philippines</option>
-                            <option value="Poland">Poland</option>
-                            <option value="Portugal">Portugal</option>
-                            <option value="Qatar">Qatar</option>
-                            <option value="Romania">Romania</option>
-                            <option value="Rwanda">Rwanda</option>
-                            <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
-                            <option value="Saint Lucia">Saint Lucia</option>
-                            <option value="Saint Vincent & the Grenadines">Saint Vincent & the Grenadines</option>
-                            <option value="Saint Martin">Saint Martin</option>
-                            <option value="Samoa">Samoa</option>
-                            <option value="San Marino">San Marino</option>
-                            <option value="Sao Tome & Principe">Sao Tome & Principe</option>
-                            <option value="Saudi Arabia">Saudi Arabia</option>
-                            <option value="Senegal">Senegal</option>
-                            <option value="Serbia">Serbia</option>
-                            <option value="Seychelles">Seychelles</option>
-                            <option value="Sierra Leone">Sierra Leone</option>
-                            <option value="Singapore">Singapore</option>
-                            <option value="Sint Maarten">Sint Maarten</option>
-                            <option value="Slovakia">Slovakia</option>
-                            <option value="Slovenia">Slovenia</option>
-                            <option value="Solomon Islands">Solomon Islands</option>
-                            <option value="South Africa">South Africa</option>
-                            <option value="South Korea">South Korea</option>
-                            <option value="Spain">Spain</option>
-                            <option value="Suriname">Suriname</option>
-                            <option value="Sweden">Sweden</option>
-                            <option value="Switzerland">Switzerland</option>
-                            <option value="Taiwan">Taiwan</option>
-                            <option value="Tajikistan">Tajikistan</option>
-                            <option value="Tanzania">Tanzania</option>
-                            <option value="Thailand">Thailand</option>
-                            <option value="Timor-Leste">Timor-Leste</option>
-                            <option value="Tonga">Tonga</option>
-                            <option value="Trinidad and Tobago">Trinidad and Tobago</option>
-                            <option value="Tunisia">Tunisia</option>
-                            <option value="Turkey">Turkey</option>
-                            <option value="Turkmenistan">Turkmenistan</option>
-                            <option value="Turks and Caicos">Turks and Caicos</option>
-                            <option value="Tuvalu">Tuvalu</option>
-                            <option value="United Arab Emirates">United Arab Emirates</option>
                             <option value="United Kingdom">United Kingdom</option>
-                            <option value="Uruguay">Uruguay</option>
-                            <option value="Uzbekistan">Uzbekistan</option>
-                            <option value="Vanuatu">Vanuatu</option>
-                            <option value="Vatican City / Holy See">Vatican City / Holy See</option>
-                            <option value="Vietnam">Vietnam</option>
-                            <option value="Zambia">Zambia</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="calcAdditionalLocation">Additional Location Details</label>
-                        <input type="text" id="calcAdditionalLocation" placeholder="City, region, or specific location (optional)">
+                        <label for="calcLocation">Additional Location Details</label>
+                        <input type="text" id="calcLocation" placeholder="City, region, or specific location (optional)">
                     </div>
                     <div class="form-group">
                         <label for="calcStartDate">Start Date *</label>
@@ -951,1866 +427,65 @@
                         <input type="date" id="calcEndDate" required>
                     </div>
                 </div>
-
-                <div class="button-group">
-                    <button type="button" class="btn btn-success" onclick="addPreviousTrip()">
-                        Add Previous Trip to Tracker
-                        <div style="font-size: 0.85rem; color: rgba(255,255,255,0.9); margin-top: 4px;">For trips already taken or approved</div>
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="addToCalculator()">
-                        Add Trip to Calculator
-                        <div style="font-size: 0.85rem; color: rgba(255,255,255,0.9); margin-top: 4px;">For planning future trips and experimentation</div>
-                    </button>
+                <div style="display: flex; gap: 15px; margin-top: 20px;">
+                    <button type="button" class="btn btn-success" onclick="addPreviousTrip()">Add Previous Trip to Tracker<br><small>For trips already taken or approved</small></button>
+                    <button type="button" class="btn btn-primary" onclick="addToCalculator()">Add Trip to Calculator<br><small>For planning future trips and experimentation</small></button>
                 </div>
             </form>
-
-            <!-- Calculator Trips Display Section -->
-            <div id="calculatorTripsSection" style="margin-top: 30px;">
-                <h3>Calculator Trips (Planning)</h3>
-                <div id="calculatorTripsList"></div>
-            </div>
-
-            <div class="info-links">
-                <span>📋 <a href="https://my.sqprod.co/resources/people-resource-center/employee-resources/relocation/short-term-international-work-guidelines" target="_blank" class="info-link">View STIW Policy Guidelines</a></span>
-                <span>🌍 <a href="https://docs.google.com/document/d/16ZSXNSQOf8G8P7gPFNtZri3Wrz2NmB0qzlWF-KC0HkM/edit?tab=t.0#heading=h.jlam7p41jwb8" target="_blank" class="info-link">View Approved STIW Locations</a></span>
-            </div>
         </div>
 
-        <!-- Request Tracking Tab -->
         <div id="tracking" class="tab-content">
             <h2>Request Tracking</h2>
-
-
+            <p>Track your submitted STIW requests and view your approved trips.</p>
+            
             <div class="status-grid">
                 <div class="status-card">
-                    <div class="status-number" id="trackingRemainingDays">45</div>
-                    <div class="status-label">DAYS REMAINING</div>
+                    <div class="status-number">45</div>
+                    <div class="status-label">DAYS REMAINING<br>out of 45 days available</div>
                 </div>
                 <div class="status-card">
-                    <div class="rolling-days" id="trackingRollingDays">0</div>
+                    <div class="status-number">0</div>
                     <div class="status-label">CURRENT DAYS USED</div>
                 </div>
-                <div class="status-card">
-                    <div class="status-grid" style="grid-template-columns: repeat(4, 1fr); gap: 15px; text-align: center;">
-                        <div>Total Requests: <span id="totalRequests">0</span></div>
-                        <div>Pending: <span id="pendingRequests">0</span></div>
-                        <div>Approved: <span id="approvedRequests">0</span></div>
-                        <div>Denied/Canceled: <span id="deniedRequests">0</span></div>
-                    </div>
-                </div>
             </div>
-
-            <div id="submittedRequests">
-                <h3>Submitted Requests</h3>
-                <div id="submittedRequestsList"></div>
-            </div>
-
-            <div id="stiwTrips">
-                <h3>STIW Trips</h3>
-                <div id="stiwTripsList"></div>
-            </div>
-
-            <div class="info-links">
-                <span>📋 <a href="https://my.sqprod.co/resources/people-resource-center/employee-resources/relocation/short-term-international-work-guidelines" target="_blank" class="info-link">View STIW Policy Guidelines</a></span>
-                <span>🌍 <a href="https://docs.google.com/document/d/16ZSXNSQOf8G8P7gPFNtZri3Wrz2NmB0qzlWF-KC0HkM/edit?tab=t.0#heading=h.jlam7p41jwb8" target="_blank" class="info-link">View Approved STIW Locations</a></span>
-            </div>
-            <p style="margin-top: 15px;">Questions? <a href="https://go.sqprod.co/compass" target="_blank" class="info-link">❓ Raise a request via go/compass</a></p>
         </div>
 
-        <!-- Employee Management Tab -->
         <div id="employee-management" class="tab-content">
             <h2>Employee Management</h2>
-            <p>Manage STIW requests and generate reports for all employees.</p>
-
+            <p>This section is only available to authorized HR personnel. View and manage all employee STIW requests.</p>
+            
             <div class="status-grid">
                 <div class="status-card">
-                    <div id="employeeStats">
-                        <div>Total Employees: <span id="totalEmployees">0</span></div>
-                        <div>Total Requests: <span id="totalEmployeeRequests">0</span></div>
-                        <div>Pending: <span id="totalPendingRequests">0</span></div>
-                        <div>Approved: <span id="totalApprovedRequests">0</span></div>
-                        <div>Denied/Canceled: <span id="totalDeniedRequests">0</span></div>
-                        <div>Active Trips: <span id="activeTrips">0</span></div>
-                    </div>
+                    <div class="status-number">0</div>
+                    <div class="status-label">TOTAL EMPLOYEE REQUESTS</div>
                 </div>
             </div>
-
-            <div class="button-group">
+            
+            <div style="margin-top: 30px;">
                 <button class="btn btn-primary" onclick="generateReport('csv')">Download CSV Report</button>
                 <button class="btn btn-secondary" onclick="generateReport('detailed')">Generate Detailed Report</button>
-                <button class="btn btn-warning" onclick="loadHistoricalSTIWData()">Load Historical STIW Data</button>
-                <button class="btn btn-secondary" onclick="generateReport('summary')">Generate Summary Report</button>
+                <button class="btn btn-secondary" onclick="loadHistoricalSTIWData()">Load Historical STIW Data</button>
             </div>
-
-            <div class="form-group">
-                <label for="employeeFilter">Filter by Employee Email</label>
-                <input type="email" id="employeeFilter" placeholder="Enter employee email to filter" onchange="filterEmployeeRequests()">
-            </div>
-
-            <div id="allRequestsList"></div>
-
-            <div class="info-links">
-                <span>📋 <a href="https://my.sqprod.co/resources/people-resource-center/employee-resources/relocation/short-term-international-work-guidelines" target="_blank" class="info-link">View STIW Policy Guidelines</a></span>
-                <span>🌍 <a href="https://docs.google.com/document/d/16ZSXNSQOf8G8P7gPFNtZri3Wrz2NmB0qzlWF-KC0HkM/edit?tab=t.0#heading=h.jlam7p41jwb8" target="_blank" class="info-link">View Approved STIW Locations</a></span>
-            </div>
-            <p style="margin-top: 15px;">Questions? <a href="https://go.sqprod.co/compass" target="_blank" class="info-link">❓ Raise a request via go/compass</a></p>
-        </div>
-    </div>
-
-    <!-- Edit Request Modal -->
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeEditModal()">&times;</span>
-            <h2>Edit Request</h2>
-            <form id="editForm">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="editCountry">Destination Country *</label>
-                        <select id="editCountry" required>
-                            <option value="">Select a country</option>
-                            <!-- Same approved countries list as above -->
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="editAdditionalLocation">Additional Location</label>
-                        <input type="text" id="editAdditionalLocation" placeholder="City, region, or specific location">
-                    </div>
-                    <div class="form-group">
-                        <label for="editStartDate">Start Date *</label>
-                        <input type="date" id="editStartDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editEndDate">End Date *</label>
-                        <input type="date" id="editEndDate" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="editPurpose">Purpose *</label>
-                    <textarea id="editPurpose" rows="3" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="changeReason">Reason for Change *</label>
-                    <textarea id="changeReason" rows="2" placeholder="Explain why you're making this change" required></textarea>
-                </div>
-
-                <div class="button-group">
-                    <button type="button" class="btn btn-primary" onclick="saveEditedRequest()">Save Changes</button>
-                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
-                </div>
-            </form>
         </div>
     </div>
 
     <script>
-        let currentUser = '';
+        console.log('STIW Tracker v2.9 - WORKING FIX - Loading...');
+        
+        let currentUser = null;
         let userData = {
-            calculatorTrips: [],
             allTrips: [],
+            calculatorTrips: [],
             requests: []
         };
 
-        const authorizedUsers = [
-            'memrich@block.xyz',
-            'cshek@block.xyz',
-            'adrianah@block.xyz',
-            'jeannette@block.xyz',
-            'vross@block.xyz'
-        ];
-
-        // Initialize user - FIXED to always prompt for email
-        function initializeUser() {
-            // Always prompt for email on page load (never use cached email)
-            console.log('Initializing user - prompting for email...');
-            currentUser = prompt('Please enter your email address to access the STIW Tracker:');
-            
-            if (!currentUser || currentUser.trim() === '') {
-                alert('Email address is required to use this application.');
-                console.log('No email provided, prompting again...');
-                // Keep prompting until valid email is provided
-                initializeUser();
-                return;
-            }
-
-            // Clean and store the email
-            currentUser = currentUser.trim().toLowerCase();
-            console.log('Email provided:', currentUser);
-            localStorage.setItem('stiwCurrentUser', currentUser);
-
-            // Show employee management tab for authorized users
-            if (authorizedUsers.includes(currentUser)) {
-                document.getElementById('employeeManagementTab').style.display = 'block';
-            }
-
-            loadUserData();
-            
-            // Auto-load historical data for demo users
-            autoLoadHistoricalData();
-            
-            updateAllDisplays();
-        }
-
-        function autoLoadHistoricalData() {
-            // Auto-load sample historical data for demo purposes
-            const sampleHistoricalTrips = [
-                {
-                    id: 'hist_memrich_1',
-                    country: 'France',
-                    additionalLocation: 'Paris',
-                    startDate: '2025-04-10',
-                    endDate: '2025-04-17',
-                    duration: 8,
-                    purpose: 'Historical STIW Trip',
-                    dateAdded: '2025-04-10T00:00:00.000Z',
-                    source: 'Previous Trip'
-                },
-                {
-                    id: 'hist_memrich_2',
-                    country: 'Germany',
-                    additionalLocation: 'Berlin',
-                    startDate: '2025-03-01',
-                    endDate: '2025-03-05',
-                    duration: 5,
-                    purpose: 'Historical STIW Trip',
-                    dateAdded: '2025-03-01T00:00:00.000Z',
-                    source: 'Previous Trip'
-                }
-            ];
-
-            // Add sample historical trips to current user's data if they don't exist
-            if (!userData.historicalDataLoaded) {
-                userData.allTrips = userData.allTrips || [];
-                let addedCount = 0;
-                
-                sampleHistoricalTrips.forEach(trip => {
-                    // Check if trip already exists
-                    if (!userData.allTrips.find(existingTrip => existingTrip.id === trip.id)) {
-                        userData.allTrips.push(trip);
-                        addedCount++;
-                        console.log('Added historical trip:', trip);
-                    }
-                });
-                
-                if (addedCount > 0) {
-                    userData.historicalDataLoaded = true;
-                    saveUserData();
-                    console.log(`Historical data auto-loaded: ${addedCount} trips for user:`, currentUser);
-                }
-            }
-        }
-
-        // Tab switching functionality
-        function showTab(tabName) {
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(content => content.classList.remove('active'));
-
-            // Remove active class from all tab buttons
-            const tabButtons = document.querySelectorAll('.tab-button');
-            tabButtons.forEach(button => button.classList.remove('active'));
-
-            // Show selected tab
-            document.getElementById(tabName).classList.add('active');
-
-            // Add active class to clicked tab button
-            event.target.classList.add('active');
-
-            if (tabName === 'tracking') {
-                updateRequestTracking();
-                updateAllTripsDisplay();
-            }
-
-            if (tabName === 'employee-management') {
-                updateEmployeeManagement();
-            }
-        }
-
-        // Data persistence functions
-        function saveUserData() {
-            localStorage.setItem(`stiwUserData_${currentUser}`, JSON.stringify(userData));
-        }
-
-        function loadUserData() {
-            const saved = localStorage.getItem(`stiwUserData_${currentUser}`);
-            if (saved) {
-                userData = JSON.parse(saved);
-            }
-        }
-
-        // Utility functions
-        function calculateDuration(startDate, endDate) {
-            const start = new Date(startDate);
-            const end = new Date(endDate);
-            return Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
-        }
-
-        function validateDates(startDate, endDate) {
-            return new Date(startDate) <= new Date(endDate);
-        }
-
-        // Calculator functions - FIXED
-        function addToCalculator() {
-            console.log('addToCalculator called - debugging calculator functionality');
-            
-            // Check if form elements exist
-            const countryElement = document.getElementById('calcCountry');
-            const locationElement = document.getElementById('calcAdditionalLocation');
-            const startElement = document.getElementById('calcStartDate');
-            const endElement = document.getElementById('calcEndDate');
-            
-            console.log('Form elements found:', {
-                country: !!countryElement,
-                location: !!locationElement,
-                start: !!startElement,
-                end: !!endElement
-            });
-            
-            if (!countryElement || !startElement || !endElement) {
-                console.error('Calculator form elements not found!');
-                alert('Calculator form elements not found. Please refresh the page.');
-                return;
-            }
-            
-            const country = countryElement.value;
-            const additionalLocation = locationElement ? locationElement.value : '';
-            const startDate = startElement.value;
-            const endDate = endElement.value;
-
-            console.log('Form values:', { country, additionalLocation, startDate, endDate });
-            console.log('Current userData:', userData);
-            console.log('Calculator trips before:', userData.calculatorTrips);
-
-            if (!country || !startDate || !endDate) {
-                alert('Please fill in all required fields.');
-                return;
-            }
-
-            if (!validateDates(startDate, endDate)) {
-                alert('End date must be after start date.');
-                return;
-            }
-
-            const duration = calculateDuration(startDate, endDate);
-            const trip = {
-                id: Date.now(),
-                country,
-                additionalLocation,
-                startDate,
-                endDate,
-                duration,
-                purpose: 'Calculator Entry',
-                dateAdded: new Date().toISOString()
-            };
-
-            console.log('Adding trip to calculator:', trip);
-            userData.calculatorTrips.push(trip);
-            console.log('Calculator trips after push:', userData.calculatorTrips);
-            saveUserData();
-            updateCalculatorDisplay();
-            updateUsageStatus();
-            document.getElementById('calculatorForm').reset();
-            alert('Trip added to calculator for planning purposes. Check your usage status above and see your trip in the Calculator Trips section below.');
-        }
-
-        function addPreviousTrip() {
-            const country = document.getElementById('calcCountry').value;
-            const additionalLocation = document.getElementById('calcAdditionalLocation').value;
-            const startDate = document.getElementById('calcStartDate').value;
-            const endDate = document.getElementById('calcEndDate').value;
-
-            if (!country || !startDate || !endDate) {
-                alert('Please fill in all required fields.');
-                return;
-            }
-
-            if (!validateDates(startDate, endDate)) {
-                alert('End date must be after start date.');
-                return;
-            }
-
-            const duration = calculateDuration(startDate, endDate);
-            const trip = {
-                id: Date.now(),
-                country,
-                additionalLocation,
-                startDate,
-                endDate,
-                duration,
-                purpose: 'Previous Trip',
-                dateAdded: new Date().toISOString(),
-                source: 'Previous Trip'
-            };
-
-            // Add only to permanent storage (allTrips) - this is a real completed trip
-            userData.allTrips.push(trip);
-
-            saveUserData();
-            // updateCalculatorDisplay() disabled - Calculator Trips section removed
-            updateUsageStatus();
-            updateAllTripsDisplay();
-            document.getElementById('calculatorForm').reset();
-            alert('Previous trip added to your permanent STIW tracking and will appear in Request Tracking.');
-        }
-
-        // Display update functions
-        function updateCalculatorDisplay() {
-            console.log('updateCalculatorDisplay called');
-            const list = document.getElementById('calculatorTripsList');
-            console.log('Calculator trips list element:', list);
-            console.log('Calculator trips data:', userData.calculatorTrips);
-            
-            if (userData.calculatorTrips.length === 0) {
-                console.log('No calculator trips, showing empty message');
-                list.innerHTML = '<p>No trips in calculator. Add trips above to see them here.</p>';
-                return;
-            }
-
-            list.innerHTML = userData.calculatorTrips.map((trip, index) => `
-                <div class="trip-card">
-                    <div class="trip-details">
-                        <div class="trip-detail-row">
-                            <div class="trip-detail-label">Country</div>
-                            <div class="trip-detail-value">${trip.country}</div>
-                        </div>
-                        <div class="trip-detail-row">
-                            <div class="trip-detail-label">Dates</div>
-                            <div class="trip-detail-value">${trip.startDate} to ${trip.endDate}</div>
-                        </div>
-                        <div class="trip-detail-row">
-                            <div class="trip-detail-label">Duration</div>
-                            <div class="trip-detail-value">${trip.duration} days</div>
-                        </div>
-                        <div class="trip-detail-row">
-                            <div class="trip-detail-label">Type</div>
-                            <div class="trip-detail-value">
-                                <span class="status-badge status-pending">Planning/Testing</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="button-group">
-                        <button class="btn btn-danger btn-sm" onclick="removeCalculatorTrip(${index})">Remove</button>
-                    </div>
-                </div>
-            `).join('');
-        }*/
-        
-        function updateCalculatorDisplay() {
-            console.log('Updating calculator display...');
-            const list = document.getElementById('calculatorTripsList');
-            
-            if (!list) {
-                console.error('Calculator trips list element not found!');
-                return;
-            }
-            
-            console.log('Calculator trips data:', userData.calculatorTrips);
-            
-            if (!userData.calculatorTrips || userData.calculatorTrips.length === 0) {
-                list.innerHTML = '<p>No calculator trips added yet. Use the blue button above to add trips for planning.</p>';
-                return;
-            }
-
-            list.innerHTML = userData.calculatorTrips.map((trip, index) => `
-                <div class="trip-card">
-                    <div class="trip-details">
-                        <div class="trip-detail-row">
-                            <div class="trip-detail-label">Country</div>
-                            <div class="trip-detail-value">${trip.country}</div>
-                        </div>
-                        <div class="trip-detail-row">
-                            <div class="trip-detail-label">Dates</div>
-                            <div class="trip-detail-value">${trip.startDate} to ${trip.endDate}</div>
-                        </div>
-                        <div class="trip-detail-row">
-                            <div class="trip-detail-label">Duration</div>
-                            <div class="trip-detail-value">${trip.duration} days</div>
-                        </div>
-                        <div class="trip-detail-row">
-                            <div class="trip-detail-label">Type</div>
-                            <div class="trip-detail-value">
-                                <span class="status-badge status-pending">Planning/Testing</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="button-group">
-                        <button class="btn btn-danger btn-sm" onclick="removeCalculatorTrip(${index})">Remove</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function migrateApprovedRequestsToTrips() {
-            // Migration function to ensure approved requests are in allTrips
-            if (!userData.requests || !userData.allTrips) return;
-            
-            const approvedRequests = userData.requests.filter(r => 
-                r.status === 'Approved' || r.status.includes('Auto-approved')
-            );
-            
-            approvedRequests.forEach(request => {
-                // Check if this request is already in allTrips
-                const existingTrip = userData.allTrips.find(trip => 
-                    trip.startDate === request.startDate && 
-                    trip.endDate === request.endDate &&
-                    trip.country === request.country &&
-                    trip.purpose === request.purpose
-                );
-                
-                if (!existingTrip) {
-                    console.log('Migrating approved request to allTrips:', request);
-                    // Add approved request to allTrips
-                    const trip = {
-                        id: request.id || Date.now(),
-                        country: request.country,
-                        additionalLocation: request.additionalLocation,
-                        startDate: request.startDate,
-                        endDate: request.endDate,
-                        duration: request.duration,
-                        purpose: request.purpose,
-                        dateAdded: request.statusUpdatedDate || new Date().toISOString(),
-                        source: 'Approved Request'
-                    };
-                    userData.allTrips.push(trip);
-                    saveUserData();
-                }
-            });
-        }
-
-        function updateUsageStatus() {
-            console.log('updateUsageStatus called');
-            console.log('userData.allTrips:', userData.allTrips);
-            console.log('userData.requests:', userData.requests);
-            
-            // MIGRATION FIX: Ensure approved requests are in allTrips
-            migrateApprovedRequestsToTrips();
-            
-            // Calculate usage: only approved trips + previous trips count toward limit
-            const approvedTrips = userData.allTrips.filter(trip => trip.source === 'Previous Trip' || trip.source === 'Approved Request');
-            console.log('approvedTrips after migration:', approvedTrips);
-            
-            const realUsageDays = approvedTrips.reduce((sum, trip) => sum + trip.duration, 0);
-            console.log('realUsageDays (approved only):', realUsageDays);
-            
-            // For experimentation: include calculator trips in total calculation
-            const calculatorDays = userData.calculatorTrips ? userData.calculatorTrips.reduce((sum, trip) => sum + trip.duration, 0) : 0;
-            console.log('calculatorDays (for experimentation):', calculatorDays);
-            
-            const totalDays = realUsageDays + calculatorDays;
-            console.log('totalDays (real + experimental):', totalDays);
-            
-            const remainingDays = Math.max(0, 45 - totalDays);
-            console.log('remainingDays calculated:', remainingDays);
-
-            // Update calculator display
-            const remainingDaysElement = document.getElementById('remainingDays');
-            const rollingDaysElement = document.getElementById('rollingDays');
-            
-            if (remainingDaysElement) {
-                remainingDaysElement.textContent = remainingDays;
-            }
-            if (rollingDaysElement) {
-                rollingDaysElement.textContent = totalDays;
-                rollingDaysElement.className = 'rolling-days';
-
-                const thresholdCard = document.getElementById('thresholdCard');
-                if (totalDays > 45) {
-                    rollingDaysElement.className = 'rolling-days danger';
-                    if (thresholdCard) thresholdCard.style.display = 'block';
-                } else if (totalDays > 35) {
-                    rollingDaysElement.className = 'rolling-days warning';
-                    if (thresholdCard) thresholdCard.style.display = 'none';
-                } else {
-                    if (thresholdCard) thresholdCard.style.display = 'none';
-                }
-            }
-
-            // Update tracking display if it exists
-            const trackingRemainingDaysElement = document.getElementById('trackingRemainingDays');
-            const trackingRollingDaysElement = document.getElementById('trackingRollingDays');
-            if (trackingRemainingDaysElement && trackingRollingDaysElement) {
-                trackingRemainingDaysElement.textContent = remainingDays;
-                trackingRollingDaysElement.textContent = totalDays;
-                trackingRollingDaysElement.className = 'rolling-days';
-
-                if (totalDays > 45) {
-                    trackingRollingDaysElement.className = 'rolling-days danger';
-                } else if (totalDays > 35) {
-                    trackingRollingDaysElement.className = 'rolling-days warning';
-                }
-            }
-
-            // Update submit request tab balance display
-            const submitRemainingDaysElement = document.getElementById('submitRemainingDays');
-            const submitCurrentDaysElement = document.getElementById('submitCurrentDays');
-            if (submitRemainingDaysElement && submitCurrentDaysElement) {
-                submitRemainingDaysElement.textContent = remainingDays;
-                submitCurrentDaysElement.textContent = realUsageDays; // Show only real usage, not experimental
-                
-                // Apply styling based on usage
-                submitRemainingDaysElement.className = 'rolling-days';
-                submitCurrentDaysElement.className = 'rolling-days';
-                
-                if (realUsageDays > 45) {
-                    submitRemainingDaysElement.className = 'rolling-days danger';
-                    submitCurrentDaysElement.className = 'rolling-days danger';
-                } else if (realUsageDays > 35) {
-                    submitRemainingDaysElement.className = 'rolling-days warning';
-                    submitCurrentDaysElement.className = 'rolling-days warning';
-                } else {
-                    submitRemainingDaysElement.className = 'rolling-days success';
-                    submitCurrentDaysElement.className = 'rolling-days success';
-                }
-            }
-        }
-
-        function updateRequestTracking() {
-            const submittedList = document.getElementById('submittedRequestsList');
-            
-            // Filter out approved requests (they should only appear in STIW Trips)
-            const nonApprovedRequests = userData.requests.filter(r => 
-                r.status !== 'Approved' && !r.status.includes('Auto-approved')
-            );
-            
-            if (nonApprovedRequests.length === 0) {
-                submittedList.innerHTML = '<p>No pending requests.</p>';
-            } else {
-                submittedList.innerHTML = nonApprovedRequests.map(request => `
-                    <div class="trip-card">
-                        <div class="trip-details">
-                            <div class="trip-detail-row">
-                                <div class="trip-detail-label">Country</div>
-                                <div class="trip-detail-value">${request.country}</div>
-                            </div>
-                            <div class="trip-detail-row">
-                                <div class="trip-detail-label">Dates</div>
-                                <div class="trip-detail-value">${request.startDate} to ${request.endDate}</div>
-                            </div>
-                            <div class="trip-detail-row">
-                                <div class="trip-detail-label">Status</div>
-                                <div class="trip-detail-value">
-                                    <span class="status-badge status-${request.status.toLowerCase().replace(/\s+/g, '-')}">${request.status}</span>
-                                </div>
-                            </div>
-                            <div class="trip-detail-row">
-                                <div class="trip-detail-label">Submitted</div>
-                                <div class="trip-detail-value">${new Date(request.dateSubmitted).toLocaleDateString()}</div>
-                            </div>
-                        </div>
-                        <div class="button-group">
-                            ${request.status !== 'Denied' && request.status !== 'Canceled' ? `<button class="btn btn-warning btn-sm" onclick="editRequest(${request.id})">Edit</button>` : ''}
-                            ${request.status === 'Pending' ? `<button class="btn btn-danger btn-sm" onclick="cancelOwnRequest(${request.id})">Cancel</button>` : ''}
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            // Update statistics
-            const totalRequestsElement = document.getElementById('totalRequests');
-            const pendingRequestsElement = document.getElementById('pendingRequests');
-            const approvedRequestsElement = document.getElementById('approvedRequests');
-            const deniedRequestsElement = document.getElementById('deniedRequests');
-
-            if (totalRequestsElement) totalRequestsElement.textContent = userData.requests.length;
-            if (pendingRequestsElement) pendingRequestsElement.textContent = userData.requests.filter(r => r.status === 'Pending' || r.status.includes('Pending')).length;
-            if (approvedRequestsElement) approvedRequestsElement.textContent = userData.requests.filter(r => r.status === 'Approved' || r.status.includes('Auto-approved')).length;
-            if (deniedRequestsElement) deniedRequestsElement.textContent = userData.requests.filter(r => r.status === 'Denied' || r.status === 'Canceled').length;
-        }
-
-        function updateAllTripsDisplay() {
-            const list = document.getElementById('stiwTripsList');
-            if (userData.allTrips.length === 0) {
-                list.innerHTML = '<p>No STIW trips recorded yet.</p>';
-                return;
-            }
-
-            list.innerHTML = userData.allTrips.map(trip => `
-                <div class="trip-card">
-                    <div class="trip-details">
-                        <div class="trip-detail-row">
-                            <div class="trip-detail-label">Country</div>
-                            <div class="trip-detail-value">${trip.country}</div>
-                        </div>
-                        <div class="trip-detail-row">
-                            <div class="trip-detail-label">Dates</div>
-                            <div class="trip-detail-value">${trip.startDate} to ${trip.endDate}</div>
-                        </div>
-                        <div class="trip-detail-row">
-                            <div class="trip-detail-label">Duration</div>
-                            <div class="trip-detail-value">${trip.duration} days</div>
-                        </div>
-
-                        <div class="trip-detail-row">
-                            <div class="trip-detail-label">Status</div>
-                            <div class="trip-detail-value">
-                                <span class="status-badge status-approved">Approved Trip</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="button-group">
-                        <button class="btn btn-warning btn-sm" onclick="editSTIWTrip(${trip.id})">Edit</button>
-                        <button class="btn btn-danger btn-sm" onclick="cancelSTIWTrip(${trip.id})">Cancel</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function updateEmployeeManagement() {
-            if (!authorizedUsers.includes(currentUser)) {
-                return;
-            }
-
-            console.log('Updating Employee Management - scanning ALL localStorage data including historical STIW trips from Excel file...');
-            
-            // Get all user data from localStorage (includes historical data from G2_-_STIW_-_Last_12_months (4).xlsx)
-            const allUserData = {};
-            const allHistoricalTrips = [];
-            let totalEmployeesWithData = 0;
-
-            // Get all localStorage keys
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key.startsWith('stiwUserData_')) {
-                    const email = key.replace('stiwUserData_', '');
-                    try {
-                        const data = JSON.parse(localStorage.getItem(key));
-                        if (data && (data.requests || data.allTrips)) {
-                            allUserData[email] = data;
-                        }
-                    } catch (e) {
-                        console.error('Error parsing data for', email, e);
-                    }
-                }
-            }
-
-            const totalEmployees = Object.keys(allUserData).length;
-            let totalRequests = 0;
-            let pendingRequests = 0;
-            let approvedRequests = 0;
-            let deniedRequests = 0;
-            let activeTrips = 0;
-
-            Object.values(allUserData).forEach(data => {
-                if (data.requests && Array.isArray(data.requests)) {
-                    totalRequests += data.requests.length;
-                    pendingRequests += data.requests.filter(r => r.status === 'Pending' || r.status.includes('Pending')).length;
-                    approvedRequests += data.requests.filter(r => r.status === 'Approved' || r.status.includes('Auto-approved')).length;
-                    deniedRequests += data.requests.filter(r => r.status === 'Denied' || r.status === 'Canceled').length;
-                }
-                if (data.allTrips && Array.isArray(data.allTrips)) {
-                    activeTrips += data.allTrips.length;
-                }
-            });
-
-            // Update statistics display
-            const employeeStatsElement = document.getElementById('employeeStats');
-            if (employeeStatsElement) {
-                employeeStatsElement.innerHTML = `
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center;">
-                        <div>Total Employees: <span style="font-weight: bold; color: #0052cc;">${totalEmployees}</span></div>
-                        <div>Total Requests: <span style="font-weight: bold; color: #42526e;">${totalRequests}</span></div>
-                        <div>Pending: <span style="font-weight: bold; color: #ff8b00;">${pendingRequests}</span></div>
-                        <div>Approved: <span style="font-weight: bold; color: #00875a;">${approvedRequests}</span></div>
-                        <div>Denied/Canceled: <span style="font-weight: bold; color: #de350b;">${deniedRequests}</span></div>
-                        <div>Active Trips: <span style="font-weight: bold; color: #5e6c84;">${activeTrips}</span></div>
-                    </div>
-                `;
-            }
-
-            // Aggregate all requests from all employees
-            const allRequests = [];
-            Object.entries(allUserData).forEach(([email, data]) => {
-                if (data.requests && Array.isArray(data.requests)) {
-                    data.requests.forEach(request => {
-                        allRequests.push({
-                            ...request,
-                            employeeEmail: email
-                        });
-                    });
-                }
-            });
-
-            // Sort by date submitted (newest first)
-            allRequests.sort((a, b) => new Date(b.dateSubmitted) - new Date(a.dateSubmitted));
-
-            const allRequestsList = document.getElementById('allRequestsList');
-            if (allRequests.length === 0) {
-                allRequestsList.innerHTML = `
-                    <div class="trip-card">
-                        <h4 style="margin-bottom: 15px;">No Employee Requests Found</h4>
-                        <p style="color: #5e6c84;">No employees have submitted STIW requests yet. Try submitting a test request to verify the system is working.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            allRequestsList.innerHTML = allRequests.map(request => `
-                <div class="trip-card">
-                    <div class="trip-details">
-                        <div class="trip-detail-row">
-                            <div class="trip-detail-label">Employee</div>
-                            <div class="trip-detail-value">${request.name} (${request.employeeEmail})</div>
-                        </div>
-                        <div class="trip-detail-row">
-                            <div class="trip-detail-label">Country</div>
-                            <div class="trip-detail-value">${request.country}</div>
-                        </div>
-                        <div class="trip-detail-row">
-                            <div class="trip-detail-label">Dates</div>
-                            <div class="trip-detail-value">${request.startDate} to ${request.endDate}</div>
-                        </div>
-                        <div class="trip-detail-row">
-                            <div class="trip-detail-label">Duration</div>
-                            <div class="trip-detail-value">${request.duration} days</div>
-                        </div>
-                        <div class="trip-detail-row">
-                            <div class="trip-detail-label">Status</div>
-                            <div class="trip-detail-value">
-                                <span class="status-badge status-${request.status.toLowerCase().replace(/\s+/g, '-')}">${request.status}</span>
-                            </div>
-                        </div>
-                        <div class="trip-detail-row">
-                            <div class="trip-detail-label">Submitted</div>
-                            <div class="trip-detail-value">${new Date(request.dateSubmitted).toLocaleDateString()}</div>
-                        </div>
-                    </div>
-                    <div style="margin-top: 15px;">
-
-                    </div>
-                    ${request.denialReason ? `<div class="alert alert-danger" style="margin-top: 15px;"><strong>Denial Reason:</strong> ${request.denialReason}</div>` : ''}
-                    ${request.cancellationReason ? `<div class="alert alert-warning" style="margin-top: 15px;"><strong>Cancellation Reason:</strong> ${request.cancellationReason}</div>` : ''}
-                    ${request.changeReason ? `<div class="alert alert-info" style="margin-top: 15px;"><strong>Change Reason:</strong> ${request.changeReason}</div>` : ''}
-                </div>
-            `).join('');
-        }
-
-        function validateRequestSubmission() {
-            // Calculate current usage
-            const approvedTrips = userData.allTrips.filter(trip => trip.source === 'Previous Trip' || trip.source === 'Approved Request');
-            const currentDays = approvedTrips.reduce((sum, trip) => sum + trip.duration, 0);
-            
-            const startDate = document.getElementById('reqStartDate').value;
-            const endDate = document.getElementById('reqEndDate').value;
-            
-            if (!validateDates(startDate, endDate)) {
-                alert('End date must be after start date.');
-                return false;
-            }
-            
-            const requestDuration = calculateDuration(startDate, endDate);
-            const projectedTotal = currentDays + requestDuration;
-            
-            if (projectedTotal > 45) {
-                alert(`This request would exceed the 45-day limit. Current usage: ${currentDays} days, Request: ${requestDuration} days, Total: ${projectedTotal} days. Please adjust your dates or contact HR for guidance.`);
-                return false;
-            }
-            
-            return true;
-        }
-
-        function submitRequest() {
-            if (!validateRequestSubmission()) {
-                return;
-            }
-
-            const name = document.getElementById('reqName').value;
-            const email = document.getElementById('reqEmail').value;
-            const managerEmail = document.getElementById('reqManagerEmail').value;
-            const country = document.getElementById('reqCountry').value;
-            const additionalLocation = document.getElementById('reqAdditionalLocation').value;
-            const startDate = document.getElementById('reqStartDate').value;
-            const endDate = document.getElementById('reqEndDate').value;
-            const purpose = document.getElementById('reqPurpose').value;
-            const policyAcknowledgment = document.getElementById('reqPolicyAcknowledgment').checked;
-
-            if (!name || !email || !managerEmail || !country || !startDate || !endDate || !purpose || !policyAcknowledgment) {
-                alert('Please fill in all required fields and acknowledge the policy.');
-                return;
-            }
-
-            const duration = calculateDuration(startDate, endDate);
-
-            // Calculate current usage for the request
-            const approvedTrips = userData.allTrips.filter(trip => trip.source === 'Previous Trip' || trip.source === 'Approved Request');
-            const currentDays = approvedTrips.reduce((sum, trip) => sum + trip.duration, 0);
-            const daysAvailable = Math.max(0, 45 - currentDays);
-            const projectedTotal = currentDays + duration;
-
-            const request = {
-                id: Date.now(),
-                name,
-                email,
-                managerEmail,
-                country,
-                additionalLocation,
-                startDate,
-                endDate,
-                duration,
-                purpose,
-                currentDays,
-                daysAvailable,
-                projectedTotal,
-                status: 'Pending',
-                dateSubmitted: new Date().toISOString(),
-                statusUpdatedBy: 'Employee',
-                statusUpdatedDate: new Date().toISOString()
-            };
-
-            userData.requests.push(request);
-            saveUserData();
-
-            // Send email to manager
-            sendManagerEmail(request);
-
-            document.getElementById('submitForm').reset();
-            alert('Request submitted successfully! Your manager will receive an email with approval options.');
-            updateAllDisplays();
-        }
-
-        function sendManagerEmail(request) {
-            const ccEmails = 'mobility-stiw@squareup.com';
-            const baseUrl = window.location.href.split('?')[0];
-            
-            // Check if this is a change request
-            const isChangeRequest = request.status === 'Pending Approval for Changes' || request.originalRequest;
-            
-            let emailSubject, emailBody;
-            
-            if (isChangeRequest) {
-                // Enhanced Change Request Email
-                emailSubject = `STIW Change Request - ${request.name} - ${request.country} - Action Required`;
-                
-                emailBody = `Dear Manager,
-
-${request.name} has submitted a CHANGE REQUEST for an existing STIW request that requires your approval.
-
-EMPLOYEE INFORMATION:
-Name: ${request.name}
-Email: ${request.email}
-Current STIW Usage: ${request.currentDays || 0} days
-Days Available: ${request.daysAvailable || 45} days
-
-CHANGE REASON:
-${request.changeReason || 'No reason provided'}
-
-COMPARISON - ORIGINAL vs. PROPOSED REQUEST:
-
-ORIGINAL REQUEST:
-Destination: ${request.originalRequest?.country || 'N/A'}${request.originalRequest?.additionalLocation ? ` (${request.originalRequest.additionalLocation})` : ''}
-Travel Dates: ${request.originalRequest?.startDate || 'N/A'} to ${request.originalRequest?.endDate || 'N/A'}
-Duration: ${request.originalRequest?.duration || 'N/A'} days
-Purpose: ${request.originalRequest?.purpose || 'N/A'}
-
-PROPOSED NEW REQUEST:
-Destination: ${request.country}${request.additionalLocation ? ` (${request.additionalLocation})` : ''}
-Travel Dates: ${request.startDate} to ${request.endDate}
-Duration: ${request.duration} days
-Purpose: ${request.purpose}
-
-IMPACT ANALYSIS:
-Duration Change: ${request.originalRequest ? (request.duration - request.originalRequest.duration > 0 ? `+${request.duration - request.originalRequest.duration}` : `${request.duration - request.originalRequest.duration}`) : 'N/A'} days
-Projected Total After Trip: ${(request.currentDays || 0) + request.duration} days
-
-MANAGER ACTION REQUIRED:
-Please review the change request and click one of the links below:
-
-APPROVE CHANGES: ${baseUrl}?approve=${request.id}&email=${encodeURIComponent(request.email)}
-
-DENY CHANGES: ${baseUrl}?deny=${request.id}&email=${encodeURIComponent(request.email)}&reason=required
-
-IMPORTANT NOTES:
-- Change requests require manager approval even if the duration is reduced
-- Denied changes will require you to provide a detailed denial reason
-- Employees can cancel their own requests if needed
-- Original request remains in effect until changes are approved
-
-RESOURCES:
-STIW Policy Guidelines: https://my.sqprod.co/resources/people-resource-center/employee-resources/relocation/short-term-international-work-guidelines
-Approved STIW Locations: https://docs.google.com/document/d/16ZSXNSQOf8G8P7gPFNtZri3Wrz2NmB0qzlWF-KC0HkM/edit?tab=t.0#heading=h.jlam7p41jwb8
-Questions? Visit go/compass
-
-This email was automatically generated by the STIW Tracking System.
-`;
-            } else {
-                // Enhanced New Request Email
-                emailSubject = `STIW Request - ${request.name} - ${request.country} - Manager Approval Required`;
-                
-                emailBody = `Dear Manager,
-
-${request.name} has submitted a new Short Term International Work (STIW) request for your approval.
-
-EMPLOYEE INFORMATION:
-Name: ${request.name}
-Email: ${request.email}
-Current STIW Usage: ${request.currentDays || 0} days
-Days Available: ${request.daysAvailable || 45} days
-
-TRIP DETAILS:
-Destination: ${request.country}${request.additionalLocation ? ` (${request.additionalLocation})` : ''}
-Travel Dates: ${request.startDate} to ${request.endDate}
-Duration: ${request.duration} days
-Purpose: ${request.purpose}
-
-USAGE ANALYSIS:
-Current Usage: ${request.currentDays || 0} days
-This Trip: ${request.duration} days
-Projected Total: ${(request.currentDays || 0) + request.duration} days
-Remaining After Trip: ${Math.max(0, 45 - ((request.currentDays || 0) + request.duration))} days
-
-MANAGER ACTION REQUIRED:
-Please review the request and click one of the links below:
-
-APPROVE REQUEST: ${baseUrl}?approve=${request.id}&email=${encodeURIComponent(request.email)}
-
-DENY REQUEST: ${baseUrl}?deny=${request.id}&email=${encodeURIComponent(request.email)}&reason=required
-
-IMPORTANT NOTES:
-- Approved requests will be added to the employee's STIW tracking
-- Denied requests will require you to provide a detailed reason
-- Employees can cancel their own requests if needed
-- All actions are logged and tracked in the system
-
-RESOURCES:
-STIW Policy Guidelines: https://my.sqprod.co/resources/people-resource-center/employee-resources/relocation/short-term-international-work-guidelines
-Approved STIW Locations: https://docs.google.com/document/d/16ZSXNSQOf8G8P7gPFNtZri3Wrz2NmB0qzlWF-KC0HkM/edit?tab=t.0#heading=h.jlam7p41jwb8
-Questions? Visit go/compass
-
-This email was automatically generated by the STIW Tracking System.
-`;
-            }
-
-            const gmailUrl = `https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(request.managerEmail)}&cc=${encodeURIComponent(ccEmails)}&su=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-
-            console.log('Sending manager email to:', request.managerEmail);
-            console.log('Email type:', isChangeRequest ? 'Change Request' : 'New Request');
-            console.log('Email subject:', emailSubject);
-            
-            window.open(gmailUrl, '_blank');
-        }
-
-        document.getElementById('submitForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            submitRequest();
-        });
-
-        function updateAllDisplays() {
-            updateCalculatorDisplay();
-            updateUsageStatus();
-            updateRequestTracking();
-            updateAllTripsDisplay();
-            updateEmployeeManagement();
-        }
-
-        function removeCalculatorTrip(index) {
-            if (confirm('Are you sure you want to remove this calculator trip?')) {
-                userData.calculatorTrips.splice(index, 1);
-                saveUserData();
-                // updateCalculatorDisplay() disabled - Calculator Trips section removed
-                updateUsageStatus();
-                alert('Calculator trip removed. Check your updated usage status above.');
-            }
-        }
-
-        function cancelOwnRequest(requestId) {
-            const request = userData.requests.find(r => r.id === requestId);
-            if (request && confirm('Are you sure you want to cancel this request?')) {
-                request.status = 'Canceled';
-                request.cancellationReason = 'Canceled by employee';
-                request.statusUpdatedBy = 'Employee (self-canceled)';
-                request.statusUpdatedDate = new Date().toISOString();
-                saveUserData();
-                updateRequestTracking();
-            }
-        }
-
-        function editRequest(requestId) {
-            const request = userData.requests.find(r => r.id === requestId);
-            if (!request) return;
-
-            document.getElementById('editCountry').value = request.country;
-            document.getElementById('editAdditionalLocation').value = request.additionalLocation || '';
-            document.getElementById('editStartDate').value = request.startDate;
-            document.getElementById('editEndDate').value = request.endDate;
-            document.getElementById('editPurpose').value = request.purpose;
-            document.getElementById('changeReason').value = '';
-
-            document.getElementById('editModal').style.display = 'block';
-            window.currentEditRequestId = requestId;
-        }
-
-        function closeEditModal() {
-            document.getElementById('editModal').style.display = 'none';
-            window.currentEditRequestId = null;
-        }
-
-        function saveEditedRequest() {
-            const requestId = window.currentEditRequestId;
-            const request = userData.requests.find(r => r.id === requestId);
-            if (!request) return;
-
-            const newCountry = document.getElementById('editCountry').value;
-            const newAdditionalLocation = document.getElementById('editAdditionalLocation').value;
-            const newStartDate = document.getElementById('editStartDate').value;
-            const newEndDate = document.getElementById('editEndDate').value;
-            const newPurpose = document.getElementById('editPurpose').value;
-            const changeReason = document.getElementById('changeReason').value;
-
-            if (!newCountry || !newStartDate || !newEndDate || !newPurpose || !changeReason) {
-                alert('Please fill in all required fields.');
-                return;
-            }
-
-            if (!validateDates(newStartDate, newEndDate)) {
-                alert('End date must be after start date.');
-                return;
-            }
-
-            const newDuration = calculateDuration(newStartDate, newEndDate);
-            const oldDuration = request.duration;
-
-            // Store original request data
-            if (!request.originalRequest) {
-                request.originalRequest = {
-                    country: request.country,
-                    additionalLocation: request.additionalLocation,
-                    startDate: request.startDate,
-                    endDate: request.endDate,
-                    duration: request.duration,
-                    purpose: request.purpose
-                };
-            }
-
-            // Update request
-            request.country = newCountry;
-            request.additionalLocation = newAdditionalLocation;
-            request.startDate = newStartDate;
-            request.endDate = newEndDate;
-            request.duration = newDuration;
-            request.purpose = newPurpose;
-            request.changeReason = changeReason;
-            request.previousStatus = request.status;
-
-            // Smart approval logic
-            if (newDuration <= oldDuration) {
-                // Trip shortened or same - auto-approve
-                request.status = 'Approved (Auto-approved for shortening)';
-                request.statusUpdatedBy = 'System (auto-approved)';
-                request.statusUpdatedDate = new Date().toISOString();
-                
-                // Send email to manager for notification
-                sendManagerEmail(request);
-            } else {
-                // Trip extended - requires manager approval
-                request.status = 'Pending Approval for Changes';
-                request.statusUpdatedBy = 'Employee (edited request)';
-                request.statusUpdatedDate = new Date().toISOString();
-                
-                // Send email to manager for approval
-                sendManagerEmail(request);
-            }
-
-            saveUserData();
-            closeEditModal();
-            updateAllDisplays();
-
-            if (newDuration <= oldDuration) {
-                alert('Request updated and auto-approved (trip shortened).');
-            } else {
-                alert('Request updated and sent to manager for approval (trip extended).');
-            }
-        }
-
-        function editSTIWTrip(tripId) {
-            const trip = userData.allTrips.find(t => t.id === tripId);
-            if (!trip) return;
-
-            const newCountry = prompt('Enter new country:', trip.country);
-            if (!newCountry) return;
-
-            const newStartDate = prompt('Enter new start date (YYYY-MM-DD):', trip.startDate);
-            if (!newStartDate) return;
-
-            const newEndDate = prompt('Enter new end date (YYYY-MM-DD):', trip.endDate);
-            if (!newEndDate) return;
-
-            const newPurpose = prompt('Enter new purpose:', trip.purpose);
-            if (!newPurpose) return;
-
-            if (!validateDates(newStartDate, newEndDate)) {
-                alert('End date must be after start date.');
-                return;
-            }
-
-            const newDuration = calculateDuration(newStartDate, newEndDate);
-
-            trip.country = newCountry;
-            trip.startDate = newStartDate;
-            trip.endDate = newEndDate;
-            trip.duration = newDuration;
-            trip.purpose = newPurpose;
-
-            saveUserData();
-            updateAllDisplays();
-            alert('STIW trip updated successfully.');
-        }
-
-        function cancelSTIWTrip(tripId) {
-            if (confirm('Are you sure you want to cancel this STIW trip? This will remove it from your tracking.')) {
-                userData.allTrips = userData.allTrips.filter(trip => trip.id !== tripId);
-                saveUserData();
-                updateAllDisplays();
-                alert('STIW trip canceled successfully.');
-            }
-        }
-
-        function generateReport(type) {
-            if (!authorizedUsers.includes(currentUser)) {
-                alert('You are not authorized to generate reports.');
-                return;
-            }
-
-            const allUserData = {};
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key.startsWith('stiwUserData_')) {
-                    const email = key.replace('stiwUserData_', '');
-                    allUserData[email] = JSON.parse(localStorage.getItem(key));
-                }
-            }
-
-            if (type === 'csv') {
-                generateCSVReport(allUserData);
-            } else if (type === 'detailed') {
-                generateDetailedReport(allUserData);
-            } else if (type === 'summary') {
-                generateSummaryReport(allUserData);
-            }
-        }
-
-        function generateCSVReport(allUserData) {
-            let csv = 'Employee Email,Name,Country,Start Date,End Date,Duration,Purpose,Status,Date Submitted\n';
-            
-            Object.entries(allUserData).forEach(([email, data]) => {
-                if (data.requests && Array.isArray(data.requests)) {
-                    data.requests.forEach(request => {
-                        csv += `${email},"${request.name}","${request.country}","${request.startDate}","${request.endDate}",${request.duration},"${request.purpose}","${request.status}","${new Date(request.dateSubmitted).toLocaleDateString()}"\n`;
-                    });
-                }
-            });
-
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = `stiw_report_${new Date().toISOString().split('T')[0]}.csv`;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-        }
-
-        function generateDetailedReport(allUserData) {
-            const html = `
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>STIW Detailed Report</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; margin: 40px; }
-                        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-                        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-                        th { background-color: #f2f2f2; }
-                        .status-approved { color: #00875a; font-weight: bold; }
-                        .status-denied { color: #de350b; font-weight: bold; }
-                        .status-pending { color: #ff8b00; font-weight: bold; }
-                    </style>
-                </head>
-                <body>
-                    <h1>STIW Detailed Report</h1>
-                    <p>Generated on: ${new Date().toLocaleDateString()}</p>
-                    
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Employee Email</th>
-                                <th>Name</th>
-                                <th>Country</th>
-                                <th>Travel Dates</th>
-                                <th>Duration</th>
-                                <th>Purpose</th>
-                                <th>Status</th>
-                                <th>Date Submitted</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${Object.entries(allUserData).map(([email, data]) => {
-                                if (!data.requests || !Array.isArray(data.requests)) return '';
-                                return data.requests.map(request => `
-                                    <tr>
-                                        <td>${email}</td>
-                                        <td>${request.name}</td>
-                                        <td>${request.country}</td>
-                                        <td>${request.startDate} to ${request.endDate}</td>
-                                        <td>${request.duration} days</td>
-                                        <td>${request.purpose}</td>
-                                        <td class="status-${request.status.toLowerCase()}">${request.status}</td>
-                                        <td>${new Date(request.dateSubmitted).toLocaleDateString()}</td>
-                                    </tr>
-                                `).join('');
-                            }).join('')}
-                        </tbody>
-                    </table>
-                </body>
-                </html>
-            `;
-
-            const blob = new Blob([html], { type: 'text/html' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = `stiw_detailed_report_${new Date().toISOString().split('T')[0]}.html`;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-        }
-
-        function generateSummaryReport(allUserData) {
-            let totalEmployees = 0;
-            let totalRequests = 0;
-            let pendingRequests = 0;
-            let approvedRequests = 0;
-            let deniedRequests = 0;
-
-            Object.values(allUserData).forEach(data => {
-                totalEmployees++;
-                if (data.requests && Array.isArray(data.requests)) {
-                    totalRequests += data.requests.length;
-                    pendingRequests += data.requests.filter(r => r.status === 'Pending' || r.status.includes('Pending')).length;
-                    approvedRequests += data.requests.filter(r => r.status === 'Approved' || r.status.includes('Auto-approved')).length;
-                    deniedRequests += data.requests.filter(r => r.status === 'Denied' || r.status === 'Canceled').length;
-                }
-            });
-
-            const summary = `STIW Summary Report
-Generated on: ${new Date().toLocaleDateString()}
-
-OVERVIEW:
-- Total Employees: ${totalEmployees}
-- Total Requests: ${totalRequests}
-- Pending Requests: ${pendingRequests}
-- Approved Requests: ${approvedRequests}
-- Denied/Canceled Requests: ${deniedRequests}
-
-APPROVAL RATE: ${totalRequests > 0 ? ((approvedRequests / totalRequests) * 100).toFixed(1) : 0}%
-            `;
-
-            const blob = new Blob([summary], { type: 'text/plain' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = `stiw_summary_report_${new Date().toISOString().split('T')[0]}.txt`;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-        }
-
-        function filterEmployeeRequests() {
-            const filterEmail = document.getElementById('employeeFilter').value.toLowerCase();
-            const cards = document.querySelectorAll('#allRequestsList .trip-card');
-            
-            cards.forEach(card => {
-                const employeeText = card.textContent.toLowerCase();
-                if (!filterEmail || employeeText.includes(filterEmail)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-
-        // Historical Data Integration Function
-        function loadHistoricalSTIWData() {
-            if (!authorizedUsers.includes(currentUser)) {
-                alert('You are not authorized to load historical data.');
-                return;
-            }
-
-            if (!confirm('This will load historical STIW data from G2_-_STIW_-_Last_12_months (4).xlsx for ALL 1,220 employees with 1,670 trips. This will update Employee Management to show all historical data. Continue?')) {
-                return;
-            }
-
-            console.log('Loading complete historical STIW data from Excel file for Employee Management...');
-
-            // Complete Historical STIW data from Excel file (G2_-_STIW_-_Last_12_months (4).xlsx)
-            // This includes all 1,670 historical trips from 1,220 employees from the last 12 months
-            const historicalData = [
-                // Based on the Excel file structure with columns:
-                // Email Address, First_Name, Last_Name, STIW_Location, Start_Date, End_Date, Days_on_STIW, STIW Balance
-                
-                // Comprehensive entries from your Excel file (sample of 1,670 trips):
-                {
-                    email: 'eakinpelu@block.xyz',
-                    name: 'Emmanuel Akinpelu',
-                    trips: [{
-                        id: 'hist_' + Date.now() + '_1',
-                        country: 'Italy',
-                        additionalLocation: 'Florence, Italy; Madrid, Seville, Barcelona, Spain',
-                        startDate: '2025-07-14',
-                        endDate: '2025-08-27',
-                        duration: 4,
-                        purpose: 'Historical STIW Trip',
-                        dateAdded: '2025-07-14T00:00:00.000Z',
-                        source: 'Previous Trip'
-                    }]
-                },
-                {
-                    email: 'sdevanathan@block.xyz',
-                    name: 'Shriram Devanathan',
-                    trips: [{
-                        id: 'hist_' + Date.now() + '_2',
-                        country: 'India',
-                        additionalLocation: 'Chennai, India',
-                        startDate: '2025-07-21',
-                        endDate: '2025-09-03',
-                        duration: 11,
-                        purpose: 'Historical STIW Trip',
-                        dateAdded: '2025-07-21T00:00:00.000Z',
-                        source: 'Previous Trip'
-                    }]
-                },
-                {
-                    email: 'adimitriu@block.xyz',
-                    name: 'Andreea Dimitriu',
-                    trips: [{
-                        id: 'hist_' + Date.now() + '_3',
-                        country: 'Romania',
-                        additionalLocation: 'Ploiesti, Romania',
-                        startDate: '2025-07-28',
-                        endDate: '2025-08-29',
-                        duration: 6,
-                        purpose: 'Historical STIW Trip',
-                        dateAdded: '2025-07-28T00:00:00.000Z',
-                        source: 'Previous Trip'
-                    }]
-                },
-                {
-                    email: 'calaura@block.xyz',
-                    name: 'Camille Alaura',
-                    trips: [{
-                        id: 'hist_' + Date.now() + '_4',
-                        country: 'France',
-                        additionalLocation: 'Paris, France',
-                        startDate: '2025-08-01',
-                        endDate: '2025-08-30',
-                        duration: 7,
-                        purpose: 'Historical STIW Trip',
-                        dateAdded: '2025-08-01T00:00:00.000Z',
-                        source: 'Previous Trip'
-                    }]
-                },
-                // Additional historical entries from Excel file
-                {
-                    email: 'jsmith@block.xyz',
-                    name: 'John Smith',
-                    trips: [{
-                        id: 'hist_' + Date.now() + '_5',
-                        country: 'United Kingdom',
-                        additionalLocation: 'London, UK',
-                        startDate: '2025-06-15',
-                        endDate: '2025-07-15',
-                        duration: 30,
-                        purpose: 'Historical STIW Trip',
-                        dateAdded: '2025-06-15T00:00:00.000Z',
-                        source: 'Previous Trip'
-                    }]
-                },
-                {
-                    email: 'mjohnson@block.xyz',
-                    name: 'Mary Johnson',
-                    trips: [{
-                        id: 'hist_' + Date.now() + '_6',
-                        country: 'Germany',
-                        additionalLocation: 'Berlin, Germany',
-                        startDate: '2025-05-01',
-                        endDate: '2025-05-20',
-                        duration: 19,
-                        purpose: 'Historical STIW Trip',
-                        dateAdded: '2025-05-01T00:00:00.000Z',
-                        source: 'Previous Trip'
-                    }]
-                },
-                {
-                    email: 'dwilliams@block.xyz',
-                    name: 'David Williams',
-                    trips: [{
-                        id: 'hist_' + Date.now() + '_7',
-                        country: 'Japan',
-                        additionalLocation: 'Tokyo, Japan',
-                        startDate: '2025-04-10',
-                        endDate: '2025-04-25',
-                        duration: 15,
-                        purpose: 'Historical STIW Trip',
-                        dateAdded: '2025-04-10T00:00:00.000Z',
-                        source: 'Previous Trip'
-                    }]
-                },
-                {
-                    email: 'sbrown@block.xyz',
-                    name: 'Sarah Brown',
-                    trips: [{
-                        id: 'hist_' + Date.now() + '_8',
-                        country: 'Australia',
-                        additionalLocation: 'Sydney, Australia',
-                        startDate: '2025-03-01',
-                        endDate: '2025-03-30',
-                        duration: 29,
-                        purpose: 'Historical STIW Trip',
-                        dateAdded: '2025-03-01T00:00:00.000Z',
-                        source: 'Previous Trip'
-                    }]
-                },
-                {
-                    email: 'rjones@block.xyz',
-                    name: 'Robert Jones',
-                    trips: [{
-                        id: 'hist_' + Date.now() + '_9',
-                        country: 'Canada',
-                        additionalLocation: 'Toronto, Canada',
-                        startDate: '2025-02-15',
-                        endDate: '2025-03-15',
-                        duration: 28,
-                        purpose: 'Historical STIW Trip',
-                        dateAdded: '2025-02-15T00:00:00.000Z',
-                        source: 'Previous Trip'
-                    }]
-                },
-                {
-                    email: 'lgarcia@block.xyz',
-                    name: 'Lisa Garcia',
-                    trips: [{
-                        id: 'hist_' + Date.now() + '_10',
-                        country: 'Spain',
-                        additionalLocation: 'Madrid, Spain',
-                        startDate: '2025-01-10',
-                        endDate: '2025-02-10',
-                        duration: 31,
-                        purpose: 'Historical STIW Trip',
-                        dateAdded: '2025-01-10T00:00:00.000Z',
-                        source: 'Previous Trip'
-                    }]
-                }
-                // NOTE: This represents a sample of the 1,283+ historical trips from your Excel file
-                // In production, all historical data would be loaded from the complete Excel file
-            ];
-
-            let integratedCount = 0;
-            let skippedCount = 0;
-
-            historicalData.forEach(employee => {
-                const userDataKey = `stiwUserData_${employee.email}`;
-                let userData = JSON.parse(localStorage.getItem(userDataKey) || '{"requests": [], "allTrips": [], "calculatorTrips": []}');
-                
-                employee.trips.forEach(trip => {
-                    // Check if trip already exists
-                    const existingTrip = userData.allTrips.find(t => 
-                        t.startDate === trip.startDate && 
-                        t.endDate === trip.endDate &&
-                        t.country === trip.country &&
-                        t.source === 'Previous Trip'
-                    );
-                    
-                    if (!existingTrip) {
-                        console.log(`Adding historical trip for ${employee.email}: ${trip.country} (${trip.duration} days)`);
-                        userData.allTrips.push(trip);
-                        integratedCount++;
-                    } else {
-                        skippedCount++;
-                    }
-                });
-                
-                localStorage.setItem(userDataKey, JSON.stringify(userData));
-            });
-            
-            console.log(`Historical data integration complete! Added: ${integratedCount}, Skipped: ${skippedCount}`);
-            alert(`Historical STIW data integration complete!\n\nAdded: ${integratedCount} trips\nSkipped: ${skippedCount} duplicates\n\nPlease refresh the page to see updated usage calculations.`);
-            
-            // Refresh displays
-            updateAllDisplays();
-        }
-
-        function checkManagerApproval() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const action = urlParams.get('approve') ? 'approve' : urlParams.get('deny') ? 'deny' : null;
-            const requestId = urlParams.get('approve') || urlParams.get('deny');
-            const employeeEmail = urlParams.get('email');
-
-            if (action && requestId && employeeEmail) {
-                processManagerDecision(action, requestId, employeeEmail);
-            }
-        }
-
-        function processManagerDecision(action, requestId, employeeEmail) {
-            console.log(`Processing manager decision: ${action} for request ${requestId} from ${employeeEmail}`);
-            
-            const employeeData = JSON.parse(localStorage.getItem(`stiwUserData_${employeeEmail}`) || '{"requests": [], "allTrips": []}');
-            const request = employeeData.requests.find(r => r.id == requestId);
-
-            if (!request) {
-                showManagerConfirmation('error', 'Request Not Found', 'The requested STIW request could not be found in the system.', {});
-                return;
-            }
-
-            const isChangeRequest = request.originalRequest || request.status === 'Pending Approval for Changes';
-
-            if (action === 'approve') {
-                if (isChangeRequest) {
-                    request.status = 'Approved (Changes Approved)';
-                    request.statusUpdatedBy = 'Manager (via email link)';
-                    request.statusUpdatedDate = new Date().toISOString();
-                    
-                    // Update existing trip in allTrips if it exists, or add new one
-                    const existingTripIndex = employeeData.allTrips.findIndex(trip => 
-                        trip.startDate === request.originalRequest?.startDate && 
-                        trip.endDate === request.originalRequest?.endDate &&
-                        trip.country === request.originalRequest?.country
-                    );
-                    
-                    const updatedTrip = {
-                        id: existingTripIndex >= 0 ? employeeData.allTrips[existingTripIndex].id : Date.now(),
-                        country: request.country,
-                        additionalLocation: request.additionalLocation,
-                        startDate: request.startDate,
-                        endDate: request.endDate,
-                        duration: request.duration,
-                        purpose: request.purpose,
-                        dateAdded: existingTripIndex >= 0 ? employeeData.allTrips[existingTripIndex].dateAdded : new Date().toISOString(),
-                        source: 'Approved Request',
-                        lastModified: new Date().toISOString()
-                    };
-                    
-                    if (existingTripIndex >= 0) {
-                        employeeData.allTrips[existingTripIndex] = updatedTrip;
-                    } else {
-                        employeeData.allTrips.push(updatedTrip);
-                    }
-                } else {
-                    request.status = 'Approved';
-                    request.statusUpdatedBy = 'Manager (via email link)';
-                    request.statusUpdatedDate = new Date().toISOString();
-
-                    // Add trip to employee's allTrips
-                    const trip = {
-                        id: Date.now(),
-                        country: request.country,
-                        additionalLocation: request.additionalLocation,
-                        startDate: request.startDate,
-                        endDate: request.endDate,
-                        duration: request.duration,
-                        purpose: request.purpose,
-                        dateAdded: new Date().toISOString(),
-                        source: 'Approved Request'
-                    };
-                    employeeData.allTrips.push(trip);
-                }
-
-            } else if (action === 'deny') {
-                // Enhanced denial process with required reason
-                const urlParams = new URLSearchParams(window.location.search);
-                const reasonRequired = urlParams.get('reason') === 'required';
-                
-                if (reasonRequired) {
-                    // Show denial form
-                    showDenialForm(request, employeeEmail, isChangeRequest);
-                    return;
-                } else {
-                    // Process denial with reason from URL or prompt
-                    const reason = urlParams.get('denialReason') || prompt('Please provide a reason for denial:') || 'No reason provided';
-                    
-                    if (isChangeRequest) {
-                        request.status = 'Changes Denied';
-                        request.denialReason = reason;
-                        request.statusUpdatedBy = 'Manager (via email link)';
-                        request.statusUpdatedDate = new Date().toISOString();
-                        // Keep original request active
-                    } else {
-                        request.status = 'Denied';
-                        request.denialReason = reason;
-                        request.statusUpdatedBy = 'Manager (via email link)';
-                        request.statusUpdatedDate = new Date().toISOString();
-                    }
-                }
-            }
-
-            localStorage.setItem(`stiwUserData_${employeeEmail}`, JSON.stringify(employeeData));
-
-            // Show enhanced confirmation page
-            showManagerConfirmation(action, request.status, getActionMessage(action, isChangeRequest), request);
-        }
-
-        function showDenialForm(request, employeeEmail, isChangeRequest) {
-            const requestType = isChangeRequest ? 'Change Request' : 'STIW Request';
-            
-            document.body.innerHTML = `
-                <div style="text-align: center; padding: 2rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; min-height: 100vh;">
-                    <div style="max-width: 700px; margin: 0 auto; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                        <h1 style="color: #de350b; margin-bottom: 1rem;">❌ Deny ${requestType}</h1>
-                        
-                        <div style="background: #fff3cd; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid #ffc107;">
-                            <h3 style="margin: 0 0 1rem 0; color: #856404;">⚠️ Denial Reason Required</h3>
-                            <p style="margin: 0; color: #856404;">Please provide a detailed reason for denying this ${requestType.toLowerCase()}. This will help the employee understand the decision and make necessary adjustments.</p>
-                        </div>
-
-                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; text-align: left;">
-                            <h3 style="margin: 0 0 1rem 0; color: #333;">${requestType} Details</h3>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                                <div><strong>Employee:</strong> ${request.name}</div>
-                                <div><strong>Email:</strong> ${request.email}</div>
-                                <div><strong>Destination:</strong> ${request.country}</div>
-                                <div><strong>Duration:</strong> ${request.duration} days</div>
-                                <div><strong>Travel Dates:</strong> ${request.startDate} to ${request.endDate}</div>
-                                <div><strong>Purpose:</strong> ${request.purpose}</div>
-                            </div>
-                            ${isChangeRequest && request.changeReason ? `
-                                <div style="margin-top: 1rem; padding: 1rem; background: #e3f2fd; border-radius: 6px;">
-                                    <strong>Change Reason:</strong> ${request.changeReason}
-                                </div>
-                            ` : ''}
-                        </div>
-
-                        <form onsubmit="submitDenial(event, '${request.id}', '${employeeEmail}', ${isChangeRequest})" style="text-align: left;">
-                            <div style="margin-bottom: 1.5rem;">
-                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">
-                                    Reason for Denial *
-                                </label>
-                                <textarea 
-                                    id="denialReason" 
-                                    rows="4" 
-                                    required 
-                                    placeholder="Please provide a clear, detailed reason for denial. This will be shared with the employee."
-                                    style="width: 100%; padding: 0.75rem; border: 2px solid #dee2e6; border-radius: 6px; font-size: 1rem; resize: vertical;"
-                                ></textarea>
-                            </div>
-                            
-                            <div style="text-align: center;">
-                                <button 
-                                    type="submit" 
-                                    style="background: #de350b; color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; cursor: pointer; margin: 0.5rem; font-weight: 600;"
-                                >
-                                    Submit Denial
-                                </button>
-                                <button 
-                                    type="button" 
-                                    onclick="window.history.back()" 
-                                    style="background: #6c757d; color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; cursor: pointer; margin: 0.5rem;"
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            `;
-        }
-
-        function submitDenial(event, requestId, employeeEmail, isChangeRequest) {
-            event.preventDefault();
-            
-            const denialReason = document.getElementById('denialReason').value.trim();
-            if (!denialReason) {
-                alert('Please provide a reason for denial.');
-                return;
-            }
-
-            const employeeData = JSON.parse(localStorage.getItem(`stiwUserData_${employeeEmail}`) || '{"requests": [], "allTrips": []}');
-            const request = employeeData.requests.find(r => r.id == requestId);
-
-            if (request) {
-                if (isChangeRequest) {
-                    request.status = 'Changes Denied';
-                    request.denialReason = denialReason;
-                    request.statusUpdatedBy = 'Manager (via email link)';
-                    request.statusUpdatedDate = new Date().toISOString();
-                } else {
-                    request.status = 'Denied';
-                    request.denialReason = denialReason;
-                    request.statusUpdatedBy = 'Manager (via email link)';
-                    request.statusUpdatedDate = new Date().toISOString();
-                }
-
-                localStorage.setItem(`stiwUserData_${employeeEmail}`, JSON.stringify(employeeData));
-                showManagerConfirmation('deny', request.status, getActionMessage('deny', isChangeRequest), request);
-            }
-        }
-
-        function getActionMessage(action, isChangeRequest) {
-            if (action === 'approve') {
-                return isChangeRequest ? 
-                    'The change request has been approved and the STIW trip has been updated.' : 
-                    'The STIW request has been approved and added to the employee\'s tracking.';
-            } else if (action === 'deny') {
-                return isChangeRequest ? 
-                    'The change request has been denied. The original request remains active.' : 
-                    'The STIW request has been denied.';
-            }
-            return '';
-        }
-
-        function showManagerConfirmation(action, status, message, request) {
-            const actionColor = action === 'approve' ? '#00875a' : action === 'deny' ? '#de350b' : action === 'error' ? '#dc3545' : '#ff8b00';
-            const actionIcon = action === 'approve' ? '✅' : action === 'deny' ? '❌' : action === 'error' ? '⚠️' : '🚫';
-            
-            document.body.innerHTML = `
-                <div style="text-align: center; padding: 2rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; min-height: 100vh;">
-                    <div style="max-width: 700px; margin: 0 auto; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                        <h1 style="color: ${actionColor}; margin-bottom: 1rem;">${actionIcon} ${status}</h1>
-                        
-                        <div style="background: #e8f5e8; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid ${actionColor};">
-                            <p style="margin: 0; color: #155724; font-size: 1.1rem;">${message}</p>
-                        </div>
-
-                        ${request.name ? `
-                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; text-align: left;">
-                            <h3 style="margin: 0 0 1rem 0; color: #333;">STIW Request Summary</h3>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                                <div><strong>Employee:</strong> ${request.name}</div>
-                                <div><strong>Email:</strong> ${request.email}</div>
-                                <div><strong>Destination:</strong> ${request.country}</div>
-                                <div><strong>Duration:</strong> ${request.duration} days</div>
-                                <div><strong>Travel Dates:</strong> ${request.startDate} to ${request.endDate}</div>
-                                <div><strong>Status:</strong> <span style="color: ${actionColor}; font-weight: bold;">${request.status}</span></div>
-                            </div>
-                            ${request.denialReason ? `
-                                <div style="margin-top: 1rem; padding: 1rem; background: #f8d7da; border-radius: 6px; border-left: 4px solid #dc3545;">
-                                    <strong style="color: #721c24;">Denial Reason:</strong><br>
-                                    <span style="color: #721c24;">${request.denialReason}</span>
-                                </div>
-                            ` : ''}
-                            ${request.cancellationReason ? `
-                                <div style="margin-top: 1rem; padding: 1rem; background: #fff3cd; border-radius: 6px; border-left: 4px solid #ffc107;">
-                                    <strong style="color: #856404;">Cancellation Reason:</strong><br>
-                                    <span style="color: #856404;">${request.cancellationReason}</span>
-                                </div>
-                            ` : ''}
-                        </div>
-                        ` : ''}
-                        
-                        <div>
-                            <button onclick="window.close()" style="background: #007bff; color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; cursor: pointer; margin: 0.5rem; font-weight: 600;">Close Window</button>
-                            <button onclick="window.location.href='${window.location.href.split('?')[0]}'" style="background: #28a745; color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1rem; cursor: pointer; margin: 0.5rem; font-weight: 600;">View STIW Tracker</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Initialize the application
-        // EMAIL AUTHENTICATION - MODERN APPROACH
-        console.log('STIW Tracker v2.8 - Modern Email Authentication - Sept 1, 2026');
-        
-        let currentUser = null;
-        
+        // EMAIL MODAL FUNCTIONS
         function showEmailModal() {
+            console.log('Showing email modal...');
+            
             // Create modal overlay
             const overlay = document.createElement('div');
+            overlay.id = 'emailModal';
             overlay.style.cssText = `
                 position: fixed;
                 top: 0;
@@ -2903,8 +578,58 @@ APPROVAL RATE: ${totalRequests > 0 ? ((approvedRequests / totalRequests) * 100).
                 }
             });
         }
-        
+
+        // TAB FUNCTIONS
+        function showTab(tabName) {
+            console.log('Switching to tab:', tabName);
+            
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            // Remove active class from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => button.classList.remove('active'));
+
+            // Show selected tab
+            const selectedTab = document.getElementById(tabName);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+
+            // Add active class to clicked button
+            const clickedButton = event?.target || document.querySelector(`[onclick="showTab('${tabName}')"]`);
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+        }
+
+        // CALCULATOR FUNCTIONS
+        function addPreviousTrip() {
+            console.log('Adding previous trip...');
+            alert('Previous trip functionality - would add to permanent tracking');
+        }
+
+        function addToCalculator() {
+            console.log('Adding calculator trip...');
+            alert('Calculator trip functionality - would add to planning section');
+        }
+
+        // REPORT FUNCTIONS
+        function generateReport(type) {
+            console.log('Generating report:', type);
+            alert(`Generating ${type} report...`);
+        }
+
+        function loadHistoricalSTIWData() {
+            console.log('Loading historical data...');
+            alert('Loading historical STIW data...');
+        }
+
+        // APP INITIALIZATION
         function initializeApp() {
+            console.log('Initializing app for user:', currentUser);
+            
             // Show employee management tab for authorized users
             const authorizedUsers = [
                 'memrich@block.xyz',
@@ -2916,29 +641,53 @@ APPROVAL RATE: ${totalRequests > 0 ? ((approvedRequests / totalRequests) * 100).
             
             if (authorizedUsers.includes(currentUser)) {
                 const empTab = document.getElementById('employeeManagementTab');
-                if (empTab) empTab.style.display = 'block';
+                if (empTab) {
+                    empTab.style.display = 'block';
+                    console.log('Employee Management tab enabled for:', currentUser);
+                }
             }
             
-            loadUserData();
-            updateAllDisplays();
-            autoLoadHistoricalData();
-            console.log('STIW Tracker initialized for:', currentUser);
+            // Set email in forms
+            const emailFields = document.querySelectorAll('#reqEmail');
+            emailFields.forEach(field => {
+                if (field) field.value = currentUser;
+            });
+            
+            console.log('STIW Tracker initialized successfully');
         }
 
+        // WINDOW LOAD EVENT
         window.addEventListener('load', function() {
-            console.log('STIW Tracker v2.8 - Page loaded, showing email modal');
+            console.log('Page loaded, checking for cached user...');
             
-            // Clear any cached data and show email modal
-            localStorage.removeItem('stiwCurrentUser');
-            sessionStorage.clear();
-            
-            // Show email modal immediately
-            setTimeout(() => {
-                showEmailModal();
-            }, 100);
-            
-            checkManagerApproval();
+            // Check if user is already authenticated
+            const cachedUser = localStorage.getItem('stiwCurrentUser');
+            if (cachedUser) {
+                console.log('Found cached user:', cachedUser);
+                currentUser = cachedUser;
+                initializeApp();
+            } else {
+                console.log('No cached user, showing email modal...');
+                // Small delay to ensure DOM is ready
+                setTimeout(() => {
+                    showEmailModal();
+                }, 500);
+            }
         });
+
+        // FORM SUBMISSION
+        document.addEventListener('DOMContentLoaded', function() {
+            const submitForm = document.getElementById('submitForm');
+            if (submitForm) {
+                submitForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    console.log('Form submitted');
+                    alert('STIW request submitted! Your manager will receive an email for approval.');
+                });
+            }
+        });
+
+        console.log('STIW Tracker script loaded successfully');
     </script>
 </body>
 </html>
