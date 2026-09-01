@@ -7,7 +7,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="2.6-20260901-email-prompt-force-fixed">
+    <meta name="version" content="2.7-20260901-email-prompt-IMMEDIATE-FORCE">
     <meta http-equiv="Last-Modified" content="Sun, 01 Sep 2026 09:33:00 GMT">
     <style>
         :root {
@@ -2803,21 +2803,53 @@ APPROVAL RATE: ${totalRequests > 0 ? ((approvedRequests / totalRequests) * 100).
         }
 
         // Initialize the application
+        // FORCE EMAIL PROMPT - IMMEDIATE EXECUTION
+        console.log('STIW Tracker v2.7 - FORCING EMAIL PROMPT IMMEDIATELY - Sept 1, 2026');
+        
+        // Clear ALL possible cached data
+        localStorage.clear();
+        sessionStorage.clear();
+        console.log('CLEARED ALL STORAGE - EMAIL PROMPT FORCED');
+        
+        // FORCE prompt immediately when script loads
+        let currentUser = prompt('🌍 STIW TRACKER ACCESS\n\nPlease enter your email address to continue:');
+        
+        if (!currentUser || currentUser.trim() === '') {
+            alert('Email address is required to use this application.');
+            currentUser = prompt('🌍 STIW TRACKER ACCESS\n\nEmail is required. Please enter your email address:');
+        }
+        
+        if (currentUser) {
+            currentUser = currentUser.trim().toLowerCase();
+            localStorage.setItem('stiwCurrentUser', currentUser);
+            console.log('EMAIL SET:', currentUser);
+        }
+
         window.addEventListener('load', function() {
-            console.log('STIW Tracker v2.6 - EMAIL PROMPT FORCE FIXED - Sept 1, 2026 - Loading...');
+            console.log('STIW Tracker v2.7 - Page loaded after email prompt');
             
-            // FORCE clear any cached user data to ensure email prompt appears EVERY TIME
-            localStorage.removeItem('stiwCurrentUser');
-            sessionStorage.clear(); // Clear session storage too
-            console.log('FORCE cleared ALL cached user data - email prompt MUST appear now');
+            // Initialize the rest of the application
+            if (currentUser) {
+                // Show employee management tab for authorized users
+                const authorizedUsers = [
+                    'memrich@block.xyz',
+                    'cshek@block.xyz',
+                    'adrianah@block.xyz',
+                    'jeannette@block.xyz',
+                    'vross@block.xyz'
+                ];
+                
+                if (authorizedUsers.includes(currentUser)) {
+                    document.getElementById('employeeManagementTab').style.display = 'block';
+                }
+                
+                loadUserData();
+                updateAllDisplays();
+                autoLoadHistoricalData();
+            }
             
-            // Add small delay to ensure clearing is complete
-            setTimeout(() => {
-                console.log('Starting initialization after cache clear...');
-                initializeUser();
-                checkManagerApproval();
-                console.log('STIW Tracker initialized with FORCED email prompt');
-            }, 100);
+            checkManagerApproval();
+            console.log('STIW Tracker fully initialized');
         });
     </script>
 </body>
