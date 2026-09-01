@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Prompt Test</title>
+</head>
+<body>
+    <h1>Email Prompt Test</h1>
+    <p id="status">Testing email prompt...</p>
+    
+    <script>
+        console.log('Script starting...');
+        
+        // Clear all storage
+        localStorage.clear();
+        sessionStorage.clear();
+        console.log('Storage cleared');
+        
+        // Force email prompt
+        console.log('About to show prompt...');
+        let userEmail = prompt('Please enter your email address:');
+        console.log('Prompt result:', userEmail);
+        
+        if (userEmail) {
+            document.getElementById('status').textContent = 'Email entered: ' + userEmail;
+            localStorage.setItem('testEmail', userEmail);
+        } else {
+            document.getElementById('status').textContent = 'No email provided';
+        }
+    </script>
+</body>
+</html>
