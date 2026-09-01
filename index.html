@@ -1636,10 +1636,7 @@
                             <div class="trip-detail-label">Duration</div>
                             <div class="trip-detail-value">${trip.duration} days</div>
                         </div>
-                        <div class="trip-detail-row">
-                            <div class="trip-detail-label">Purpose</div>
-                            <div class="trip-detail-value">${trip.purpose || 'Not specified'}</div>
-                        </div>
+
                         <div class="trip-detail-row">
                             <div class="trip-detail-label">Status</div>
                             <div class="trip-detail-value">
@@ -1775,10 +1772,7 @@
                         </div>
                     </div>
                     <div style="margin-top: 15px;">
-                        <div class="trip-detail-row">
-                            <div class="trip-detail-label">Purpose</div>
-                            <div class="trip-detail-value">${request.purpose}</div>
-                        </div>
+
                     </div>
                     ${request.denialReason ? `<div class="alert alert-danger" style="margin-top: 15px;"><strong>Denial Reason:</strong> ${request.denialReason}</div>` : ''}
                     ${request.cancellationReason ? `<div class="alert alert-warning" style="margin-top: 15px;"><strong>Cancellation Reason:</strong> ${request.cancellationReason}</div>` : ''}
